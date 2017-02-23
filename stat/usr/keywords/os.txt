@@ -1,0 +1,44 @@
+Windows ME=Win ME
+9x 4.90=Win ME
+Windows 98=Win 98
+NT 5.0=Win 2000
+Win2000=Win 2000
+Windows 2000=Win 2000
+NT 5.2=Win 2003
+NT 6.0=Win Vista
+NT 6.1=Win 7
+NT 4=Win NT
+NT4=Win NT
+Media Center=Win XP Media
+NT 5.1=Win XP
+XP=Win XP
+PalmOS
+Windows 95=Win 95
+Win95=Win 95
+Win 9x=Win 9x
+CE=Win CE
+OS2=OS/2
+Win
+Android
+Kindle
+Blackberry
+iPod
+iPad
+iPhone
+Mac
+Unix
+FreeBSD
+OpenBSD
+NetBSD
+Linux
+linux=Linux
+SunOS
+OS/2
+Symbian
+SymbOS=Symbian
+Profile/MIDP-2.0 Configuration/CLDC-1.1=Mobile Phone
+profile/MIDP-2.0 configuration/CLDC-1.1=Mobile Phone
+Profile/MIDP-2.1 Configuration/CLDC-1.1=Mobile Phone
+Opera Mini=Mobile Phone
+Opera Mobi=Mobile Phone
+PLAYSTATION 3=Playstation 3

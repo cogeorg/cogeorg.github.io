@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>CrazyStat: Relative Time-Spans</title>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body>
+
+<h1><a name="top"></a>CrazyStat</h1>
+<p><i>Version 1.70</i></p>
+<h2>How do relative time-spans work?</h2>
+<p>This is an advanced feature which is meant for preset creation. If you do not
+plan to create your own preset, there is no need to use this.</p>
+
+<p>To define a good and useful preset, you will need to set either relative
+time-spans or "total time" for all of the modules.</p>
+
+<p>This document includes information which is necessary to create your own preset
+via CrazyStat's "Manage presets"-feature (GUI). This is a quite easy way to
+generate your own preset. If you want to create advanced presets, you might
+have to do this manually because the GUI is somehow restricted.<br />
+If you have successfully created presets via GUI, you might want to read
+advanced_presets.txt for more information on how to (manually) write presets.</p>
+
+<p>If you want to save a preset, time-settings are somehow complicated. Let's
+assume you want to have the "Visits/Hour"-Module display today's visits. You
+could click the calendar, choose the current day and that's it. But if you save
+this as a preset, this preset will only work for one day. The day after, the
+setting "today" means something else than the day before. You would need to 
+change your preset every day if you want to do this with absolute time-spans.</p>
+
+<p>So that's why there are relative time-spans. With these, you say that your
+time-span starts "today" and ends "tomorrow". These are strings, which can be
+entered (exactly like this) into the "Start"- and "End"-fields for relative
+time-spans. Every time the statistic is being analyzed, CrazyStat will calculate
+what "today" means at the moment.</p>
+
+<h3>So what can be entered as "start" and "end"?</h3>
+
+<p>These strings are parsed using <a href="http://php.net/manual/en/function.strtotime.php" target="_blank">php-function strtotime()</a>. Have a look at the
+<a href="http://php.net/manual/en/function.strtotime.php" target="_blank">manual</a>.<p>
+
+<p>Before passing the string to strtotime, some special characters are replaced:</p>
+
+<table>
+<tr><td>%d</td><td>day of the month (as a number)</td></tr>
+<tr><td>%m</td><td>month (as a number)</td></tr>
+<tr><td>%F</td><td>month (full text, e.g. January)</td></tr>
+<tr><td>%Y</td><td>year (as a 4-digit number)</td></tr>
+<tr><td>%H</td><td>hour (24h-format, leading zeros)</td></tr>
+<tr><td>%i</td><td>minutes (leading zeros)</td></tr>
+<tr><td>%s</td><td>seconds (leading zeros)</td></tr>
+<tr><td>%D</td><td>day of the week (3 letters, Mon-Sun)</td></tr>
+<tr><td>%l</td><td>day of the week (full text, e.g. Monday)</td></tr>
+<tr><td>%w</td><td>day of the week (numeric, 0=Sunday)</td></tr>
+<tr><td>%W</td><td>week-number (ISO-8601)</td></tr>
+</table>
+
+<p>These are defined completely the same way like the <a href="http://php.net/manual/en/function.date.php" target="_blank">php-function date()</a> does.</p>
+
+<p>Examples (everything in one line means the same thing):</p>
+
+<p>today, %Y/%m/%d, %d.%m.%Y<br />
+tomorrow, %Y/%m/%d +1 day, today +1 day<br />
+yesterday, %d.%m.%Y -1 day<br />
+now, %Y/%m/%d %H:%i:%s<br />
+next saturday, %Y-W%W +%w days +6day<br />
+</p>
+<p>You see in most cases, there are a dozen of ways to achieve the same result.<br />
+<u>Hint</u>: You nearly always need to add "-1 second" to your "end"-String.
+Because if you want to get all hits for today, setting "tomorrow" as end-string
+will be 1 second too much, as midnight of tomorrow is not today.<br />
+You might say that there will never be hits for 00:00 of tomorrow as that's
+always in the future. You're correct in this case.
+But if you want the first of the last month as start (e.g. "%Y/%m/1 -1 month")
+and end of last month as end, the end should be "%Y/%m/1 -1second".
+If "-1 second" is missing, the visits of midnight of the 1st of this month would
+ be included. You could also use "%Y/%m/1 23:59:59 -1day".<br />
+<u>Attention</u>: This sounds stupid, as there won't be a lot of hits in this second.
+But if you don't use this, caching might not work efficiently for your preset
+because time-end of your preset might look different to CrazyStat compared to
+another preset, but in fact it's just different by 1 second.</p>
+
+<h3>Time-span names</h3>
+
+<p>You can give your time-span a name, which will appear at the top of the module.
+This could be a text like "Today". But you could also set "%Y/%m/%d" to get the
+actual date. All the replacement-characters listed above work the same way.</p>
+
+<h3>Start #</h3>
+
+<p>"Start #" makes it possible to start with the oldest entry. Let's say you>
+want to show all the visitors of the last 30 days in "Visits/day".<br />
+You would set start "today -30 days" and end "tomorrow -1 second". This will do
+fine, but older entries might end up at the bottom of the module while today's
+entry is somehow in the middle. To get a nicer view, you can tell CrazyStat to
+start with a particular one, e.g. with #5. But of course, this changes as well.<br />
+So here, the same characters as above are replaced. For the example above, you
+could use "%d+1". Note that here, only simple operations like plus and minus are
+allowed.</p>
+
+<h3>Check your time-span!</h3>
+
+<p>You can always press "Check" to see what the representation of what you entered
+would be at the moment. This is very useful for "debugging" your relative time-span.</p>
+
+</body>
+</html>

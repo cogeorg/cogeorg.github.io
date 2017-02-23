@@ -1,0 +1,128 @@
+/*
+
+>>>>>> CrazyStat <<<<<<
+A convenient, comprehensive and free PHP statistic-Script with optional counter.
+
+Copyright (C) 2004-2011 Christopher Kramer
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+E-Mail: webmaster AT christosoft DOT de
+Web: http://www.christosoft.de
+Version: 1.70
+
+*** style.css ***
+Funktion:    Stylesheet (Design)
+Aufrufbar:   nein
+Eingebunden: von password_protect.php, index.php  (<link>)
+*/
+
+body {
+padding: 0;
+margin: 0;
+border: 0;
+background-color: white;
+}
+
+body, h2, a {
+font-family: Calibri, Verdana, Arial;
+color: black;
+text-decoration: none;
+}
+
+
+h1 {
+text-align: center;
+padding-top: 20px;
+padding-bottom: 40px;
+}
+
+div#outer_main {
+margin-top: 50px;
+width: 600px;
+text-align: left;
+}
+
+div#inner_main {
+background-color: #F3F3F3;
+border: 1px solid black;
+padding: 20px;
+}
+
+
+div#panel {
+height: 24px;
+}
+
+div.reiter {
+float: left;
+border-top: 1px solid black;
+padding: 3px 20px 3px 20px;
+height: 17px;
+}
+
+div#r0_1, div#r1_1, div#r2_1 {
+background-color: #C0C0C0;
+color: #000000;
+border-color: black;
+}
+
+div#r0_0, div#r1_0, div#r2_0 {
+background-color: #F3F3F3;
+border-color: #808080;
+}
+
+div#r0_0 a, div#r1_0 a, div#r2_0 a  {
+color: #808080;
+}
+
+div#r0_1, div#r1_1 {
+border-left: 1px solid black;
+}
+
+div#r0_0, div#r1_0 {
+border-left: 1px solid #808080;
+}
+
+div#r1_1, div#r2_1 {
+border-right: 1px solid black;
+}
+
+div#r1_0, div#r2_0 {
+border-right: 1px solid #808080;
+}
+
+.meldung {
+font-weight: bold;
+background-color: #F3F3F3;
+color: black;
+font-size: 12pt;
+}
+
+table.gitter td {
+border: 1px solid black;
+padding: 3px;
+text-align: center;
+}
+
+table.gitter {
+border-collapse:collapse;
+}
+
+p.copyright, p.copyright a {
+margin-top: 15px;
+font-size: 8pt;
+color: #888888;
+}

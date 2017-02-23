@@ -1,0 +1,137 @@
+Googlebot
+bingbot
+Yahoo! Slurp
+Robot
+robot
+bot/
+Bot/
+spider/
+Spider/
+crawler/
+Crawler/
+crawler.htm
+crawlerinfo.html
+bot.htm
+bot.php
+spider.htm
+Yahoo-MMCrawler
+msnbot
+Ask Jeeves/Teoma
+Google Web Preview
+ia_archiver
+SearchEngine
+Baiduspider+
+MQbot metaquerier.cs.uiuc.edu/crawler
+Pagebull http://www.pagebull.com/
+Semager/1.0 (Semager; http://www.semager.de)
+findlinks
+Cerberian
+ImageWalker/
+Mozilla/5.0 (compatible; LiteFinder/1.0; +http://www.litefinder.net/about.html)
+eventax/1.0 (http://www.eventax.de)
+heritrix/
+Yandex
+SnapPreviewBot
+/Nutch-1
+Java/
+ichiro/
+Mozilla crawl/5.0 (compatible; fairshare.cc +http://fairshare.cc)
+Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 4.0; obot)
+Jakarta Commons-HttpClient/
+ABACHOBot
+Accoona-AI-Agent
+Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0) AddSugarSpiderBot www.idealobserver.com
+Mozilla/4.0 (compatible; Arachmo)
+Mozilla/4.0 (compatible; B-l-i-t-z-B-O-T)
+BaiDuSpider
+Mozilla/5.0 (compatible; BeslistBot; nl; BeslistBot 1.0;  http://www.beslist.nl/
+Mozilla/4.0 (compatible; BlitzBot)
+BlitzBOT
+boitho.com-dc/
+Mozilla/4.0 (compatible; Cerberian Drtrs
+Charlotte/
+DataparkSearch/
+DiamondBot
+EmeraldShield.com WebBot (http://www.emeraldshield.com/webbot.aspx)
+FAST Enterprise Crawler
+FAST-WebCrawler
+FurlBot
+FyberSpider
+g2Crawler
+genieBot
+Girafabot
+hl_ftien_spider
+holmes/
+htdig/
+iaskspider
+igdeSpyder
+IssueCrawler
+Jaxified Bot
+KoepaBot
+L.webis/
+Mozilla/5.0 larbin@unspecified.mail
+larbin_
+LARBIN-EXPERIMENTAL
+ldspider
+LexxeBot
+Linguee Bot
+LinkWalker
+lmspider
+lwp-trivial/
+http://www.mabontland.com
+Mediapartners-Google/
+Mnogosearch-3.1.21
+mogimogi/1.0
+MSNBOT
+MSRBOT
+MVAClient
+NetResearchServer
+NewsGator/
+NG-Search/
+nicebot
+Nusearch Spider
+NutchCVS/
+Nymesis/
+oegp v. 1.3.0
+Pompos/
+PostPost/1.0 (+http://postpo.st/crawlers)
+PycURL
+Qseero v1.0.0
+radian6_default_(www.radian6.com/crawler)
+RufusBot (Rufus Web Miner; http://64.124.122.252/feedback.html)
+SandCrawler - Compatibility Testing
+SBIder/0.8-dev (SBIder; http://www.sitesell.com/sbider.html; http://support.sitesell.com/contact-support.html)
+Scrubby/
+SearchSight/2.0 (http://SearchSight.com/)
+semanticdiscovery/0.1
+Sensis Web Crawler (search_comments\at\sensis\dot\com\dot\au)
+Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0) SEOChat::Bot v1.1
+Shim-Crawler
+ShopWiki/1.0 ( +http://www.shopwiki.com/wiki/Help:Bot)
+silk/1.0 (+http://www.slider.com/silk.htm)/3.7
+Silk/1.0
+Snappy/
+sogou spider
+Speedy Spider
+Sqworm/
+StackRambler/
+TinEye
+truwoGPS/1.0 (GNU/Linux; U; i686; en-US; +http://www.lan4lano.net/browser.html )
+TwengaBot
+updated/0.1-beta (updated; http://www.updated.com; updated@updated.com)
+Vagabondo
+VoilaBot
+Vortex/
+VORTEX/
+voyager/
+VYU2 (GNU; OpenRISC)
+webcollage/
+http://www.almaden.ibm.com/cs/crawler
+yacybot
+YahooSeeker/
+YahooSeeker-Testing/
+Yeti/
+yoogliFetchAgent/
+Zao/
+Zealbot
+ZyBorg/

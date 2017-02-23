@@ -1,0 +1,10 @@
+@media screen, print {
+ ul.mktree  li { list-style: none; }
+ ul.mktree, ul.mktree ul , ul.mktree li { margin-left:10px; padding:0px; }
+ ul.mktree  li           .bullet { padding-left: 15px; }
+ ul.mktree  li.liOpen    .bullet { cursor: pointer; background: url(minus.gif)  center left no-repeat; }
+ ul.mktree  li.liClosed  .bullet { cursor: pointer; background: url(plus.gif)   center left no-repeat; }
+ ul.mktree  li.liBullet  .bullet { cursor: default; background: url(bullet.gif) center left no-repeat; }
+ ul.mktree  li.liOpen    ul { display: block; }
+ ul.mktree  li.liClosed  ul { display: none; }
+}

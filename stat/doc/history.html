@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>CrazyStat: History</title>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body class="l3">
+
+<h1><a name="top"></a>CrazyStat</h1>
+<p><i>Version 1.70</i></p>
+<h2>History</h2>
+
+      
+<h3>Version 1.70</h3>
+
+<h4>1.70 Final</h4>
+<ul>
+ <li>Dutch language file added (thanks to <a href="http://www.plaise.nl" target="_blank">plaise.nl</a>)</li>
+ <li>Operating System Detection: Linux now also detected if lower case (seldom)</li>
+ <li>Robots: Introduced generic detection strings and deleted some specific ones that are covered by the generic ones.</li>
+ <li>$config_stat_memory_limit added to adjust the memory limit (which was hard coded before). New default is now 128MB (60MB before).</li>
+ <li>One typo in English languagefile corrected</li>
+ <li>Fix: If the current month has less days then the month before, some presets showed empty entries (no visitors) for days that in fact had visitors.</li>
+</ul>
+
+<h4>RC4</h4>
+<ul>
+ <li><b>Security Fix</b>: The preset-form included the Session-ID in an insecure way into the html which makes XSS possible</li>
+ <li>faq_en.html: Translation mistakes (Google translation) manually corrected</li>
+ <li>Login-form now warns, if password has to be transferred unencrypted because src/extensions/md5.js is missing</li>
+ <li>in show_log.php, unknown resolution is not ? anymore but the language-constant is used. You can now also search for the language constant and get these results.</li>
+ <li>Corrupted cache-files (e.g. if disk was full) are now automatically detected and cleaning of cache is then allowed (even if not allowed by configuration) to fix the issue</li>
+ <li>show_log.php marks robots as such (+ gray text)</li>
+ <li>unused lytebox-themes have been deleted out of the CSS to reduce file size</li>
+ <li>added <a href="config_settings_en.html#config_ip_anonymous">$config_ip_anonymous</a> to usr/config.php to make users aware of this setting</li>
+ <li>Fix: In IE6, the menu didn't work properly because its transparent color and its fixed position</li>
+ <li>Fix: Refreshing a search result (filter) using the refresh-button didn't work</li>
+ <li>Fix: Checking relative time stamps did only work when language was English (not for German)</li>
+ <li>Fix: in logs.php selecting multiple files to search/delete did not work in some browsers (e.g. FF4, IE6)</li>
+ <li>Fix: Managing Logs and presets was (partly) not possible without cookies because the session-id was not passed everywhere</li>
+ <li>Fix: With javascript disabled, the new menu got kind of broken because the extra buttons were not styled. Now there is a new icon for the "manage presets"-button and an improved style of the "Go"-button (to change the preset).</li>
+ <li>Fix: if the session timed out or got destroyed, logging in with the correct password did not work on the first attempt. This is now fixed by getting the current rand-value to salt the password using AJAX before calculating the hash.</li>
+ <li>Fix: when switching between user agent and browser/system in show_log.php, the page and direction where set back to default</li>
+ <li>Fix: in show_log.php, the text-view still displayed 32bit color depth instead of 24 (32 does not make any sense)</li>
+ <li>Fix: Typo in 2 config/set variables in faq_de.html corrected</li>
+ <li>Fix: If there were a lot of very small (&lt;1%) pie pieces, these added up so the first (biggest) piece got smaller than it should (inaccuracy added up)</li>
+ <li>Fix: Some modules which support limit and are ordered descending still highlighted some empty values like the max-entry of modules that do not support "limit"</li>
+ <li>Fix: In MS IIS, $_SERVER['REQUEST_URI'] is not always set so CrazyStat's file-module didn't work. This work-around should fix this.</li>
+ <li>Fix: Two typos in German and two in English language file corrected. Also a typo in the constant-names corrected. Some texts in preset_editor.php were fix (English) and not translated.</li>
+ <li>Fix: Several Fixes of invalid XHTML</li>
+ <li>Fix: Copyright in comment was still 2010 instead of 2011</li>
+ <li>Fix: Links to en.christosoft.de instead of www.christosoft.de if English is active</li>
+ <li>Fix: about.php: christosoft-link didn't have a target=_blank so it opened inside the lyteframe</li>
+ <li>Fix: Operating Systems: Windows 7 Media center was detected as Windows XP Media Center, OS/2 -detection improved</li>
+ <li>Browsers: MSIE 9 and Firefox 4 added to browser.txt, some Mozilla Browsers separated</li>
+ <li>Robots: Loads of robots added (especially Bingbot which was not yet there for some reason - only msnbot was there). Every robot listed on http://www.useragentstring.com/pages/Crawlerlist/ should now be detected.</li>
+</ul>
+
+<h4>RC3</h4>
+<ul>
+ <li>Bugfix: Refreshing the log (in show_log.php) only worked for one entry and only once</li>
+ <li>Bugfix: preset() didn't delete empty entries of outdated cached data (Cache cleaning needed to clean up your cache)</li>
+ <li>Bugfix: Error message in language files referred to readme.txt which is now readme_xx.html (xx being the lang). Link added here.</li>
+ <li>Bugfix: stream_get_wrappers() is only available in PHP5 and caused an error in PHP4</li>
+ <li>Bigfix: PFC didn't work with GOON (after max_execution time was reached)</li>
+ <li>Bugfix: when a language was chosen on login, the following files did still use the default lang: about.php, anonymous_redirect.php, nojs.php, piechart.php</li>
+ <li>Bugfix: about.php: English donation didn't work correctly</li>
+ <li>Bugfix: English lang file used "Page Impessions" but "Page Views" seems to be the correct English term</li>
+ <li>Bugfix: The update instructions for 1.7x didn't mention replacing stat/usr/keywords files</li>
+ <li>Operating Systems: Added some mobile devices - devices are not all grouped as "mobile phone" anymore</li>
+</ul>
+
+<h4>RC2</h4>
+<ul>
+ <li>Bugfix: Smaller bugs in the log-tool regarding compression fixed</li>
+ <li>Bugfix: German "Umlaute" in German documentation replaced with entities for servers that have a default-charset that is not UTF8</li>
+ <li>Bugfix: Imagesize of counterimage or alternative image is now detected locally even if $config_rel_path is a URL</li>
+ <li>Bugfix: The rel-names of the default preset where not language-dependent but always English</li>
+ <li>Bugfix: In calendar / relative, most GUI strings were English-only</li>
+ <li>Bugfix: example.php was still in German (now English)</li>
+ <li>Bugfix: $set_counter_text didn't work</li>
+ <li>Bugfix: $set_counter_file_name didn't work</li>
+ <li>If counter is deactivated, no redirection to the blind image is used anymore, but the blind image is returned directly (reduced HTTP-overhead)</li>
+ <li>Language can be chosen when logging in (can be disabled using $config_stat_lang_fix)</li>
+ <li>doc/relative_time-spans.txt converted into HTML</li>
+ <li>Simple right management with $config_stat_user_* introduced</li>
+ <li>stat/show_stat.php added as redirection to stat/src/show_stat.php. This file and stat/index.php now redirect 301 (instead 302).</li>
+</ul>
+
+<p><i>Note: CrazyStat was available in German only up to version 1.70 RC1 which is the
+      first released version to introduce multilanguage-support.
+      Therefore I did not think it was necessary to translate "history" into
+      English. Newer changes are documented in English.
+      If you can't live without knowing about CrazyStat's old days, contact me
+      and I might translate it for you ;)</i></p>
+
+
+<h4>RC1</h4>
+<ul>
+<li>     Oberfl&auml;che Multilanguage (bisher de/en). Code, Kommentare und interne Bezeichner
+         werden langfristig St&uuml;ck f&uuml;r St&uuml;ck komplett englisch sein, damit wurde schon
+         ansatzweise begonnen.
+</li><li>Echte gzip-Kompression mit zlib komprimiert Logdateien und Cachedateien
+         und spart so enorm viel Webspace. "Einfache Kompression" von CrazyStat 1.6x
+         sowie das Logformat 1.5 werden nicht mehr unterst&uuml;tzt. Log-Tool kann
+         mit "einfacher Kompression" komprimierte Dateien gz-komprimieren sowie
+         gz-komprimierte Dateien entkomprimieren.
+</li><li>Weiter verbesserte Sicherheit der Passwort&uuml;bertragung mittels salted MD5-Hash.
+         Warnung, falls Passwort im Klartext &uuml;bertragen werden muss (da kein JS),
+         Passwort&uuml;bertragung beim &auml;ndern jetzt auch als MD5-Hash falls
+         $config_stat_password_md5=true, sonst Warnmeldung
+</li><li>Bei deaktiviertem Passwortschutz sind manche Funktionen (Cache
+         l&ouml;schen, Presets &auml;ndern, Logdateien l&ouml;schen/downloaden) nun standardm&auml;&szlig;ig
+         deaktiviert und lassen sich per config aktivieren         
+</li><li>IPs werden auf Wunsch anonymisiert (salted MD5-Hash) ($config_ip_anonymous).
+         Au&szlig;erdem kann das Log-Tool jetzt IPs anonymisieren.
+</li><li>Salt-String wird automatisch nach der Installation auf einen zuf&auml;lligen Wert gesetzt
+</li><li>DoNotCount-Cookie verwendet Salt-String
+</li><li>Filter: Umschalten Browser/System<->user agent m&ouml;glich
+</li><li>Daten-Tabellen k&ouml;nnen jetzt durch Klick auf Spaltenkopf sortiert werden
+         (dank <a href="http://www.webtoolkit.info/sortable-html-table.html" target="_blank">sortabletable-extension von webtoolkit.info</a>)
+</li><li>Kreisdiagramm-Zoom: Header und Footer eingef&uuml;gt, sortierbar
+</li><li>Lytebox f&uuml;r Kalender & Kreisdiagramm-Zoom
+</li><li>Waitbox l&auml;sst sich verstecken
+</li><li>Dateien in usr, src und doc aufgeteilt
+</li><li>deutsche Dateinamen durch englische ersetzt:
+<ul><li>    beispieldatei.php -> example.php
+</li><li>            eintrag.php -> src/include.php
+</li><li>            img/blue.gif -> src/img/bar1.gif
+</li><li>            img/grau.gif -> src/img/bar0.gif
+</li><li>            kalender.php -> src/calendar.php
+</li><li>            keywords/systeme.txt -> usr/keywords/os.txt
+</li><li>            kreis_zoom.php -> src/pie_zoom.php
+</li><li>            kreisdiagramm.php -> src/piechart.php
+</li><li>            LIESMICH.txt -> doc/README_de.html bzw README_en.html
+</li><li>            lizenz.txt -> doc/license.txt
+</li><li>            modul_ausgabe.php -> src/module_out.php
+</li><li>            modul_refresh.js -> src/module_refresh.js
+</li><li>            passwortschutz.php -> src/password_protect.php
+</li><li>            countergrafiken -> usr/counter_styles</li></ul>
+</li><li>Performance der Analyse um ca. 8% verbessert (globale IP-Sperre vorgezogen)
+</li><li>AjaxTree JS-Performance verbessert
+</li><li>Zeichensatz auf UTF-8 umgestellt/vereinheitlicht, keine unn&ouml;tigen Entities mehr,
+         stattdessen senden des korrekten HTTP-Headers
+</li><li>Kalender: relative Zeitspannen einstellbar (f&uuml;r Preset-Erstellung ben&ouml;tigt)
+</li><li>Presets konfigurierbar ausgelagert, eigene Presets k&ouml;nnen &uuml;ber GUI erzeugt
+         und verwaltet werden, neue Presets, neues Default-Preset, Default-Preset
+         kann konfiguriert werden
+</li><li>Default-File-Cache (DFC) zu Preset-File-Cache verallgemeinert<br />
+         --> Statistik-Auswertung mit Preset-Einstellungen enorm beschleunigt
+</li><li>getDateFast durch getdate ersetzt und date_default_timezone_set() eingesetzt<br />
+         -> dadurch wird getdate schneller als getDateFast (-> Auswertung beschleunigt)
+</li><li>Log-Verwaltung wurde verbessert: L&ouml;schen von Logdateien, Spalte mit Log-Gr&ouml;&szlig;e,
+         suchen in mehreren bestimmten Logdateien, Icons ersetzen Text-Links
+</li><li>Suche/Filter jetzt ohne JavaScript m&ouml;glich (bis zu 10 Bedingungen)
+</li><li>Durchschnitts-Berechnung f&uuml;r alle Module in der Fu&szlig;leiste
+</li><li>H&ouml;he der Module bei Limit (nur x Eintr&auml;ge anzeigen) dynamisch
+</li><li>Imagemap &uuml;ber Kreisdiagramme sodass bei MouseOver der Bezeichner sowie der
+Prozentwert erscheint
+</li><li>Neues Icon-basiertes Men&uuml; ersetzt Textlink-Men&uuml;
+</li><li>Oberfl&auml;che aufgefrischt, Rahmen heller, Overlay w&auml;hrend des Ladens
+</li><li>Messagebox & Waitbox zusammengefasst, Messagebox bei Session Timeout
+</li><li>32 bit Farbtiefe -> 24bit (da in Wirklichkeit nur 24bit angezeigt werden,
+       siehe z.B. <a href="http://de.wikipedia.org/wiki/True_Color" target="_blank">Wikipedia</a>)
+</li><li>config.php wurde in src/config_default.php (Default-Werte - nicht &auml;ndern!) und usr/config.php
+         (angepasste Werte - hier eigene Einstellungen vornehmen) aufgeteilt
+</li><li>Dokumentation der Config-Einstellungen aus der config.php in ein HTML-Dokument
+         &uuml;bernommen (doc/config_settings_de.html bzw. config_settings_en.html)
+</li><li>Die meiste Dokumentation wurde aus text-Dateien in HTML-Dateien &uuml;bernommen         
+</li><li>about.php: Neuer Dialog mit Infos zur CrazyStat-Installation und Links zur Dokumentation         
+</li><li>Verbesserte Fehlerbehandlung
+</li><li>keywords/os.txt: NetBSD und weitere mobile Ger&auml;te (Smartphones) hinzugef&uuml;gt
+</li><li>Security Fix: $set_counter_datei_name (neuer Name: $set_counter_file_name) wird jetzt
+         per basename() entsch&auml;rft (diese L&uuml;cke tritt nur auf, wenn register_globals aktiv ist)
+</li><li>Security Fix: mehrere XSS-L&uuml;cken geschlossen
+</li><li>Bugfix: Leere Zeilen in robots.txt erzeugten Fehlermeldungen sodass der
+         Counter nicht erschien. Jetzt werden leere Zeilen ignoriert.
+</li><li>Bugfix: Such-Formular-Inhalt (Filter) wurde beim Hinzuf&uuml;gen einer weiteren
+         Bedingung gel&ouml;scht (document.write durch DOM ersetzt)
+</li><li>Bugfix: 30-Tage-Monate erzeugten teilweise 31 Eintr&auml;ge (letzter leer)
+</li><li>Bugfix: Kreisdiagramm-Zoom-Bug behoben (Reihenfolge der Legende)
+</li><li>Bugfix: Referer-Tree Ajax Bug: beim Nutzen von "All" im Referer-Modul
+         wurden die Hintergrund-Infos zu den zus&auml;tzlichen Domains (jsdata) nicht
+         aktualisiert sodass beim Klick auf "+" keine Referer nachgeladen wurden
+</li></ul>
+<h3>Version 1.63</h3>
+<ul><li> Bilder (Icons etc.) in Verzeichnis stat/img verschoben
+</li><li>Icons ausgetauscht durch Icons aus dem <a href="http://www.famfamfam.com/lab/icons/silk/" target="_blank">Silk-Iconset</a>
+         Vielen Dank an Mark James!
+</li><li>Farbe der Modul-Titelleiste aufgehellt
+</li><li>Diagramm-Farben ver&auml;ndert (Default-Werte von $config_stat_pie_colors)
+</li><li>neues Icon f&uuml;r Balken/Kreisdiagramme, wechselt je nach Stadium
+</li><li>Neuer Default-Wert $config_stat_max_style="font-weight: bold"
+</li><li>Gesamt-Analyse des Logfiles aus show_stat.php in analyze.php ausgelagert
+</li><li>Ausgabe der Module in modul_ausgabe.php ausgelagert und Code optimiert
+</li><li>Ajax statt Neuladen der Statistikseite: Beim Refresh, Limit/All-&auml;nderung,
+         Diagramm-Umschaltung, IP-Sperren-Umschaltung, Kalender-&auml;nderung etc. wird
+         die Seite nicht mehr neu geladen sondern nur das Modul per Ajax neu geladen
+</li><li>In den Modulen "Gesamt"-Fu&szlig;zeile hinzugef&uuml;gt, deshalb H&ouml;hen der Module angepasst
+         und neue Default-Werte $config_stat_pie_size=89 und
+         $config_stat_limit["dateien"]=10
+</li><li>Wenn Module begrenzt (Limit) angezeigt werden, werden bei der Anzeige
+         nicht mehr alle Eintr&auml;ge durchlaufen -> schneller
+</li><li>Auswertegeschwindigkeit verbessert und Ram-Nutzung verringert
+</li><li>Error-Handling und Meldungs-Ausgabe verbessert:
+         Meldungs-Fenster (wie waitbox) schwebt &uuml;ber der Statistik,
+         Fehlermeldungen verbessert (z.B. wenn Log-Ordner nicht existiert
+         M&ouml;glichkeit zum Anlegen)
+</li><li>Hinweistext wenn PHP-Code nicht geparsed wird eingef&uuml;gt
+</li><li>Log-Ansicht: Browser/System (ausgewertet) alternativ zu User Agent String
+</li><li>Diverse Robots hinzugef&uuml;gt
+</li><li>Diverse Systeme eingef&uuml;gt (OS/2 Warp, Playstation3, Mobile Phones)
+</li><li>Browser Google Chrome eingef&uuml;gt (und Netscape 9)
+</li><li>alternative Browser-Keywords-Datei (browser_wie_version_1-52.txt) durch
+         browser_engines.txt ersetzt (unterscheidet nur Engines, keine Browser)
+</li><li>Keywords: Reihenfolge der W&ouml;rter wie erste Suche
+</li><li>Ram-Nutzung in Debug-Info eingef&uuml;gt
+</li><li>config_counter_link kann jetzt %CRAZYSTATPFAD% enthalten, was dann durch
+         den config_rel_pfad, oder set_rel_pfad (falls gesetzt) ersetzt wird
+</li><li>Im Modul Dateien l&auml;sst sich das verstecken des Pfads jetzt &uuml;ber
+         $config_stat_files_hide_dir an/abschalten
+</li><li>Log-Tool verbessert: Automatische Vorgabewerte, Schrittreihenfolge etc.
+</li><li>Bugfix: Kalender-Eingaben (Start/Ende) ohne f&uuml;hrende Nullen werden korrekt
+         interpretiert
+</li><li>Bugfix: Bei Suche/Filter in Logdateien werden die Logdateien jetzt
+         in korrekter Reichenfolge durchsucht
+</li><li>Bugfix: Passwort &auml;ndern: Wenn wiederholtes PW nicht identisch ist wurde
+         nicht erkannt
+</li><li>Bugfix: Robots sicher geblockt
+</li><li>Bugfix: Unter Systeme erscheinen auch "Sonstige" 
+</li><li>Bugfix: Fortsetzen des Auswertens bei Abbruch wegen max_execution_time
+         funktionierte nicht
+</li><li>Bugfix: Default-Filecache unterdr&uuml;ckte u.U. Zugriffe (beim Aktualisieren
+         eines einzelnen Moduls oder wenn eine neue Datei hinzukommt)
+</li><li>Bugfix: Kalender funktioniert auch im Modul "Monate"
+</li><li>Bugfix: Manche Suchbegriffe wurden nicht erkannt
+</li><li>Bugfix: Umlaute bei Keywords werden korrkt angezeigt
+</li><li>Bugfix: kreisdiagramme: Fehlermeldung ("Keine Daten") nicht mehr zu klein
+</li><li>Bugfix: Copyright-Hinweis auf Home/Login-Seite neu platziert um Problemen bei
+         geringer Monitoraufl&ouml;sung/Fensterbreite zu beseitigen
+</li><li>Bugfix: Erscheinungsbild des Loginformulars im IE korrigiert
+</li></ul>
+<h3>Version 1.62B</h3>
+<ul><li>Bugfix: Short-Tags-Bug behoben (optional)
+</li><li>Firefox 3 und IE8 wird erkannt</li></ul>
+<h3>Version 1.62 A</h3>
+<ul><li> Bugfix: Kreisdiagramm-Bug (nur grauer Kreis) behoben (optional)</li></ul>
+<h3>Version 1.62</h3>
+<ul><li>"Hits/Suchbegriff"-Modul hinzugef&uuml;gt (keywords)
+</li><li>Mit keywords/queryregex.txt kann die Suchbegriff-Auswertung flexibel angepasst
+         werden
+</li><li>System-Erkennungsstrings in keywords/systeme.txt ausgelagert
+</li><li>browser.txt und referer.txt in Ordner "keywords" verschoben
+</li><li>Filter/Suchen in den Logdateien (logs.php/show_log.php)
+</li><li>Kreisdiagramm-Zoom
+</li><li>Kantengl&auml;ttung der Kreisdiagramme
+</li><li>Login (passwortschutz.php): Aussehen &uuml;berarbeitet, "Passwort &auml;ndern" hinzugef&uuml;gt,
+         Passw&ouml;rter in config_pass.php ausgelagert
+</li><li>Nutzerabh&auml;ngige Config-Einstellungen
+</li><li>IP wird jetzt auch bei den meisten Proxys korrekt geloggt
+</li><li>Ajax-Tree-Extension: Host nicht mehr bei jedem einzelnen Eintrag
+</li><li>Beim Klicken auf Links zu externen Seiten (Referern) werden jetzt keine Referer
+         mehr &uuml;bermittelt (also auch keine Session-IDs)
+</li><li>Logout-Button in logs.php und show_log.php eingef&uuml;gt
+</li><li>show_log.php linkt am Ende der Logdatei zur n&auml;chsten/vorherigen (je nach Richtung)
+</li><li>$set_xhtml und $set_xhtml_noscript erm&ouml;glichen auf unterschiedlichen Seiten unterschiedliche Einbindungsmodi
+</li><li>Ordner werden unter "Dateien" jetzt besser mit abschlie&szlig;endem Slash angezeigt
+         (Anzeige im Modul "Dateien" komplett &uuml;berarbeitet)
+</li><li>Sonntag jetzt normalerweise letzter Tag der Woche (in config anpassbar)
+</li><li>Config-Einstellungen mit !!! und ??? markiert
+</li><li>HTML 4.01/Strict Valide wenn $config_counter_link_target=false (neu) und
+         $config_xhtml=false
+</li><li>Bugfix: Log-Ordner mit Zahlen jetzt mit Splitting m&ouml;glich, Bugfix statX.log X>11
+</li><li>Bugfix: show_log.php erkennt das Ende der Logdatei auch bei r&uuml;ckw&auml;rts
+</li><li>Bugfix: Presets, die den auszuwertenden Zeitraum ver&auml;ndern funktionieren wieder
+</li><li>Bugfix: Notice-Fehler in kreisdiagramm.php bei 0 Hits gefixed
+</li><li>Bigfix: Links auf externe Seiten werden jetzt hoffentlich endlich korrekt
+         und valide verlinkt (linkprep-Bugs)
+</li><li>Bugfix: RC-Handling in stat.php jetzt korrekt
+</li></ul>
+<h3>Version 1.61</h3>
+<ul><li>AjaxTree-Extension f&uuml;r Referer. Jede 2. Zeile andere Farbe.</li>
+</li><li>Default-Cache bringt enorme Zeitersparnis beim Auswerten mit Default-
+         Einstellungen.
+</li><li>Es k&ouml;nnen jetzt mehrere Nutzer mit unterschiedlichen Passw&ouml;rtern angelegt werden.
+         Die abgespeicherten Passw&ouml;rter k&ouml;nnen als MD5-Hash abgespeichert werden
+         ($config_stat_password_md5). Mit der MD5-Extension md5.js kann das Passwort
+         als MD5-Hash vom Clienten zum Server &uuml;bertragen werden (unabh&auml;ngig von
+         $config_stat_password_md5).
+</li><li>Kalender: Jahr beliebig w&auml;hlbar, Handling verbessert, nimmt aktuellen Wert als
+         Voreinstellung (als "Zeitspanne")
+</li><li>Modul "Hits" hat jetzt auch einen Aktualisieren-Button
+</li><li>IP-Sperren f&uuml;r bessere Performance (und Default-Cache) umgestellt
+</li><li>CrazyStat-Logo
+</li><li>Waitbox ersetzt "Bitte warten"-Text neben Copyright
+</li><li>An alle Links Session-IDs angeh&auml;ngt um Betrieb ohne Cookies zu erm&ouml;glichen
+</li><li>Referer ohne Baum nicht mehr mit Scrollbalken
+</li><li>Horizontale Modulscrollbalken durch Mindestbreiten verhindert, verbesserte Anzeige
+         bei kleineren Bildschirmaufl&ouml;sungen (bei geringer Breite)
+</li><li>Verbesserungen in show_log.php: Referer verlinkt, Valides, lesbareres HTML. "Text"
+         Anzeigemodus jetzt ohne fehlerhafte Zeilenumbr&uuml;che, Farbtiefe hinzugef&uuml;gt,
+         Code verbessert
+</li><li>Nicht erfasste Farbtiefe ('Nicht gespeichert') kann jetzt ausgeblendet werden
+         ($config_stat_colordepth_unsaved)
+</li><li>Die Breite der Balkendiagramme kann jetzt angepasst werden
+         ($config_stat_bar_length)
+</li><li>Einige Browser (v.a. Download-Manager) und Robots hinzugef&uuml;gt
+</li><li>Betriebssystem-Erkennung besser erweiterbar gemacht (&auml;hnlich Browser)
+</li><li>Farbtiefen-Umrechnung f&uuml;r bessere Performance erst bei Ausgabe
+</li><li>Von show_stat.php erzeugtes XHTML besser einger&uuml;ckt
+</li><li>Leere/korrupte Logzeilen werden jetzt &uuml;bersprungen (nicht gleich Abbruch)
+</li><li>Die Gr&ouml;&szlig;e des Counters/der Ersatz-Grafik wird jetzt als HTML-Attribut angegeben,
+         um bei blind.gif Lade-Symbol zu unterdr&uuml;cken und Ladezeit zu beschleunigen.
+</li><li>Bugfix: $config_stat_long_bars wirkt sich jetzt auch auf den Referer-Baum aus
+         (bei false)
+</li><li>Bugfix: XSS-L&uuml;cken beseitigt
+</li><li>Log-Tool: Leert den Zielordner jetzt anstatt nur zu ersetzen und legt ihn falls
+         nicht vorhanden an
+</li></ul>
+<h3>Version 1.60</h3>
+<ul><li> Das neue Logdatei-Format (1.6) erzeugt sehr viel kleinere Logdateien (bis &uuml;ber
+         50% kleiner). Allerdings ist es nicht mit den alten Format (1.5) kompatibel.
+         CrazyStat 1.6 kann deshalb beide Formate verwenden (in config.php einstellbar).
+         Beide Formate sind durch ein Konvertierungstool ineinander umwandelbar.
+</li><li>Logdateien im neuen und alten Logformat k&ouml;nnen jetzt nach einer gewissen
+         maximalen Dateigr&ouml;&szlig;e gesplittet werden. Die Logdateien hei&szlig;en jetzt
+         (stadardm&auml;&szlig;ig) stat0.log wobei 0 hochgez&auml;hlt wird. Au&szlig;erdem liegen Logdateien
+         jetzt in einem extra Ordner (Standard:"logs"). Das Anzeigen und Backuppen der
+         Logs wurde zusammengefasst (logs.php).
+</li><li>Von mehreren Dateien ben&ouml;tigte Funktionen zum Umgang mit Logdateien finden sich
+         jetzt in der Datei log_funcs.php
+</li><li>Der von CrazyStat erzeugte Code zum Einbinden verwendet im XHTML-Modus jetzt kein
+         document.write mehr.
+</li><li>Die Farbtiefe wird jetzt geloggt und ausgewertet (in beiden Logformaten)
+</li><li>Hits/User hinzugef&uuml;gt
+</li><li>Auch mit &auml;lteren GDLib-Versionen k&ouml;nnen jetzt farbige Kreisdiagramme erstellt
+         werden.
+</li><li>Dank Scrollbalken wird jetzt beim Anzeigen aller Eint&auml;ge das Layout nicht mehr
+         zerst&ouml;rt (s. $config_stat_scroll).
+</li><li>Die Checkbox auf der Anmelde-Seite ist jetzt standardm&auml;&szlig;ig nur aktiviert, wenn
+         der Cookie schon gesetzt ist
+</li><li>Oberfl&auml;che verbessert: Kleinigkeiten wurden angepasst. So schlie&szlig;en jetzt rechts
+         alle Module b&uuml;ndig ab. Au&szlig;erdem kommt CrazyStat mit ein bisschen weniger
+         Bildschirmplatz in der H&ouml;he aus, was evtl. Scrollbalken verhindern soll.
+</li><li>Der Text "Cookie" l&auml;sst sich jetzt &auml;ndern und abschalten
+         ($config_counter_cookie_text).
+</li><li>Ob die Baumansicht der Referrer Standard ist, l&auml;sst sich jetzt einstellen
+         ($config_stat_referrer_tree).
+</li><li>Falls die Auswertung der Statistik l&auml;nger als die max_execution_time dauern
+         sollte, kann das Auswerten jetzt fortgesetzt werden
+</li><li>In den Dateinamen kann man bestimmte Daten jetzt ersetzen. Dies ist z.B.
+         hilfreich wenn man Dateien umbenannt hat (s. $config_stat_files_replace).
+</li><li>Falls die Logdatei nicht exisitiert und eine erstellt werden muss, wird jetzt
+         direkt der Counter angezeigt.
+</li><li>Auf jeder Seite l&auml;sst sich jetzt die Countergrafik einzeln festlegen
+         ($set_counter_datei_name)
+</li><li>"Zeitraum bestimmen" intern auf Timestamps umgestellt. Dies beschleunigt die
+         Auswertung des neuen Logformats. Au&szlig;erdem wurden hier Sicherheitsl&uuml;cken
+         geschlossen (es konnten unkontrolliert Daten in die Session geschleust werden).
+         Allerdings ist es jetzt nicht mehr m&ouml;glich, nur auf einen Monat zu be-
+         schr&auml;nken (z.B. alle Zugriffe im Juli in allen Jahren).
+</li><li>Der Kalender zur Beschr&auml;nkung auf einen Zeitraum hat als Standardwert jetzt
+         den Zeitraum von heute auf morgen (dies entspricht allen heutigen Zugriffen).
+         Da stehts 0 Uhr des Tages genommen wird ergab der alte Standardwert nie Zugriffe.
+</li><li>Counter-Bild wird jetzt ein Timestamp-Parameter &uuml;bergeben um Caching zu verhindern
+</li><li>Die Buttons f&uuml;r Limit/all werden nurnoch angezeigt, wenn mehr Eintr&auml;ge als der
+         limit-Wert vorliegen
+</li><li>"Cahe l&ouml;schen" wurde in "Alle aktualisieren" umbenannt und den Modulen
+         Links hinzugef&uuml;gt um nur ein Modul zu aktualisieren
+</li><li>HTML der Statistikauswertung jetzt lesbarer (Kommentare und verbesserte
+         Einr&uuml;ckungen)
+</li><li>Nicht-JavaScript-f&auml;hige Browser k&ouml;nnen jetzt die Statistikauswertung fast
+         uneingeschr&auml;nkt verwenden. "Zeitraum bestimmen" und das Ausw&auml;hlen von
+         Presets wurde entsprechend verbessert, andere (unwichtigere) Funktionen
+         wurden mit einer Meldung versehen.
+</li><li>XHTML-Validit&auml;t von show_stat.php verbessert
+</li><li>robots.txt hinzugef&uuml;gt, betreffende Robots werden komplett ignoriert
+</li><li>browser.txt aktualisiert (IE 7, FF 2)
+</li><li>Bugfix: Reload-Text kam &ouml;fters obwohl kein Reload vorlag.
+</li><li>Bugfix: Die Spalten-&Uuml;berschriften "Anzahl" und "Anteil" der Referer ist jetzt
+         bei der Baumansicht im Internet-Explorer nicht mehr verschoben
+</li><li>Bugfix: Kleine Bugs, die Notice-Fehler erzeugen k&ouml;nnen, entfernt
+</li><li>Bugfix: Neue Version 1.01 der Extension mktree integriert, die einen Bug fixed
+</li><li>Bugfix: L&uuml;cke, die eventuell unberechtiges Einloggen erm&ouml;glicht gefixed
+</li></ul>
+<h3>Version 1.53</h3>
+<ul><li> stat.php durch Einsatz von fopen statt file wesentlich weniger RAM-intensiv
+</li><li>die Statistikauswertung l&auml;sst sich jetzt auf genau definierte Zeitspannen
+         einschr&auml;nken. Hierzu wurde CalendarPopup von <a href="http://www.javascripttoolbox.com/" target="_blank">javascripttoolbox.com</a>
+         verwendet.
+</li><li>Referer werden jetzt nach Domains in Baumansicht gelistet. Dazu wurde DHTML Tree
+         von <a href="http://www.javascripttoolbox.com/" target="_blank">javascripttoolbox.com</a> verwendet.
+</li><li>Den Buttons in show_stat.php Title-Texte hinzugef&uuml;gt
+</li><li>Lange Dateinamen werden gek&uuml;rzt, ungek&uuml;rzt im title-Text
+</li><li>Die Browsererkennung kann durch das Editieren der Datei browser.txt frei nach
+         Ihren W&uuml;nschen erfolgen (s. FAQ).
+</li><li>Standardm&auml;&szlig;ig detailliertere Browser und Systemauswertung
+</li><li>Logdateidownload sicherer und schneller
+</li><li>Tabellen-Log und Text-Log stark verbessert (bl&auml;ttern, Referer hinzugef&uuml;gt, r&uuml;ck-
+         w&auml;rts auslesen)
+</li><li>Funktion der Einzeldateien durch einheitliche Kommentare besser dokumentiert
+</li><li>Durch Cookie kann man die eigenen Seitenaufrufe der Statistik nicht z&auml;hlen lassen
+</li><li>Code st&auml;rker XHTML 1.0 transitional valide
+</li><li>Bugfix: Die Refererdiagramme haben jetzt auch bei ignorierten Referern
+         wirklich "lange Balken"
+</li><li>Bugfix: Alt/Title-Text der Limit-Einstellung
+</li><li>Bugfix: in "src/include.php" wird "config.php" jetzt stets korrekt eingebunden,
+         vielen Dank an Florian Steiner und Stefan Kehrer.
+</li></ul>
+<h3>Version 1.52</h3>
+<ul><li> gif-Countergrafiken werden akzeptiert, falls m&ouml;glich
+</li><li>transparente Grafiken werden als gif ausgegeben, falls m&ouml;glich
+</li><li>Fehlermeldungen des Counters werden jetzt als Grafik ausgegeben
+</li><li>show_stat.php wurde aufger&auml;umt und &auml;hnliche Teile in Funktionen gefasst->kleiner
+</li><li>show_stat.php sollte XHTML valide sein, style.css sollte CSS valide sein
+         (kann je nach Statistikdaten nicht der Fall sein)
+</li><li>In Balkendiagramme werden wenn $config_stat_long_bars auf true gesetzt ist
+         die Maximalwerte als 100% genommen, sodass Unterschiede besser erkennbar sind
+</li><li>"Cachen" erm&ouml;glicht, immer nur die Module neu auszuwerten, deren Einstellungen
+         ver&auml;ndert wurden
+</li><li>Referer sind verlinkt
+</li><li>Mehrere Referer k&ouml;nnen ausgeblendet werden, es werden nur noch Seiten ausgeblendet,
+         die mit den genannten Strings anfangen. Dies soll verhindern, dass Referer der Form
+         http://seite.de/GeheAufSeite.php?seite=http://www.meineseite.de ausgeblendet werden.
+</li><li>stat.php liest die Log jetzt nur noch einmal ein
+</li><li>Mehr Browser und Systeme erkannt (Media Center Edition extra)
+</li><li>Bugfix: Zuwenig gez&auml;hlte "User online" werden jetzt richtig gez&auml;hlt
+</li><li>Bugfix: URLs werden jetzt wirklich immer encoded
+</li><li>Bugfix: F&uuml;r Transparenz wird jetzt wirklich Pixel 1/1 und nicht 2/2 verwendet
+</li></ul>
+<h3>Version 1.51</h3>
+<ul><li> Die in $config_stat_files_delete angegebenen Zeichenketten werden f&uuml;r die
+         Statistik aus den Dateinamen gel&ouml;scht
+</li><li>Dank $rel_pfad k&ouml;nnen jetzt Dateien in unterschiedlichen Ordnern von der Statistik
+         erfasst werden (s. FAQ).
+</li><li>Referer wird protokolliert und ausgewertet (Logs abw&auml;rts kompatibel)
+</li><li>index.html sch&uuml;tzt Verzeichnisstruktur und bietet News zu CrazyStat
+</li><li>Der Code innerhalb der Seiten ist jetzt valides XHTML
+</li><li>Copyright-Hinweis verschoben und verlinkt
+</li><li>Cursor &uuml;ber Dateien ge&auml;ndert um auf die Funktion des vollst&auml;ndigen
+         Anzeigen von Dateinamen aufmerksam zu machen
+</li><li>Wartehinweis verbessert (z.B. Sanduhr-Mauszeiger)
+</li><li>Bugfix: scr statt src. Damit sind die Balkendiagramme jetzt ein wenig anders.
+</li><li>Bugfix: $PHP_SELF wird nicht mehr ben&ouml;tigt
+</li><li>Bugfix: Counterstand!=Statistik (IP-Sperre buggy)
+</li><li>Bugfix: URLs werden encoded => Get-Daten werden nicht abgeschnitten
+</li><li>Bugfix: Kreisdiagrammfarbenlegende: Graut&ouml;ne
+</li><li>Standard-Config angepasst</li></ul>
+<h3>Version 1.50</h3>
+<ul><li> Erste &ouml;ffentliche Version, unter der GPL ver&ouml;ffentlicht. </li></ul>
+</body>
+</html>

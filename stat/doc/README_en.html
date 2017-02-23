@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>CrazyStat: Readme-File (English)</title>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body class="l2">
+
+<h1><a name="top">CrazyStat</a></h1>
+<p><i>Version 1.70</i></p>
+<p>This is CrazyStat's Readme-file. CrazyStat  is a comfortable, comprehensive and free statistic-script with optional counter.
+Thanks a lot for choosing CrazyStat.</p>
+
+<h2><a name="inhalt">1. Content</a></h2>
+
+<ol>
+ <li><a href="#inhalt">Content</a></li>
+ <li><a href="#features">Features</a>
+  <ul>
+   <li><a href="#features_general">General</a></li>
+   <li><a href="#features_stat">Statistic</a></li>
+   <li><a href="#features_counter">Counter</a></li>
+  </ul>
+ </li>
+ <li><a href="#requirements">Requirements</a>
+  <ul>
+   <li><a href="#requirements_server">Server-Requirements</a></li>
+   <li><a href="#requirements_client">Client-Requirements</a></li>
+  </ul>
+ </li>
+ <li><a href="#installation">Installation</a>
+  <ul>
+   <li><a href="#installation_quick">Quick Installation</a></li>
+   <li><a href="#installation_detailed_counter">Detailed Installaion process with counter</a></li>
+   <li><a href="#installation_detailed_no_counter">Detailed Installaion process without counter</a></li>
+   <li><a href="#installation_after">After Installation</a></li>
+  </ul>
+ </li>
+ <li><a href="#faq">Frequently Asked Questions (FAQ)</a></li>
+ <li><a href="#history">History</a></li>
+ <li><a href="#todo">To do</a></li>
+ <li><a href="#copyright">Copyright and license</a></li>
+</ol>
+
+<h2><a name="features">2. Features</a></h2>
+
+<h3><a name="features_general">General</a></h3>
+<ul>
+ <li>can work completely without JavaScript (which a lot of scripts can't)</li>
+ <li>no advertisement, logos or similar stuff on the pages counted, only small remark in alt-attribute of optional counter</li>
+ <li>independent of other service providers because it's a PHP script running on your server</li>
+ <li>configuration of IP blocking</li>
+ <li>IPs can optionally be saved anonymously so that visitors can not be tracked back</li>
+ <li>Statistics and counter in just one script!</li>
+ <li>no MySQL required</li>
+ <li>no access to server-logs required</li>
+ <li>your pages stay valid HTML or XHTML</li>
+ <li>optionally, your own hits are not counted</li>
+ <li>log-files are optionally gzip-compressed so they use minimal webspace</li>
+</ul>
+
+<h3><a name="features_stat">Statistic</a></h3>
+<ul>
+ <li>All results are displayed on a clear interface that gives you all the information with a single glance using
+    bar charts (for browser, screen resolution and operating system also pie charts).</li>
+ <li>For the following data, hist or visitors will be analyzed for any time span or total time:
+  <ul>
+   <li>total hits</li>
+   <li>hits this month</li>
+   <li>hits last month</li>
+   <li>users online</li>
+   <li>maximum hits / day</li>
+   <li>average hits / day</li>
+   <li>hits / weekday</li>
+   <li>hits / month</li>
+   <li>hits / day</li>
+   <li>hits / hour</li>
+   <li>browser used by visitor</li>
+   <li>files (pages) viewed by visitor</li>
+   <li>screen resolution of visitor</li>
+   <li>color depth</li>
+   <li>operating system</li>
+   <li>referrer</li>
+   <li>search phrases the user entered before coming to the site</li>
+  </ul>
+ </li>
+ <li>average and sum values for all modules</li>
+ <li>optional password protection with multiple users, password saved and
+ transferred encrypted</li>
+ <li>individual "presets" can be saved to access your preferred statistics-view easily and fastly</li>
+ <li>download and manage log-files from web interface (backup, delete)</li>
+ <li>logfile-viewer (as table)</li>
+ <li>search inside log-files (filter)</li>
+ <li>optimized analyzing-performance achieved by multiple caching techniques</li>
+ <li>multilingual GUI (German and English at the moment)</li>
+</ul>
+
+<h3><a name="features_counter">Counter</a></h3>
+<ul>
+ <li>can be turned off</li>
+ <li>when counter is turned off, visitor sees an image of your choice 
+    (e.g. blank.gif => user does not see anything)</li>
+ <li>counter design can be chosen freely upon hundreds of images available on the net for free</li>
+ <li>count hits or visitors (blocking ips)</li>
+ <li>number of digits can be chosen freely</li>
+ <li>transparency possible to make the counter integrate as good as possible into your design</li>
+ <li>any value can be added to the real counter value (e.g. value of your old counter)</li>
+ <li>optionally the counter can display a configurable text when it's a reload</li>
+ <li>instead of a graphical counter, a text counter which integrates nicely into any text and can be style using CSS
+ can also be displayed</li>
+</ul>
+
+<p><a href="#top">Go to top</a></p>
+
+<h2><a name="requirements">3. Requirements</a></h2>
+
+<h3><a name="requirements_server">Server-Requirements</a></h3>
+<ul>
+ <li>PHP with session-support (4.2.2, 4.2.3, 4.3.4, 4.4.1, 5.0.4, 5.1.2, 5.2.6 have been tested),
+   for Counter and pie charts with active gdlib (for gif-support GDLib &lt;1.6 or &gt; 2.0.28).<br />
+   For security reasons, register_globals = Off is generally recommended (but not required).
+   Runs also if safe_mode = On.</li>
+ <li>no MySQL</li>
+ <li>Sites with a <i>lot</i> of visitors should use a "strong" server</li>
+ <li><strong>The script runs on nearly any php-webspace, including free hosters.</strong></li>
+</ul>
+
+<h3><a name="requirements_client">Client-Requirements</a></h3>
+<ul>
+ <li>Browser (Internet Explorer 8/7/6/5.5, Mozilla 1.7, Opera 9.64/9.02/8.54/7.54/7.2/5,
+   Firefox 3.6/3.5/3.0/2.0/1.5/1.0, Safari 4.0.4/3.2.1 (Win), Google Chrome 4.0.249.89/1.0
+   and Netscape 4.78 (more or less) have been tested</li>
+ <li>Images (must not be blocked, text browsers will not be counted)</li>
+ <li>JavaScript (only) needed to detect screen resolution and color depth
+   and some comfort functions in the back-end (but even the back-end
+   also works without JavaScript!)</li>
+</ul>
+
+<p><a href="#top">Go to top</a></p>
+ 
+<h2><a name="installation">4. Installation</a></h2>
+
+<p><strong>See <a href="faq_en.html#faq40">FAQ</a> on how to update CrazyStat 1.7x (including Release Candidates) to this version.</strong><br />
+Updating from CrazyStat 1.5x or 1.6x is described only in the <a href="faq_de.html#faq3">German FAQ</a> (because CrazyStat &lt;
+1.70 was German-only)</p>
+
+<h3><a name="installation_quick"></a>Quick Installation (Steps in brackets only for counter!)</h3>
+<p>This guide is intended for experienced users.</p>
+<ol>
+ <li>Unzip the file</li>
+ <li>(Choose/download counter style (graphics in stat/usr/counter_styles/ - others on
+     <a href="http://en.christosoft.de/Crazystat/Counter_styles" target="_blank">http://en.christosoft.de/Crazystat/Counter_styles</a>)</li>
+ <li>(Convert counter style to PNG (or gif, if your GDLib supports gif) (see FAQ) and         
+     save it to "stat/usr/counter_styles")</li>
+ <li>Open stat/usr/config.php and adjust settings (esp. $config_rel_path)</li>
+ <li>Upload the "stat"-folder with all its sub-folders and files</li>
+ <li>Set chmod 777 for stat/usr and all of its files and subfolders and stat/src/log-tool</li>
+ <li>Insert &lt;?php @include_once("stat/src/include.php"); ?&gt; between &lt;body&gt; and &lt;/body&gt;
+     for every page to be counted, <u>change file extension ".html" or ".htm" to ".php"</u> (if it's not already ".php").
+     See FAQ: "CrazyStat in .html-files", "Count pages in different folders"</li>
+ <li>Open statistic (http://www.example.com/stat/). If password protection is active, please change
+    password when logging in. Default-user is "admin", password is "pass".</li>
+</ol>
+
+<p>If you changed "stat" into something else, you need to adjust the code (step 7) and $config_rel_path (step 4)!</p>
+       
+<h3><a name="installation_detailed_counter">Detailed Installation process <i>with</i> counter</a></h3>
+<ol>
+ <li>Unzip the file somewhere on your local hard drive (e.g. with <a href="http://www.7-zip.org/" target="_blank">7-Zip</a>)</li>
+ <li>The choose a counter style. You find styles in "stat/usr/counter_styles" that are ready for usage.
+   On <a href="http://en.christosoft.de/Crazystat/Counter_styles" target="_blank">http://en.christosoft.de/Crazystat/Counter_styles</a>
+   you find more styles, links to pages with even more styles as well as hints on how to make your own style.</li>
+ <li>Now make sure your counter style is in PNG-format (or GIF if your server supports it).
+   You can find instructions under FAQ on how to convert your counter style to PNG. Place your style in
+   "stat/usr/counter_styles".</li>
+ <li>Open "stat/usr/config.php" in a text editor (such as Notepad or <a href="http://www.pspad.com/en/" target="_blank">PSPad</a>)
+     and adjust the settings according to your needs (esp. $config_rel_path). The file name of the counter file
+     has to be set in $config_counter_file_name and $config_counter_enabled=true; must be set to activate
+     the counter.<br />
+     <a href="config_settings_en.html">More information on all configuration settings</a></li>
+ <li>Upload the "stat"-folder with all files and sub-folders to your server 
+     (e.g. via FTP using <a href="http://filezilla-project.org/" target="_blank">FileZilla</a>)</li>
+ <li>Set chmod 777 for "stat/usr" and all of its files and sub-folders and "stat/src/log-tool". See FAQ on how to do this.</li>
+ <li>Insert &lt;?php @include_once("stat/src/include.php"); ?&gt; between &lt;body&gt; and &lt;/body&gt;
+     for every page to be counted, <u>change file extension ".html" or ".htm" to ".php"</u> (if it's not already ".php").
+     See FAQ: "CrazyStat in .html-files", "Count pages in different folders"</li>
+ <li>Open statistic (http://www.example.com/stat/). If password protection is active, please change
+    password when logging in. Default-user is "admin", password is "pass".</li>
+</ol>
+
+
+<h3><a name="installation_detailed_no_counter">Detailed Installation process <i>without</i> counter</a></h3>
+<ol>
+ <li>Unzip the file somewhere on your local hard drive (e.g. with <a href="http://www.7-zip.org/" target="_blank">7-Zip</a>)</li>
+ <li>Open "stat/usr/config.php" in a text editor (such as Notepad or <a href="http://www.pspad.com/en/" target="_blank">PSPad</a>)
+     and adjust the settings according to your needs (esp. $config_rel_path). Set $config_counter_enabled=false;
+     to disable the counter.<br />
+     <a href="config_settings_en.html">More information on all configuration settings</a></li>
+ <li>Upload the "stat"-folder with all files and sub-folders to your server 
+     (e.g. via FTP using <a href="http://filezilla-project.org/" target="_blank">FileZilla</a>)</li>
+ <li>Set chmod 777 for "stat/usr" and all of its files and sub-folders and "stat/src/log-tool". See FAQ on how to do this.</li>
+ <li>Insert &lt;?php @include_once("stat/src/include.php"); ?&gt; between &lt;body&gt; and &lt;/body&gt;
+     for every page to be counted, <u>change file extension ".html" or ".htm" to ".php"</u> (if it's not already ".php").
+     See FAQ: "CrazyStat in .html-files", "Count pages in different folders"</li>
+ <li>Open statistic (http://www.example.com/stat/). If password protection is active, please change
+    password when logging in. Default-user is "admin", password is "pass".</li>
+</ol>
+
+<h3><a name="installation_after">After Installation</a></h3>
+<ul>
+ <li>You can open the statistic in your browser with "http://example.com/stat/"</li>
+ <li>The logtool (only German up to now) is available via "http://example.com/stat/log-tool/" (see FAQ)</li>
+</ul>
+
+<p><a href="#top">Go to top</a></p>
+
+<h2><a name="faq">5. Frequently Asked Questions (FAQ)</a></h2>
+<p>Please see <a href="faq_en.html">faq_en.html</a></p>
+
+<p><a href="#top">Go to top</a></p>
+
+<h2><a name="history">6. History</a></h2>
+<p>Pleas see <a href="history.html">history.html</a> (only German up to version 1.70).</p>
+
+<p><a href="#top">Go to top</a></p>
+
+<h2><a name="todo">7. To Do</a></h2>
+<p>Please see <a href="todo.txt">todo.txt</a></p>
+
+
+<p><a href="#top">Go to top</a></p>
+
+<h2><a name="copyright">8. Copyright and License</a></h2>
+<p>Copyright (C) 2004-2011  Christopher Kramer</p>
+
+<p>This program is free software; you can redistribute it and/or
+modify it under the terms of the <a href="license.txt">GNU General Public License</a>
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received <a href="license.txt">a copy of the GNU General Public License</a>
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</p>
+
+<p>Website: <a href="http://en.christosoft.de" target="_blank">http://en.christosoft.de</a><br />
+E-Mail:  webmaster AT christosoft DOT de<br />
+Version: 1.70
+</p>
+<p><a href="#top">Go to top</a></p>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+<Files *.log>
+Deny From All
+</Files>
+<Files counter.log>
+Allow From All
+</Files>

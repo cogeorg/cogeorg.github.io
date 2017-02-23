@@ -1,0 +1,154 @@
+This file describes advanced usage of presets for CrazyStat.
+It describes how to manually write your own preset.
+This file is intended for the advanced user who knows PHP.
+You should have successfully created a preset with CrazyStat's "Manage presets"
+feature (GUI) before manually creating presets. The tricky part of the GUI-usage
+is explained in relative_time-spans.html which you should have read before
+reading this.
+
+
+
+Presets are stored as php-files in usr/presets.
+Every preset has its own file. Presets generated via GUI are called presetX.php
+with X being a number.
+The file-name of the preset and the internal ID (see below) must be identical.
+The presets are ordered by file-name / ID in GUI (not by preset name!).
+
+Presets are arrays that look like this:
+
+$config_preset['PRESET_ID']['name']=LANG_CONSTANT;
+$config_preset['PRESET_ID']['presets']=array('PRESET_ID1','PRESET_ID2',...);
+$config_preset['PRESET_ID']['cache']=BOOLEAN;
+$config_preset['PRESET_ID']['cacheable']=BOOLEAN;
+$config_preset['PRESET_ID']['modules']['MODULE']['VAR']=VALUE;
+
+PRESET_ID: Internal name of the preset, must be identical with the file name!
+Presets are ordered by this ID. 
+***** name *****
+LANG_CONSTANT: The name of the preset shown in the front-end
+   This should ideally be the constant of the language file (or a string).
+   If no name is defined, this preset will not be visible in front-end
+   (only as a base for other presets or for caching - see examples)
+***** presets *****
+Make the preset based on other ones.
+Here you can combine several other presets (array of preset-ids to be loaded).
+You could e.g. base your preset on the default-preset:
+$config_preset['PRESET_ID']['presets']=array('01_default');
+***** cache *****
+Define whether to cache this preset or not. Can be false or true.
+Attention: A Preset is only cacheable if at least these settings are defined:
+ip, time_span
+DO NOT set cache=true if you did not define those!!!
+You can load other presets (like ip1) to easily add default ip or time settings
+to make your preset cachable.
+Two presets which have the same ip, time_span, time_start and time_end settings
+for all modules are equal concerning caching so only one of them needs to be
+cached even if other settings are different (CrazyStat will in fact realize that
+they are identical and only cache one of them, even if both are set cache=true).
+This value can be changed via GUI.
+***** cacheable *****
+Only presets that define IP and time-settings for _all_ modules are cacheable.
+Presets saved via GUI always do this and therefore are always cacheble.
+Manually written presets or some of the presets that come with CrazyStat might
+not be cacheable (e.g. the tree- or scroll-presets). If you write presets that
+are not cacheable, you need to set this to false so CrazyStat knows that this
+preset can not be cached. Setting "cache" false is not enough, because "cache"
+can be changed via GUI if cacheable is not set or true.
+Default is true and can be omitted. 
+***** modules *****
+define a setting for one or a couple of modules
+
+MODULE: Module the setting should affect
+   one of:
+   (hit),day,month,weekday,hour,browser,file,resolution,colordepth,system,
+     referer,keyword
+   or one of these special values:
+     LIMIT = All modules with limit/all capability
+             (browser,file,resolution,colordepth,system,referer,keyword)
+     ALL = All modules (see above)
+           NOTE: as 'hit' is unchangeable, better use CALENDAR instead!
+     CHARTS = All modules with pie chart capability
+             (browser,resolution,system)
+     GLOBAL = Global setting (not module-specific - see VAR)
+     CALENDAR = All modules that support calendar-settings
+             (all except hit) BETTER USE THIS INSTEAD OF "ALL"
+             (unless you know what you're doing)
+VAR: the variable-name of the setting, one of:
+   all: show limited number of items (false) or all (true)
+   ip: block by ip (true) or not (false)
+   piechart: use piechart (true) or not/barchart (false)
+   time_rel: use relative timespan? Using false is quite
+     useless, so this should be always true for good presets (boolean)
+   time_rel_start: time analyzing should start (string)
+     a "GNU time"-string with special chars replaced. Something like:
+     "Today", "%d.%m.%Y", "03/10/2010", "Today 12:00:00 +1 day",
+     "2009-W20-1" (which means first day (Monday) of week 20 in 2009)
+     see relative_time-spans.html for more information on this.
+   time_rel_end: time analyzing should end (just like rel_start) (string)
+   time_rel_name: name of the time-span with replaced chars (string)
+     see relative_time-spans.html for more details.
+   time_rel_startid: Number of the entry to start with. Special chars replaced.
+     see relative_time-spans.html for more details. (string) 
+   time_span: analyze complete log (false) or not (true)
+     must be true if you use time_rel_start and time_rel_end, false otherwise!
+   time_start: if using absolute time-spans, here the start timestamp is given
+     this is too inflexible for presets, so normally do not use it! (int) 
+   time_end: if using absolute time-spans, here the end timestamp is given
+     this is too inflexible for presets, so normally do not use it! (int) 
+   scroll [global]: use scrollbars (true) or not (false)
+                    NOT MODULE-SPECIFIC!
+   tree [global]: which tree to use (mk/ajax/auto)
+                 (currently only used by module referer, but global setting!)
+                 
+
+VALUE: The new value for the setting. See VAR for valid values.
+
+Of course you can use any php-notation to define this array - this file
+tries to keep it simple, but e.g. feel free to use the following if you like:
+
+$config_preset['PRESET_ID']=array(
+   'name'=>LANG_CONSTANT,
+   'presets'=>array('PRESET_ID1','PRESET_ID2',...),
+   'modules'=>array(
+        'MODULE'=>array('VAR'=>VALUE)
+        )
+   );
+
+Caution: Do never set ip- or time-settings twice!
+This might make things A LOT SLOWER because then caching won't be possible!
+
+Bad examples:
+
+$config_preset['bad_preset1']['modules']['CALENDAR']['ip']=false;
+$config_preset['bad_preset1']['modules']['day']['ip']=true;
+
+Here setting "ip" for "day" is first set false (by CALENDAR) and then true.
+Instead you have to set the settings for all modules individually or use special
+values in which the module is not included:
+
+// we can use LIMIT because "day" is not in there:
+$config_preset['good_preset1']['modules']['LIMIT']['ip']=false;
+// now we set all the other modules except of day:
+$config_preset['good_preset1']['modules']['weekday']['ip']=false;
+$config_preset['good_preset1']['modules']['month']['ip']=false;
+$config_preset['good_preset1']['modules']['hour']['ip']=false;
+// and finally the setting for "day":
+$config_preset['good_preset1']['modules']['day']['ip']=true;
+
+Another bad example:
+ 
+$config_preset['ip0']['modules']['CALENDAR']['ip']=false;
+$config_preset['bad_preset2']['presets']=array('ip0');
+$config_preset['bad_preset2']['modules']['browser']['ip']=true;
+
+Here setting "ip" for "browser" is first set false (by preset "ip0") and then
+true.
+You would have to change preset "ip0" or name all the modules manually to fix
+this.
+     
+See usr/presets for other (good) examples!
+
+If you think you made a good preset, feel free to e-mail it to:
+webmaster AT christosoft DOT de
+(I might include it in the next version or publish it on my website for other
+users)

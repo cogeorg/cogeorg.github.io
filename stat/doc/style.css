@@ -1,0 +1,18 @@
+* {
+font-family: Calibri, Verdana, Arial;
+}
+
+body.l2 h2, body.l3 h3 {
+border-top: 1px solid #C0C0C0;
+padding-top: 20px;
+margin-top:20px;
+}
+
+table {
+ border-collapse: collapse;
+}
+
+td,th {
+ border: 1px solid black;
+ vertical-align: top;
+}

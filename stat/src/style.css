@@ -1,0 +1,263 @@
+/*
+
+>>>>>> CrazyStat <<<<<<
+A convenient, comprehensive and free PHP statistic-Script with optional counter.
+
+Copyright (C) 2004-2011  Christopher Kramer
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+E-Mail: webmaster AT christosoft DOT de
+Web: http://www.christosoft.de
+Version: 1.70
+
+*** style.css ***
+Funktion:    Stylesheet (Design)
+Aufrufbar:   nein
+Eingebunden: von show_stat.php, index.html  (<link>)
+*/
+
+h1 {
+font-size: 130%;
+width: 100%;
+font-family: Calibri, "Trebuchet MS", sans-serif;
+color: black;
+background-color: white;
+margin-bottom: 0px;
+margin-top: 2px;
+}
+
+h2 {
+font-size: 110%;
+font-family: Calibri, Arial, sans-serif;
+}
+
+h3 {
+font-size: 100%;
+font-family: Calibri, Arial, sans-serif;
+font-style:italic;
+}
+
+body {
+margin-bottom: 0px;
+padding-bottom: 0px;
+padding-left: 4px;
+font-family: Calibri, "Times New Roman", Times, Arial, serif;
+}
+
+html {
+overflow-y: scroll;
+height: 100.01%;
+}
+ 
+img {
+border: 0;
+}
+ 
+.meldung_fehler {
+font-size: 110%;
+color: red;
+}
+ 
+.meldung_ok {
+font-size: 110%;
+}
+
+
+#messagebox {
+width:300px;
+min-height:150px;
+position:absolute;
+top:50%;
+left:50%;
+margin-left:-150px;
+margin-top:-75px;
+background-color: #FFFFFF;
+border: 3px solid #888888;
+font-size:75%;
+text-align:center;
+display:none;
+z-index: 99997;
+}
+
+#messagebox_close {
+text-align: right !important;
+padding-right: 10px;
+padding-bottom: 10px;
+}
+ 
+
+table.modul {
+border: 1px solid #888888;
+width: 100%;
+margin-left:1px;
+margin-right:1px;
+margin-bottom: 4px;
+font-size: 75%;
+color: black;
+font-family: Calibri, "Times New Roman", Times, Arial, serif;
+background-color: white;
+}
+
+th.modul {
+background-color: #E6E6E6;
+color: black;
+font-weight:bold;
+}
+ 
+img.icon {
+margin-left: 2px;
+}
+
+p.modul {
+border: 1px solid black;
+width: 95%;
+text-align: center;
+}
+ 
+.menue {
+position: fixed;
+right: -1px;
+top: -1px;
+text-align: right;
+font-size: 90%;
+background-color: #E6E6E6;
+background-color: rgba(216,216,216,0.65);
+padding: 5px;
+border: 1px solid #888888;
+}
+
+/* for IE6  :-( */
+* html .menue { 
+position: absolute;
+background-color: #E6E6E6;
+}
+
+input#preset_go {
+display: block;
+text-align: center;
+float: left;
+height: 22px;
+margin-top: 4px;
+}
+
+
+.menue a {
+width: 30px;
+padding: 5px 0px;
+display: block;
+text-align: center;
+float: left;
+}
+
+.menue select {
+float: left;
+margin: 5px;
+}
+
+table.daten {
+font-size: 100%;
+color: black;
+font-family: Calibri, "Times New Roman", Times, Arial, serif;
+background-color: white;
+width:100%;
+border-collapse:collapse;
+}
+
+div.daten {
+width:100%;
+overflow:auto
+}
+
+th {
+text-align: left;
+}
+ 
+tr.gesamt td {
+border-top: 1px solid #CACACA !important;
+}
+
+a {
+text-decoration: none;
+color: #0033CC;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+
+a.referer {
+color: #000000;
+background-color: #FFFFFF;
+}
+
+#message {
+color:red;
+}
+
+.copyright {
+color:#B5B5B5;
+}
+
+span.copyright {
+margin-right:20px;
+font-weight:bold;
+}
+ 
+span.version {
+font-size:70%;
+}
+ 
+.presets {
+border: 1px solid #888888;
+}
+
+.presetsHead {
+font-weight:bold;
+background-color: #E6E6E6;
+}
+ 
+.spalte {
+width:23%;
+vertical-align:top;
+}
+ 
+.ref130 {
+position:absolute;
+right:560px;
+}
+ 
+.ref20 {
+position:absolute;
+right:440px;
+}
+
+span.spanne {
+font-weight:normal;
+}
+
+tr.separate td {
+padding-top: 10px;
+border-top: 1px solid #CACACA;
+}
+
+select, option {
+font-family: Calibri, Arial, sans-serif;
+}
+
+table.table_pad td {
+padding: 1px 5px;
+}

@@ -1,0 +1,66 @@
+/*
+Diese Datei ist Teil einer Extension für:
+
+>>>>>> CrazyStat <<<<<<
+A convenient, comprehensive and free PHP statistic-Script with optional counter.
+
+Copyright (C) 2004-2011  Christopher Kramer
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+E-Mail: webmaster AT christosoft DOT de
+Web: http://www.christosoft.de
+Version: 1.70
+
+*** ajaxTree.css ***
+Funktion:    CSS-Teil von ajaxTree
+Aufrufbar:   nein
+Eingebunden: von show_stat.php (<link>)
+*/
+
+.ajaxTreeLinie, tr.ajaxTree, td.ajaxTree
+ {
+ margin:0;
+ padding:0;
+ border:0;
+ font-size:15px;
+ }
+.ajaxTreeLink
+ {
+ color:black;
+ text-decoration:none;
+ }
+
+.ajaxTreeLink:hover
+ {
+ text-decoration:underline;
+ }
+.ajaxTreeHand
+ {
+ cursor: pointer;
+ }
+a.ajaxTreeDomain
+ {
+ text-decoration:none;
+ color:black;
+ }
+tr.ajaxTreeZeile0
+ {
+ background-color: #F2F2F2;
+ }
+tr.ajaxTreeZeile1
+ {
+ background-color:#FFFFFF;
+ }

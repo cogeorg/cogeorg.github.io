@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>CrazyStat: FAQ-Datei (Deutsch)</title>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body class="l3">
+
+<h1><a name="top"></a>CrazyStat</h1>
+<p><i>Version 1.70</i></p>
+<h2>FAQ</h2>
+<p>Hier finden Sie h&auml;ufig gestellte Fragen zu CrazyStat.
+Eine eventuell aktuellere Fassung dieses Dokuments finden Sie online unter <a href="http://www.christosoft.de/CrazyStat/FAQ">http://www.christosoft.de/CrazyStat/FAQ</a>.
+</p>
+
+<p>
+Tipp: Das Benutzen der Suchfunktion ist hilfreich um hier f&uuml;ndig zu werden (meist &uuml;ber [STRG] + [F] )</p>
+
+<ul>
+<li><a href="#faq39">Ich habe den Code in meine Seite eingef&uuml;gt, aber es werden keine Aufrufe gez&auml;hlt</a></li>
+<li><a href="#faq1">Wie wandele ich eine (Counter-)Grafik ins PNG-Format um?</a></li>
+<li><a href="#faq2">Wie setze ich den CHMOD?</a></li>
+<li><a href="#faq3">Wie update ich von Version 1.6x / 1.5x?</a></li>
+<li><a href="#faq40">Wie update ich von Version 1.7x?</a></li>
+<li><a href="#faq5">Wie kann ich Usernamen &auml;ndern, neue User anlegen oder Passw&ouml;rter zur&uuml;cksetzen?<br />
+Oder: "Ich habe das Passwort vergessen"<br />
+Oder: "Ich habe $config_salt_str ge&auml;ndert und kann mich nicht mehr einloggen"</a></li>
+<li><a href="#faq6">Wie kann ich die Statistik zur&uuml;cksetzen?</a></li>
+<li><a href="#faq7">Was ist die Counter-Datei "counter.log"?</a></li>
+<li><a href="#faq8">Das Laden der Statistik im Internet Explorer braucht extrem lange, erst nach einiger
+Zeit erscheinen die Ergebnisse.<br />
+Oder: In anderen Browsern dauert das Laden des Moduls "Referer" sehr lange.</a></li>
+<li><a href="#faq9">Was ver&auml;ndert $config_xhtml ?</a></li>
+<li><a href="#faq10">Was ist anders am Logformat 1.6 ?</a></li>
+<li><a href="#faq11">Was ist "Kompression"?</a></li>
+<li><a href="#faq12">Wie verwende ich das CrazyStat-Log-Tool und was tut es?</a></li>
+<li><a href="#faq13">Was bedeutet "Seitenaufrufe dieses Computer nicht z&auml;hlen"?<br /> Oder:
+Was bedeutet "Cookie" im Counter und wie schalte ich es ab?</a></li>
+<li><a href="#faq14">Wie binde ich CrazyStat in Dateien ein, die nicht alle im selben Ordner liegen?</a></li>
+<li><a href="#faq15">Wie kann ich den Counter nur auf bestimmten Seiten anzeigen lassen?</a></li>
+<li><a href="#faq16">Wie kann ich auf unterschiedlichen Seiten unterschiediche Counterlayouts nutzen?</a></li>
+<li><a href="#faq17">Wie kann ich CrazyStat auf XHTML-Seiten im XHTML-Modus und auf HTML-Seiten im HTML-Modus
+einbinden?</a></li>
+<li><a href="#faq18">Der Counter war vor dem Aufrufen der Statistik noch h&ouml;her als danach!?</a></li>
+<li><a href="#faq19">Der Counter war vor dem Updaten noch h&ouml;her als danach!?</a></li>
+<li><a href="#faq20">Warum sehe ich die aktuellen Besucher nicht?</a></li>
+<li><a href="#faq21">Was bedeutet "Alle aktualisieren"?</a></li>
+<li><a href="#faq22">Was bedeutet "Cache l&ouml;schen"?</a></li>
+<li><a href="#faq23">Ich habe in config.php Einstellungen ge&auml;ndert (z.B. die IP-sperre) oder browser.txt oder
+robots.txt ver&auml;ndert, aber die Ergebnisse &auml;ndern sich nicht!?</a></li>
+<li><a href="#faq24">Muss der Counter diesen bl&ouml;den Link haben?</a></li>
+<li><a href="#faq25">Was sind extensions?</a></li>
+<li><a href="#faq26">Warum dauert die Auswertung der Statistik manchmal lange und manchmal kurz?</a></li>
+<li><a href="#faq27">Warum taucht unter "Dateien" ein Dateiname zweimal auf?</a></li>
+<li><a href="#faq28">Wie viel Prozent sind es denn jetzt genau?</a></li>
+<li><a href="#faq29">Warum kennt CrazyStat Browser xyz nicht? Oder:<br />
+Wie passe ich die Browsererkennung an?</a></li>
+<li><a href="#faq30">Wie blocke ich Robot XY? Oder:<br />
+Wie sehe ich, welche Robots auf meine Seite zugreifen?</a></li>
+<li><a href="#faq31">Wie passe ich die Auswertung "Hits/Suchbegriff" an?</a></li>
+<li><a href="#faq32">Wie binde ich CrazyStat in HTML-Dateien ein?</a></li>
+<li><a href="#faq33">Wie binde ich CrazyStat in XHTML-Dateien ein?</a></li>
+<li><a href="#faq34">Was ist bei XHTML-Dateien zu beachten?</a></li>
+<li><a href="#faq35">Kann ich mehrere CrazyStat-Installationen / unterschiedliche CrazyStat-Versionen in eine
+Seite einbinden?</a></li>
+<li><a href="#faq36">Ich m&ouml;chte Session-IDs/den Parameter XY aus den Datei-Eintr&auml;gen entfernen.
+Wie geht das?</a></li>
+<li><a href="#faq37">Nichts gefunden?</a></li>
+</ul>
+
+
+<h3><a name="faq39"></a>Ich habe den Code in meine Seite eingef&uuml;gt, aber es werden keine Aufrufe gez&auml;hlt</h3>
+<p>Bitte &uuml;berpr&uuml;fe, ob die Datei, in die der Code eingef&uuml;gt wurde die Dateiendung ".php" hat. Die Dateiendungen ".htm" oder ".html"
+funktionieren zwar auf manchen Servern auch, wenn es aber nicht funktioniert, muss man die Datei in ".php" umbenennen (alle Dateien,
+in die der Code eingef&uuml;gt wird/die gez&auml;hlt werden sollen).<br />
+Wer das nicht m&ouml;chte (z.B. weil viele Links ge&auml;ndert werden m&uuml;ssten) kann man auch einen alternativen Code verwenden, der auch f&uuml;r
+".htm" oder ".html"-Dateien funktioniert. Davon gibt es wiederum 2 Varianten, einen <a href="#faq32">f&uuml;r HTML-Seiten</a> und <a href="#faq33">einen f&uuml;r XHTML-Seiten</a> welche in der FAQ aufgef&uuml;hrt sind.
+<br />
+Sollte die Dateiendung korrekt sein &uuml;berpr&uuml;fe nochmal, ob alle Schritte der Installationsanleitung korrekt ausgef&uuml;hrt wurden
+(ausf&uuml;hrliche Variante lesen).</p>
+
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq1"></a>Wie wandele ich eine (Counter-)Grafik ins PNG-Format um?</h3>
+<p>Am einfachsten geht das auf folgender Seite: <a href="http://graphic2png.christosoft.de/" target="_blank">http://graphic2png.christosoft.de/</a><br />
+Alternativ k&ouml;nnen Sie das kostenlose Programm "IrfanView" (<a href="http://irfanview.de/" target="_blank">http://irfanview.de/</a>)
+verwenden. Einfach die Grafik &ouml;ffnen und Datei/Speichern unter klicken und PNG als Dateityp w&auml;hlen.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq2"></a>Wie setze ich den CHMOD?</h3>
+<p>Dies k&ouml;nnen Sie in Ihrem FTP-Programm. Dazu klicken Sie in der Regel mit der rechten
+Maustaste auf die Datei, und w&auml;hlen "Aktionen/FTP-Befehle/CHMOD (Unix)" (WS_FTP Pro),
+"chmod (Unix)" (WS_FTP95), "Change file attributes/Commands/FTP-Commands/CHMOD (Unix)"
+(WS_FTP Pro Engl.), "Dateiattribute" (FileZilla) oder &auml;hnlich. 777 entspricht vollen
+Rechten, also alle H&auml;kchen angeklickt.<br />
+Sollten Sie direkt auf dem Server unter Linux arbeiten, k&ouml;nnen Sie die Rechte mit dem
+Dateimanager, z.B. Konqueror, &auml;ndern. Dazu klicken Sie die Datei rechts an und w&auml;hlen
+Eigenschaften und dann "Berechtigungen". Alternativ k&ouml;nnen Sie in der Shell (z.B. &uuml;ber
+ssh) den Befehl chmod verwenden (z.B. "chmod -R 777 stat/usr stat/src/log-tool". Siehe "man chmod").</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq3"></a>Wie update ich von Version 1.6x oder 1.5x?</h3>
+<p><i>Bitte lesen Sie diese Anleitung zun&auml;chst in Ruhe durch, bevor Sie sie ausf&uuml;hren.</i><br />
+<br />
+Schlie&szlig;en Sie vor dem Updaten die Statistik falls sie ge&ouml;ffnet ist (Ausloggen)
+und rufen Sie sie nicht auf, bevor Sie Schritt 7 erreichen.</p>
+<ol>
+<li>Installieren Sie CrazyStat 1.70 in einem anderen Verzeichnis (z.B. "stat_"),
+setzen <a href="config_settings_de.html#config_rel_path">$config_rel_path</a> aber auf das alte Verzeichnis (z.B. "stat").</li>
+<li>Passen Sie die Datei "stat_/usr/config.php" im neuen Verzeichnis an (evtl. ge&auml;nderte Einstellungen
+aus der alten &uuml;bernehmen). Achtung: Einige Einstellungen haben neue Namen. Au&szlig;erdem
+enth&auml;lt config.php nur noch die wichtigsten Einstellungen, weitere k&ouml;nnen hinzugef&uuml;gt werden.
+Bitte beachten Sie hierzu <a href="config_settings_de.html">config_settings_de.html</a></li>
+<li>Kopieren Sie die Logdateien aus dem alten Verzeichnis (z.B. stat/logs)
+in den logs-Ordner des neuen Verzeichnis (z.B. stat_/usr/logs).</li>
+<li>Rufen Sie das CrazyStat-Log-Tool im Browser auf
+(z.B. /stat_/src/log-tool/index.php) und folgen dem Assistenten. Wichtig ist, dass die Logdateien keine "einfache Kompression"
+mehr verwenden, sondern gz-Kompression oder gar keine und im Log-Format "1.6" gespeichert sind.</li>
+<li>Einbindungscode: Die Datei "stat/eintrag.php", welche zur Statistik-Erfassung eingebunden wird,
+hei&szlig;t jetzt "stat/src/include.php". Sie k&ouml;nnen dies &uuml;berall, wo CrazyStat eingebunden wird &auml;ndern, falls
+dies wenig Arbeit ist. Wenn Sie die M&ouml;glichkeit haben, einen Symlink zu erstellen (z.B. &uuml;ber ssh) ist auch dies m&ouml;glich:<br />
+ln -s stat/src/include.php stat/eintrag.php<br />
+Als dritte M&ouml;glichkeit k&ouml;nnen Sie einfach eine Datei mit folgendem Inhalt als stat/eintrag.php anlegen:<br />
+<code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;CrazyStat&nbsp;backwards-compatibility-file&nbsp;stat/eintrag.php<br /><span style="color: #007700">include_once(</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #0000BB">__FILE__</span><span style="color: #007700">).</span><span style="color: #DD0000">'/src/include.php'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;<br /></span>
+</span>
+</code></li>
+<li>Benennen Sie den alten Ordner um (z.B. in "stat_back"). Benennen Sie den neuen
+Ordner in den Namen des alten um (z.B. in "stat").</li>
+<li>Rufen Sie die Statistik im Browser auf (z.B. "stat/<u>src/</u>show_stat.php").
+User und Passwort sind auf die Default-Werte "admin" und 
+Passwort "pass" zur&uuml;ckgesetzt und k&ouml;nnen beim Anmelden ge&auml;ndert werden. Siehe
+<a href="#faq5">"Wie kann ich Usernamen &auml;ndern, neue User anlegen oder Passw&ouml;rter zur&uuml;cksetzen?"</a> wenn Sie
+zus&auml;tzliche Nutzer (wieder) anlegen m&ouml;chten (das &Uuml;bernehmen von config_pass.php aus CrazyStat 1.6x funktioniert nicht!).
+</li>
+<li>L&ouml;schen Sie den alten Ordner (z.B. "stat_back"), wenn die Statistik
+problemlos funktioniert.</li>
+</ol>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq40"></a>Wie update ich von Version 1.7x?</h3>
+<p>Ersetzen Sie den Ordner <b>"stat/src"</b> und den Ordner <b>"stat/doc"</b> durch die der neuen Version. Achten Sie darauf, dass
+"stat/src/log-tool" weiterhin CHMOD 777 hat. Um die neusten Presets zu erhalten, kopieren Sie alle Dateien aus
+<b>"stat/usr/presets"</b> von der neuen Version in den bisherigen Ordner. Um die neusten Erkennungsdaten f&uuml;r Browser,
+Betriebssysteme, Suchmaschinen und Robots zu erhalten, kopieren Sie alle Dateien aus <b>"stat/usr/keywords"</b> von der neun Version
+in den bisherigen Ordner.<br />
+Leeren Sie den Cache nach dem Update.</p>
+
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq5"></a>Wie kann ich Usernamen &auml;ndern, neue User anlegen oder Passw&ouml;rter zur&uuml;cksetzen?<br />
+Oder: "Ich habe das Passwort vergessen"<br />
+Oder: "Ich habe <a href="config_settings_de.html#config_salt_str">$config_salt_str</a> ge&auml;ndert und kann mich nicht mehr einloggen"</h3>
+
+<p>Die Zugangsdaten werden in der Datei usr/config_pass.php im Array <a href="config_settings_de.html#config_stat_user">$config_stat_user</a> abgelegt. Die Datei hat folgenden
+Aufbau:<br />
+<br />
+&lt;?php $config_salt_str='SomeRand0m_strlng'; $config_stat_user=array (<br />
+'admin' =&gt; '1a1dc91c907325c69271ddf0c944bc72',<br />
+); ?&gt;<br />
+<br />
+Die erste Datei enth&auml;lt den "salt"-String, der beim ersten Aufruf des Login-Formulars nach der Installation automatisch
+auf einen zuf&auml;lligen Wert gesetzt wird. Dieser Wert sollte dann nicht mehr ver&auml;ndert werden.
+Die erste und die letzte Zeile der Datei sind somit fest. Dazwischen wird f&uuml;r jeden Nutzer
+eine Zeile angelegt. Zuerst steht der Nutzername in Anf&uuml;hrungszeichen, dann =&gt; und
+dann das Passwort in Anf&uuml;hrungszeichen. Dieses kann (wie hier) verschl&uuml;sselt als MD5
+vorliegen (wenn <a href="config_settings_de.html#config_stat_password_md5">$config_stat_password_md5</a>=true).
+Danach folgt ein Komma. Um einen neuen
+User anzulegen, f&uuml;gt man also eine weitere Zeile ein. Beispiel:<br />
+<br />
+&lt;?php $config_salt_str='SomeRand0m_strlng'; $config_stat_user=array (<br />
+'user1' =&gt; '1a1dc91c907325c69271ddf0c944bc72',<br />
+'user2' =&gt; md5('passwort'.$config_salt_str),<br />
+); ?&gt;<br />
+<br />
+Wenn <a href="config_settings_de.html#config_stat_password_md5">$config_stat_password_md5</a>=true ist, m&uuml;ssen alle Passw&ouml;rter als
+MD5-Hash vorliegen. Um trotzdem m&ouml;glichst einfach ein Passwort f&uuml;r einen neuen Nutzer
+angeben zu k&ouml;nnen, kann man das Passwort an die md5-Funktion &uuml;bergeben, damit es
+verschl&uuml;sselt wird (s. Beispiel). Allerdings ist so das Passwort in der Datei im
+Klartext abgelegt und die Verschl&uuml;sselung ist zwecklos. Um die Sicherheit zu erh&ouml;hen,
+kann man nun show_stat.php aufrufen und mit "Passwort &auml;ndern" das gleiche (oder ein
+anderes) Passwort zuweisen. Dies wird dann automatisch verschl&uuml;sselt abgespeichert.
+Ab CrazyStat  1.70 muss noch <a href="config_settings_de.html#config_salt_str">$config_salt_str</a> an das Passwort angeh&auml;ngt werden,
+bevor der MD5-Hash gebildet wird (s. Beispiel). Auf diese Weise k&ouml;nnen Sie auch wieder Zugang zu
+Ihrer Statistik bekommen, wenn Sie den <a href="config_settings_de.html#config_salt_str">$config_salt_str</a> manuell ver&auml;ndert haben.</p>
+<p>ACHTUNG! Nach einer &Auml;nderung von config_pass.php sicherstellen, dass die Datei
+CHMOD 777 hat.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq6"></a>Wie kann ich die Statistik zur&uuml;cksetzen?</h3>
+<p>
+L&ouml;schen Sie einfach die Logdateien. Loggen Sie sich dazu in der Statistik ein, klicken
+auf das Symbol "Logs" (neben dem Logout-Button rechts oben). Markieren Sie alle Dateien
+und klicken auf das L&ouml;schen-Symbol.<br /> 
+Alternativ k&ouml;nnen Sie die Dateien auch per FTP/SSH l&ouml;schen. Sie liegen
+standardm&auml;&szlig;ig im Ordner "usr/logs" (der Ordner ist &uuml;ber <a href="config_settings_de.html#config_logfile_folder">$config_logfile_folder</a> anpassbar).
+L&ouml;schen Sie in diesem Ordner alle Dateien, bis auf die Datei ".htaccess", diese sch&uuml;tzt Ihre Logdateien vor
+dem Zugriff von Fremden.<br />
+Sollten Sie den "Preset-File-Cache" verwenden, klicken Sie in der Statistik auf das Symbol
+<strong>"Cache l&ouml;schen"</strong> (Blitz-Symbol oben rechts) um den Cache zu leeren.<br />
+</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq7"></a>Was ist die Counter-Datei "counter.log"?</h3>
+<p>
+Hierin speichert CrazyStat drei Werte (jeweils in einer Zeile): Position in der
+letzten Logdatei, ab der eventuell noch gesperrte IPs beginnen, Gesamt-Hits mit IP-
+Sperre, Gesamt-Hits ohne IP-Sperre (ohne <a href="config_settings_de.html#config_counter_add">$config_counter_add</a>). Diese
+Informationen nutzt CrazyStat um einen schnellen Counter umzusetzen, ben&ouml;tigt
+werden sie aber auch, wenn der Counter abgestellt ist. Sie k&ouml;nnen diese Daten mit
+Ihren Scripten selbst auslesen; f&uuml;r einen einfachen Textcounter wird der
+integrierte empfohlen.<br />
+Diese Datei wird automatisch erstellt. Sollte der Wert nicht korrekt sein, wird er beim
+Auswerten der Statistik &uuml;ber show_stat.php berichtigt. Diese Datei zu backuppen
+ist kaum sinnvoll, da sie aus den Logdateien automatisch erstellt werden kann.
+Diese Datei wird immer im gleichen Verzeichnis wie die Logdateien angelegt, f&uuml;r das
+Verzeichnis m&uuml;ssen Schreibrechte vorliegen (CHMOD 777).</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq8"></a>Das Laden der Statistik im Internet Explorer braucht extrem lange, erst nach einiger
+Zeit erscheinen die Ergebnisse.<br />
+Oder: In anderen Browsern dauert das Laden des Moduls "Referer" sehr lange.</h3>
+<p>Wenn das Laden im Internet Explorer sehr lange dauert, liegt das meist daran, dass
+der Internet Explorer die Tabelle mit den Ergebnissen erst anzeigt, wenn sie komplett
+geladen ist. Wenn z.B. viele Referer oder Dateien geladen werden m&uuml;ssen, kann dies
+extrem lange dauern. Besonders wenn das Plugin "mktree" f&uuml;r die Anzeige der Referer
+verwendet wird, m&uuml;ssen gro&szlig;e Daten geladen werden bevor der Internet Explorer die
+Ergebnisse anzeigen kann. In diesem Fall empfiehlt es sich, das AjaxTree-Plugin zu
+verwenden. Zum Erzwingen von AjaxTree einfach <a href="config_settings_de.html#config_stat_tree">$config_stat_tree</a>="ajax" setzen.
+Alternativ <a href="config_settings_de.html#config_stat_referer_tree">$config_stat_referer_tree</a>=false setzen, um die Baumansicht standardm&auml;&szlig;ig
+zu deaktivieren.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq9"></a>Was ver&auml;ndert <a href="config_settings_de.html#config_xhtml">$config_xhtml</a> ?</h3>
+<p>Wenn diese Einstellung true ist, wird CrazyStat nicht den JavaScript-Befehl
+"document.write" zur Einbindung verwenden, da dieser bei XHTML nicht mehr erlaubt ist.
+Stattdessen wird per "document.getElementById" bzw. "document.all" die Statistik
+eingebunden. Bitte beachten Sie, dass diese Art der Einbindung bei XHTML erlaubt ist,
+allerdings dazu f&uuml;hren kann, dass &auml;ltere Browser nicht erfasst werden. Damit ein
+Besucher erfasst wird, muss sein Browser bei dieser Einstellung folgendes k&ouml;nnen:<br />
+- document.getElementById("id") oder document.all("id")<br />
+- Den JavaScript-internen Eventhandler window.onload=Funktion;</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq10"></a>Was ist anders am Logformat 1.6 ?</h3>
+<p>Das Logformat 1.6 wird von CrazyStat 1.6x und 1.7x verwendet. Es ist kompakter
+als das Format 1.5 welches in CrazyStat 1.5x zum Einsatz kam, obwohl es nicht weniger Daten speichert.
+Dies liegt daran,
+dass z.B. nur noch der Timestamp gespeichert wird und Datum/Uhrzeit bei der Auswertung
+daraus generiert werden. Dadurch wird die Logdatei um bis zu 20% kleiner.
+Die Auswertung der neuen Logdateien kann ein wenig l&auml;nger
+dauern. Logdateien k&ouml;nnen mit dem CrazyStat-Log-Tool ins neue Format und zur&uuml;ck
+konvertiert werden. CrazyStat 1.70 unterst&uuml;tzt die "Kompression" aus Version 1.6x nicht mehr,
+daf&uuml;r aber echte gz-Kompression (s. n&auml;chste Frage).</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq11"></a>Was ist "Kompression", gz-Kompression und zlib?</h3>
+<p>"Kompression" ist ein einfaches Verfahren, dass in CrazyStat 1.6x verwendet wurde, um Logdateien des 1.6-Formats
+um bis zu 50% kleiner zu machen, als sie unkomprimiert w&auml;ren. Dieses Verfahren hat Daten nicht
+gespeichert, wenn sie identisch mit denen der Logzeile oben dr&uuml;ber waren.
+CrazyStat 1.70 unterst&uuml;tzt nun (nur noch) echte Kompression im gz-Format ("gz-Kompression" oder "zlib-Kompression"),
+was erheblich h&ouml;here Kompressionsraten erm&ouml;glicht.
+gz-Kompression wird &uuml;ber <a href="config_settings_de.html#config_log_zlib">$config_log_zlib</a> aktiviert (default). Dabei wird immer, wenn eine neue Logdatei
+angelegt wird die vorherige komprimiert (die letzte Logdatei bleibt aus Performance-Gr&uuml;nden
+unkomprimiert). Sie sollten daher gz-Kompression immer in Verbindung mit Splitting einsetzen
+(siehe <a href="config_settings_de.html#config_logfile_maxsize">$config_logfile_maxsize</a>).<br />
+Sie k&ouml;nnen mit Hilfe des Log-Tools Logdatein komprimieren oder dekomprimieren.
+</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq12"></a>Wie verwende ich das CrazyStat-Log-Tool und was tut es?</h3>
+<p>
+Das Log-Tool erm&ouml;glicht es, CrazyStat Logdateien der unterschiedlichen Formate umzuwandeln, zu komprimieren
+oder dekomprimieren, zu splitten und zusammenzuf&uuml;gen und IPs nachtr&auml;glich zu anonymisieren. Das Log-Tool
+wertet die Logdateien nicht aus (daf&uuml;r ist CrazyStat zust&auml;ndig).</p>
+<p>
+Es befindet sich im Ordner "src/log-tool". Wenn Sie CrazyStat 1.7x bereits auf einen
+Webserver hochgeladen haben, setzen Sie dem CHMOD des Ordners "log-tool" auf 777, falls nicht
+schon geschehen (s. <a href="#faq2">FAQ</a>). Rufen
+Sie es dann auf (http://ihrserver.de/stat/src/log-tool/) und geben Sie die Zugangsdaten ein.
+Wenn Sie das Logtool allein ausf&uuml;hren m&ouml;chten, verwenden Sie bitte die Standalone-
+Version, die es unter <a href="#linkCrazyStat/Download">http://www.christosoft.de/Download</a> als Download gibt.<br />
+</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq13"></a>Was bedeutet "Seitenaufrufe dieses Computer nicht z&auml;hlen"? Oder:<br />
+Was bedeutet "Cookie" im Counter und wie schalte ich es ab?</h3>
+<p>Wenn Sie sich einloggen und dieses H&auml;kchen aktiviert haben, wird auf Ihrem PC ein Cookie
+gesetzt. Dies ist eine kleine Datei, die automatisch gel&ouml;scht wird falls Sie sich 30 Tage
+nicht mit dieser Option einloggen. Wenn Sie Ihre Seite aufrufen wird &uuml;berpr&uuml;ft, ob diese
+Datei existiert. Tut sie das, wird Ihr Aufruf nicht in die Log-Datei geschrieben.
+Au&szlig;erdem wird der Text "Cookie" (bzw. der in <a href="config_settings_de.html#config_counter_cookie_text">$config_counter_cookie_text</a> eingestellte)
+im Counter eingeblendet. Die Eigenschaften des "Cookie"-Textes entsprechen denen des
+Reload-Textes, diese k&ouml;nnen in "config.php" angepasst werden. Um den Text auszublenden,
+einfach <a href="config_settings_de.html#config_counter_cookie_text">$config_counter_cookie_text</a> auf false setzen.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq14"></a>Wie binde ich CrazyStat in Dateien ein, die nicht alle im selben Ordner liegen?</h3>
+<p>--- 1. M&ouml;glichkeit: ---<br />
+Sie setzen dazu in "config.php" folgende Einstellung:<br />
+$config_different_rel_paths=true;<br />
+Nehmen wir an, die Statistik liegt im Ordner "stat". Sie m&ouml;chten sie jetzt in der Datei
+"Bild1.php" im Ordner "Bilder" und die Datei "index.php" im Stammverzeichnis
+einbinden. Dann sehen die Codes zum Einbinden der Statistik wie folgt aus:<br />
+Bild1.php: &lt;?php $set_rel_path="../stat/"; @include_once("../stat/src/include.php"); ?&gt;<br />
+index.php: &lt;?php $set_rel_path="stat/"; @include_once("stat/src/include.php"); ?&gt;<br />
+In $set_rel_path wird also der relative Pfad von der Datei zur Statistik angegeben. Hier
+ist ein abschlie&szlig;ender Slash erforderlich. Die Funktion include_once bekommt den
+relativen Pfad zur Datei "include.php" im Statistik-Ordner &uuml;bergeben. Bei Verwendung
+dieses Features m&ouml;glichst in allen Dateien $set_rel_path festlegen.<br />
+<br />
+--- 2. M&ouml;glichkeit: ---<br />
+Sie setzen $config_rel_path auf den Pfad von der Domain aus gesehen, beginnend mit einem
+Slash. Beispiel: "http://www.meineseite.de/stat/" --&gt; $config_rel_path="/stat/".<br />
+Diese M&ouml;glichkeit wird nicht empfohlen und funktioniert nicht immer.
+(Nicht wenn $config_xhtml=true und $config_counter_enabled=true)<br />
+<br />
+--- 3. M&ouml;glichkeit: ---<br />
+Sie setzen $config_rel_path auf den absoluten Pfad (URI) zur Statistik, also z.B.
+"http://www.meineseite.de/stat/". Diese M&ouml;glichkeit wird nicht empfohlen und
+funktioniert nicht immer.<br />
+(Nicht wenn $config_xhtml=true und $config_counter_enabled=true)</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq15"></a>Wie kann ich den Counter nur auf bestimmten Seiten anzeigen lassen?</h3>
+<p>Indem Sie folgenden Code auf der Seite verwenden, auf der der Counter angezeigt werden
+soll:<br />
+&lt;?php $set_counter_enabled=true; @include_once("stat/src/include.php"); ?&gt;<br />
+Und folgenden Code auf der Seite, auf der er nicht angezeigt werden soll:<br />
+&lt;?php $set_counter_enabled=false; @include_once("stat/src/include.php"); ?&gt;</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq16"></a>Wie kann ich auf unterschiedlichen Seiten unterschiediche Counterlayouts nutzen?</h3>
+<p>Sie k&ouml;nnen die Countergrafik f&uuml;r jede Seite einzeln festlegen, indem Sie
+folgenden Code zum Einbinden verwenden:<br />
+&lt;?php $set_counter_file_name='ch_arial_blue.png';<br />
+@include_once("stat/src/include.php"); ?&gt;<br />
+Die Countergrafiken m&uuml;ssen alle im selben Ordner liegen, der Dateiname muss oben
+im Beispiel nat&uuml;rlich angepasst werden.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq17"></a>Wie kann ich CrazyStat auf XHTML-Seiten im XHTML-Modus und auf HTML-Seiten im HTML-Modus
+einbinden?</h3>
+<p>In welchem Modus CrazyStat eingebunden wird kann &uuml;ber $config_xhtml gestuert werden.
+Wenn diese Einstellung auf nicht auf alle Seiten zutrifft, kann per $set_xhtml der
+Modus vor dem Einbinden gesetzt werden.<br />
+Beispiel: &lt;?php $set_xhtml=true; @include_once("stat/src/include.php"); ?&gt;<br />
+Auch $config_xhtml_noscript kann &uuml;ber $set_xhtml_noscript angepasst werden.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq18"></a>Der Counter war vor dem Aufrufen der Statistik noch h&ouml;her als danach!?</h3>
+<p>Der Counter wurde extrem beschleunigt, hat allerdings noch ein paar kleine Bugs; so
+z&auml;hlt er manchmal obwohl er nicht sollte (sehr sehr selten). Beim Aufruf der Statistik
+wird der Counter berichtigt, da die Statistik das komplette Logfile auswertet ist sie
+im Gegensatz zum schnellen Counter fehlerfrei.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq19"></a>Der Counter war vor dem Updaten noch h&ouml;her als danach!?</h3>
+<p>Nach 1.60 RC3 werden Robots nicht mehr mitgez&auml;hlt, s. <a href="#faq30">"Wie blocke ich Robot XY?"</a>.
+In neuen Versionen wird die Liste der Robots erweitert, dadurch sinkt die "Besucherzahl"
+nach dem Update ein wenig. Sie k&ouml;nnen $config_counter_add verwenden um dies auszugleichen.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq20"></a>Warum sehe ich die aktuellen Besucher nicht?</h3>
+<p>Bei aktiviertem Cachen werden die Ergebnisse zwischengespeichert. Somit wird die
+Auswertungszeit verringert. Allerdings sind die Daten somit nicht mehr vollkommen
+aktuell. Um die aktuellen Daten zu sehen, klicken Sie auf "Alle aktualisieren" oder
+schalten das Cachen ganz ab, indem Sie $config_stat_cache auf false setzen.<br />
+Nach dem Login sind die Daten stets aktuell. Das Verwenden von "Cache l&ouml;schen" ist
+nicht n&ouml;tig, um die aktuellen Besucher zu sehen, "Alle Aktualisieren" gen&uuml;gt.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq21"></a>Was bedeutet "Alle aktualisieren"?</h3>
+<p>Damit werden die tempor&auml;r gespeicherten Ergebnisse gel&ouml;scht, die CrazyStat beschleunigen.
+Diese Daten werden bei jedem Aufruf der Statistik angelegt und dann bis zum Ausloggen
+verwendet. Wenn kein Passwortschutz verwendet wird, werden diese Daten auch
+nach kurzer Zeit wieder gel&ouml;scht (Session-Daten).</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq22"></a>Was bedeutet "Cache l&ouml;schen" (Blitz-Symbol)?</h3>
+<p>Damit wird der "Preset-File-Cache" gel&ouml;scht. Dieser Cache beschleunigt das Auswerten
+der Statistik mit den Einstellungen der meisten Presets
+erheblich. Wenn Sie diesen Cache l&ouml;schen muss die Statistik komplett neu ausgewertet
+werden, was eine Weile dauern kann. Eventuelle Fehler k&ouml;nnen durch das L&ouml;schen des
+Caches m&ouml;glicherweise behoben werden. Au&szlig;erdem m&uuml;ssen Sie nach Einstellungs&auml;nderungen
+den Cache l&ouml;schen (siehe <a href="#faq23">n&auml;chste Frage</a>). &Uuml;ber "Presets verwalten"
+kann man f&uuml;r jedes Preset einzeln einstellen, ob es gecacht werden soll oder nicht.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq23"></a>Ich habe in config.php Einstellungen ge&auml;ndert (z.B. die IP-sperre) oder browser.txt oder
+robots.txt ver&auml;ndert, aber die Ergebnisse &auml;ndern sich nicht!?</h3>
+<p>Klicken Sie auf "Cache l&ouml;schen" (Blitz-Symbol). Die alten Ergebnisse sind noch im Cache, die Statistik
+muss erst mit den neuen Einstellungen ausgewertet werden (bei allen Einstellungs&auml;nderungen, die die Auswertung beeinflussen).</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq24"></a>Muss der Counter diesen bl&ouml;den Link haben?</h3>
+<p>Nein, setzen Sie $config_counter_link einfach auf false und er verschwindet.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq25"></a>Was sind extensions?</h3>
+<p>Die Dateien im Ordner "extensions" sind JavaScript-Erweiterungen die den Bedienkomfort
+ von CrazyStat erh&ouml;hen. Sie sind allerdings nicht notwendig, d.h. Sie k&ouml;nnen
+sie einfach l&ouml;schen. "calendarpopup.js" ist f&uuml;r den Kalender zum Festlegen eines
+Zeitpunktes verantwortlich, "md5.js" ist f&uuml;r das verschl&uuml;sselte &Uuml;bertragen von
+Passworten zust&auml;ndig. Die Dateien "lytebox.css" und "lytebox.js" sind f&uuml;r die
+"Lytebox" (Modales Fenster f&uuml;r Kalender etc.), "sortabletable.js" f&uuml;r das
+Sortieren der Tabellen per Klick. Die anderen Dateien werden f&uuml;r die Baumansicht der Referer
+ben&ouml;tigt. Es gibt keine Plugin-Schnittstelle oder &auml;hnliches mit der Sie einfach
+Erweiterungen schreiben k&ouml;nnten.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq26"></a>Warum dauert die Auswertung der Statistik manchmal lange und manchmal kurz?</h3>
+<p>Das liegt daran, dass CrazyStat auf Geschwindigkeit optimiert ist. So werden bei
+eingeschalteten IP-Sperren die meisten Zeilen gar nicht ausgewertet, bei eingeschaltetem
+Cachen werden nur die Module neu ausgewertet, deren Einstellungen ver&auml;ndert wurden. Somit
+braucht CrazyStat umso k&uuml;rzer, je weniger Einstellungen ver&auml;ndert wurden (sofern die
+Statistik<br />
+bereits ausgewertet wurde) und je mehr IP-Sperren angeschaltet sind.
+Des Weiteren wertet CrazyStat dank "Preset-File-Cache" die Statistik sehr viel schneller aus,
+wenn ein Preset aktiv ist und daf&uuml;r Caching aktiviert wurde.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq27"></a>Warum taucht unter "Dateien" ein Dateiname zweimal auf?</h3>
+<p>Weil die eine Datei in einem anderen Ordner liegt, als die andere. Um rauszufinden in
+welchem, fahren Sie mit der Maus &uuml;ber den Dateinamen und warten einen Augenblick. Der
+volle Pfad der Datei erscheint.<br />
+Sie k&ouml;nnen auch $config_stat_files_hide_dir=false setzen, sodass immer der volle Pfad
+angezeigt wird.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq28"></a>Wie viel Prozent sind es denn jetzt genau?</h3>
+<p>Fahren Sie mit der Maus &uuml;ber das Balkendiagramm und Sie bekommen angezeigt, wie viel
+Prozent es genau sind.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq29"></a>Warum kennt CrazyStat Browser xyz nicht? Oder:<br />
+Wie passe ich die Browsererkennung an?</h3>
+<p>CrazyStat lassen sich leicht weitere Browser hinzuf&uuml;gen, entfernen oder &auml;ndern.<br />
+Dazu gibt es die Datei usr/keywords/browser.txt, die die Browsererkennung regelt. In jeder Zeile
+steht der "Erkennungsstring", den der Browser im "User Agent" ausgibt (z.B. "MSIE 6").
+Soll der Browser in CrazyStat nicht unter seinem Erkennungsstring, sondern unter
+einem anderen Namen aufgelistet werden, kann man diesen Namen mit einem Gleichzeichen
+anf&uuml;gen ("Erkennungsstring=Browsername"). 
+Die Datei "browser.txt" sollte CHMOD 777 (oder 644) haben.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq30"></a>Wie blocke ich Robot XY? Oder:<br />
+Wie sehe ich, welche Robots auf meine Seite zugreifen?</h3>
+<p>CrazyStat lassen sich leicht weitere Robots hinzuf&uuml;gen, entfernen oder &auml;ndern.
+Dazu gibt es die Datei usr/keywords/robots.txt, die das Blockieren der Robots regelt. In jeder Zeile
+steht der "Erkennungsstring", der den Robot eindeutig im "User Agent" identifiziert.
+S&auml;mtliche Zugriffe, bei denen der Erkennungsstring eines Robots im User-Agent vorkommt,
+werden nicht gez&auml;hlt. Dies betrifft auch die Browsererkennung, hier tauchen Robots aus
+robots.txt nicht mehr auf. Um Robots mitzuz&auml;hlen, leeren Sie einfach die Datei
+robots.txt.<br />
+Die Robots aus robots.txt werden auch nicht vom Counter gez&auml;hlt. Wenn Sie die Datei
+robots.txt &auml;ndern, wird der Counterstand nach dem Auswerten der Statistik &uuml;ber
+show_stat.php entsprechend den neuen Einstellungen angepasst.
+Die Datei "robots.txt" sollte CHMOD 777 (oder mind. 644) haben.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq31"></a>Wie passe ich die Auswertung "Hits/Suchbegriff" an?</h3>
+<p>In der Datei usr/keywords/queryregex.txt k&ouml;nnen regul&auml;re Ausdr&uuml;cke festgelegt werden, die
+die Auswertung der Suchbegriffe beeinflussen. F&uuml;r jede Regex wird eine Zeile angelegt.
+Die Zeile beginnt mit der Regex (PCRE, von Trennzeichen (in der Regel /) eingeschlossen).
+Nach einem Tabstopp folgt eine Zahl, welche die Klammer angibt, welche den Suchbegriff
+umschlie&szlig;t. CrazyStat pr&uuml;ft zun&auml;chst, ob der regul&auml;re Ausdruck "passt", wenn ja wird
+der Inhalt der angegebenen Klammer als Suchbegriff angenommen und gez&auml;hlt.<br />
+Beispiel:<br />
+<br />
+/q=([^&amp;]*)&amp;.*/ 1<br />
+<br />
+Dieser Ausdruck wertet den Inhalt des Parameters q als Suchbegriff (f&uuml;r alle Seiten).
+Die Datei "queryregex.txt" sollte CHMOD 777 (oder 644) haben.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq32"></a>Wie binde ich CrazyStat in HTML-Dateien ein?</h3>
+<p>CrazyStat l&auml;sst sich auch in HTML-Dateien mit der Endung ".html" oder ".htm" einbinden.
+Das hat den Vorteil, dass nicht
+die komplette Linkstruktur der Seite ge&auml;ndert werden muss, falls alle Dateien nicht die Endung 
+".php" haben. Dies kann bei gro&szlig;en
+Seiten entscheidend sein. Trotzdem wird diese Methode nicht empfohlen, da sich dieser
+Code von CrazyStat-Version zu CrazyStat-Version &auml;ndern wird, und somit bei einem Update
+in jeder Datei der Code ge&auml;ndert werden muss. Sollten Sie diese Methode trotzdem
+anwenden wollen, verwenden Sie folgenden Code und ersetzen PFAD durch den Pfad zur
+"stat.php" (in der Regel "stat"). Au&szlig;erdem muss DATEI durch den Dateinamen ersetzt
+werden.</p>
+
+<p>
+&lt;!-- BEGINN CrazyStat 1.70, Copyright (C) 2004-2011 Christopher Kramer http://www.christosoft.de
+/--&gt;<br />
+&lt;script type="text/javascript" language="javascript"&gt;<br />
+var jetzt=new Date();<br />
+document.write ('&lt;img
+src=\"PFAD/src/stat.php?breite='+screen.width+'&amp;amp;hoehe='+screen.height+'&amp;amp;colors='+screen.colorDepth+'&amp;amp;datei=DATEI&amp;amp;referer='+document.referrer+'&amp;amp;t='+jetzt.getTime()+'\"
+alt=\" - - - By CrazyStat - - - \" title=\" - - - By CrazyStat - - - \" border="0"
+/&gt;');<br />
+&lt;/script&gt;<br />
+&lt;noscript&gt;&lt;img src="PFAD/src/stat.php?datei=DATEI&amp;amp;referer=keinJS" alt=" - - - By
+CrazyStat - - - " title="- - - By CrazyStat - - - " border="0" /&gt;&lt;/noscript&gt;<br />
+&lt;!-- ENDE CrazyStat /--&gt;</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq33"></a>Wie binde ich CrazyStat in XHTML-Dateien ein?</h3>
+<p>CrazyStat l&auml;sst sich auch in XHTML-Dateien mit der Endung ".html", ".htm" oder ".xhtml" einbinden.
+Das hat den Vorteil, dass nicht
+die komplette Linkstruktur der Seite ge&auml;ndert werden muss, falls alle Dateien nicht die Endung ".php" haben.
+Dies kann bei gro&szlig;en
+Seiten entscheidend sein. Trotzdem wird diese Methode nicht empfohlen, da sich dieser
+Code von CrazyStat-Version zu CrazyStat-Version &auml;ndern wird, und somit bei einem Update
+in jeder Datei der Code ge&auml;ndert werden muss. Sollten Sie diese Methode trotzdem
+anwenden wollen, verwenden Sie folgenden Code und ersetzen PFAD durch den Pfad zur
+"stat.php" (in der Regel "stat"). Au&szlig;erdem muss DATEI durch den Dateinamen ersetzt
+werden.</p>
+
+<p>Wenn Sie CrazyStat in XHTML-Dokumente einbinden m&ouml;chten, k&ouml;nnen Sie folgenden
+(validen) Code verwenden (s. <a href="#faq9">"Was ver&auml;ndert $config_xhtml?"</a>).<br />
+<br />
+&lt;!-- BEGINN CrazyStat 1.70, Copyright (C) 2004-2011 Christopher Kramer http://www.christosoft.de
+/--&gt;<br />
+&lt;script type="text/javascript" language="javascript"&gt;<br />
+/* &lt;![CDATA[ */<br />
+function CrazyStat()<br />
+{<br />
+if (typeof(crazystat_oldOnLoad)=='function') crazystat_oldOnLoad();<br />
+var jetzt=new Date();<br />
+var
+CrazyStatUrl='PFAD/src/stat.php?breite='+screen.width+'&amp;hoehe='+screen.height+'&amp;colors='+screen.colorDepth+'&amp;datei=DATEI&amp;referer='+document.referrer+'&amp;t='+jetzt.getTime();<br />
+
+if(document.getElementById) obj=document.getElementById('CrazyStatImage'); else
+if(document.all) obj=document.all('CrazyStatImage');<br />
+obj.src=CrazyStatUrl;<br />
+}<br />
+var crazystat_oldOnLoad=window.onload;<br />
+window.onload=CrazyStat;<br />
+/* ]]&gt; */<br />
+&lt;/script&gt;<br />
+&lt;img id="CrazyStatImage" src="PFAD/src/img/blind.gif" alt=" - - - By CrazyStat - - - " title=" -
+- - By CrazyStat - - - " style="border:0px" /&gt;<br />
+&lt;noscript&gt;&lt;img src="PFAD/src/stat.php?datei=DATEI&amp;amp;referer=keinJS" alt=" - - - By
+CrazyStat - - - " title=" - - - By CrazyStat - - - " style="border:0px"
+/&gt;&lt;/noscript&gt;<br />
+&lt;!-- ENDE CrazyStat /--&gt;</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq34"></a>Was ist bei XHTML-Dateien zu beachten?</h3>
+<p>Wenn Sie XHTML-Dateien verwenden, die mit korrektem Mime-Type (z.B.
+application/xhtml+xml) ausgeliefert werden, k&ouml;nnen folgende Probleme auftreten: Zum
+einen zeigt der Internet Explorer diese dann gar nicht an (unabh&auml;ngig von CrazyStat),
+zum anderen werden Aufrufe von Gecko-Browsern (eventuell auch andere) von CrazyStat
+doppelt gez&auml;hlt, da diese Browser auch die Grafik im &lt;noscript&gt;-Bereich laden. Um
+dies
+zu vermeiden, setzen Sie $config_xhtml_noscript=false . Es werden dann allerdings
+nur noch Browser mit JavaScript erfasst. Bei Mime-Type text/html gibt es keine Probleme.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq35"></a>Kann ich mehrere CrazyStat-Installationen / unterschiedliche CrazyStat-Versionen in eine
+Seite einbinden?</h3>
+<p>Dies ist technisch m&ouml;glich, aber nicht empfohlen. Achten Sie unbedingt darauf, dass Sie
+sich stets ausloggen, bevor sie sich in eine andere Installation einloggen!
+Unterschiedliche Installationen bzw. Versionen werden sicher unterschiedliche Ergebnisse
+liefern, dies liegt an den Einstellungen. So werden bei unterschiedlichen Versionen
+eine unterschiedliche Anzahl Robots ignoriert. Au&szlig;erdem lassen sich die Ergebnisse durch
+config-Einstellungen stark beeinflussen, vor allem &uuml;ber die IP-Sperre.</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq36"></a>Ich m&ouml;chte Session-IDs/den Parameter XY aus den Datei-Eintr&auml;gen entfernen.
+Wie geht das?</h3>
+<p>&Uuml;ber $config_stat_files_preg_replace kann man regul&auml;re Ausdr&uuml;cke auf die Eintr&auml;ge
+des Moduls Dateien anwenden. Damit lassen sich auch Parameter aus den Eintr&auml;gen
+entfernen. Folgende Einstellung entfernt s&auml;mtliche Parameter:<br />
+$config_stat_files_preg_replace=array('/\?.*/'=&gt;'');<br />
+Ein bestimmter Parameter l&auml;sst sich wie folgt entfernen:<br />
+$config_stat_files_preg_replace=array('/[&amp;?]PHPSESSID=[^&amp;]*/'=&gt;'');<br />
+Damit werden alle PHPSESSID-Parameter entfernt (samt Wert).<br />
+Infos zu regul&auml;ren Ausdr&uuml;cken finden Sie z.B. hier:<br />
+<a href="http://www.drweb.de/php/regulaere-ausdruecke.shtml" target="_blank">http://www.drweb.de/php/regulaere-ausdruecke.shtml</a><br />
+Wenn Sie sich genauer damit befassen wollen empfehle ich Ihnen das folgende Buch:<br />
+Regul&auml;re Ausdr&uuml;cke von Jeffrey Friedl ISBN: 3-89721-349-4</p>
+
+<p><a href="#top">Nach oben</a></p><h3><a name="faq37"></a>Nichts gefunden?</h3>
+<p>Auf <a href="http://www.christosoft.de/CrazyStat/FAQ">http://www.christosoft.de/CrazyStat/FAQ</a> gibt es immer die aktuelle FAQ.
+Weitere Informationen finden sich auch in der <a href="README_de.html">README-Datei</a>.
+Sollte auch dort nichts zu finden sein, frage mich einfach per <a href="http://www.christosoft.de/Kontakt">Mail</a>.<br />
+Das Benutzen der Suchfunktion (Strg + F) hilft beim Umgang mit diesem Dokument &uuml;brigens
+auch enorm weiter ;)</p>
+
+<p><a href="#top">Nach oben</a></p>
+</body>
+</html>

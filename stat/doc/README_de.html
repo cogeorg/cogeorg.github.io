@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>CrazyStat: Readme-Datei (Deutsch)</title>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body class="l2">
+
+<h1><a name="top">CrazyStat</a></h1>
+<p><i>Version 1.70</i></p>
+<p>Dies ist die LiesMich-Datei zu CrazyStat, einem komfortablen, umfangreichen und kostenlosen
+Statistik-Script mit optionalem Counter.<br />
+Vielen herzlichen Dank, dass Sie sich f&uuml;r
+CrazyStat entschieden haben.</p>
+
+<h2><a name="inhalt">1. Inhalt</a></h2>
+
+<ol>
+ <li><a href="#inhalt">Inhalt</a></li>
+ <li><a href="#features">Features</a>
+  <ul>
+   <li><a href="#features_allgemein">Allgemein</a></li>
+   <li><a href="#features_stat">Statistik</a></li>
+   <li><a href="#features_counter">Counter</a></li>
+  </ul>
+ </li>
+ <li><a href="#voraussetzungen">Voraussetzungen</a>
+  <ul>
+   <li><a href="#voraussetzungen_server">Auf dem Server</a></li>
+   <li><a href="#voraussetzungen_client">Auf dem Client</a></li>
+  </ul>
+ </li>
+ <li><a href="#installation">Installation</a>
+  <ul>
+   <li><a href="#installation_schnell">Schnellinstallation</a></li>
+   <li><a href="#installation_ausf_counter">Ausf&uuml;hrliche Erkl&auml;rung: Installation mit Counter</a></li>
+   <li><a href="#installation_ausf_ohne_counter">Ausf&uuml;hrliche Erkl&auml;rung: Installation ohne Counter</a></li>
+   <li><a href="#installation_danach">Nach der Installation</a></li>
+  </ul>
+ </li>
+ <li><a href="#faq">H&auml;ufige Fragen (FAQ)</a></li>
+ <li><a href="#history">History</a></li>
+ <li><a href="#todo">To do</a></li>
+ <li><a href="#copyright">Copyright und Lizenz</a></li>
+</ol>
+
+<h2><a name="features">2. Features</a></h2>
+
+<h3><a name="features_allgemein">Allgemein</a></h3>
+<ul>
+ <li>kann ganz ohne JavaScript arbeiten (k&ouml;nnen nicht viele!)</li>
+ <li>keinerlei Pflichtwerbung/-logos oder &auml;hnliches bei Counter lediglich Anmerkung im
+   alt-Text</li>
+ <li>Da PHP-Script unabh&auml;ngig von anderen Anbietern (Server down etc.)</li>
+ <li>Konfiguration der IP-Sperre m&ouml;glich</li>
+ <li>IPs k&ouml;nnen optional anonymisiert gespeichert werden, sodass sie nicht mehr r&uuml;ckverfolgbar sind (Datenschutz)</li>
+ <li>Statistik und Counter in einem Script!</li>
+ <li>kein MySQL ben&ouml;tigt</li>
+ <li>kein Zugriff auf Server-Logs n&ouml;tig</li>
+ <li>eingebundene Dateien bleiben XHTML oder HTML valide</li>
+ <li>eigene Seitenaufrufe werden auf Wunsch nicht gez&auml;hlt</li>
+ <li>Logdateien werden optional gzip-komprimiert um Webspace zu sparen</li>
+</ul>
+
+<h3><a name="features_stat">Statistik</a></h3>
+<ul>
+ <li>Ergebnisse werden alle auf einen Blick &uuml;bersichtlich mit Balkendiagrammen (Browser,
+   Monitoraufl&ouml;sung und Betriebssystem auch nach Wahl in Kreisdiagrammen) dargestellt</li>
+ <li>Auswertungen zu folgenden Daten, mit und ohne IP-Sperre sowie jeweils nach Wahl auf
+   einen beschr&auml;nkten Zeitraum gesehen oder auf die gesamte Zeit bezogen:
+  <ul>
+   <li>Gesamt-Hits</li>
+   <li>Hits diesen Monat</li>
+   <li>Hits letzten Monat</li>
+   <li>User online</li>
+   <li>Maximum Hits / Tag</li>
+   <li>Durchschnitt Hits / Tag</li>
+   <li>Hits / Wochentag</li>
+   <li>Hits / Monat</li>
+   <li>Hits / Tag</li>
+   <li>Hits / Stunde</li>
+   <li>Verwendete Browser</li>
+   <li>Aufgerufene Dateien</li>
+   <li>Verwendete Monitoraufl&ouml;sung</li>
+   <li>Farbtiefe</li>
+   <li>Verwendetes Betriebssystem</li>
+   <li>Referer</li>
+   <li>Suchbegriffe &uuml;ber die die User auf die Seite gekommen sind</li>
+  </ul>
+ </li>
+ <li>Durchschnitts- und Summen-Werte f&uuml;r alle Module</li>
+ <li>Passwortschutz der den Zugriff auf die Statistik vor fremden Augen sch&uuml;tzt m&ouml;glich,
+   mehrere Nutzer anlegbar, Passwort auf Wunsch verschl&uuml;sselt abspeicherbar,
+   sichere &Uuml;bertragung des Passworts</li>
+ <li>In individuellen "Presets" k&ouml;nnen unterschiedliche Statistik-Ansichten gespeichert und schnell abgerufen werden</li>
+ <li>Downloaden und Verwalten der Logdateien &uuml;ber die Oberfl&auml;che (Backup, L&ouml;schen)</li>
+ <li>Tabellarische Anzeige der Logdateien</li>
+ <li>Durchsuchen der Logdateien (Filter)</li>
+ <li>Geschwindigkeitsoptimiertes Auswerten durch mehrstufiges Caching</li>
+ <li>mehrsprachige Oberfl&auml;che (zun&auml;chst deutsch/englisch)</li>
+</ul>
+
+<h3><a name="features_counter">Counter</a></h3>
+<ul>
+ <li>Ein/ausschaltbar</li>
+ <li>Wenn Counter aus sieht der User nur eine Grafik, die Sie frei w&auml;hlen k&ouml;nnen
+   (z.B. blank.gif => Nutzer sieht gar nichts vom Script)</li>
+ <li>Design frei w&auml;hlbar, es gibt hunderte passende kostenlose Grafiken im Internet</li>
+ <li>mit oder ohne IP-Sperre</li>
+ <li>Anzahl Stellen w&auml;hlbar</li>
+ <li>Transparenz m&ouml;glich, sodass das Design dem Hintergrund angepasst wird</li>
+ <li>Zum tats&auml;chlichen Z&auml;hlerstand l&auml;sst sich ein beliebiger Wert addieren, der z.B. mit
+   einem anderen Counter gemessen wurde (Counterstand geht nicht verloren)</li>
+ <li>Auf Wunsch l&auml;sst sich an eine beliebige Position im Counter bei Reload ein beliebiger
+   Text einblenden, der auf einen Reload hinweist. Das Aussehen des Textes (Schriftgr&ouml;&szlig;e,
+   Farbe, nach Wunsch farbiger Kasten um den Text) ist beliebig w&auml;hlbar.</li>
+ <li>&Uuml;ber CSS anpassbarer Textcounter ist ebenfalls m&ouml;glich</li>
+</ul>
+
+<p><a href="#top">Nach oben</a></p>
+
+<h2><a name="voraussetzungen">3. Voraussetzungen</a></h2>
+
+<h3><a name="voraussetzungen_server">Auf dem Server</a></h3>
+<ul>
+ <li>PHP mit Sessions (4.2.2, 4.2.3, 4.3.4, 4.4.1, 5.0.4, 5.1.2, 5.2.6 wurden getestet),
+   f&uuml;r Counter und Kreisdiagramme mit aktivierter GDLib (f&uuml;r gif-Support GDLib &auml;lter als
+   1.6 oder neuer als 2.0.28).<br />
+   Aus Sicherheitsgr&uuml;nden wird generell empfohlen register_globals = Off zu setzen
+   (nicht zwingend). L&auml;uft auch wenn safe_mode = On.</li>
+ <li>kein MySQL</li>
+ <li>Bei Seiten mit sehr hohem Besucheraufkommen ist ein "starker" Server empfehlenswert</li>
+ <li><strong>Das Script l&auml;uft auf so gut wie jedem PHP-f&auml;higen Webspace, selbst auf Freehostern</strong></li>
+</ul>
+
+<h3><a name="voraussetzungen_client">Auf dem Client</a></h3>
+<ul>
+ <li>Browser (Internet Explorer 8/7/6/5.5, Mozilla 1.7, Opera 9.64/9.02/8.54/7.54/7.2/5,
+   Firefox 3.6/3.5/3.0/2.0/1.5/1.0, Safari 4.0.4/3.2.1 (Win), Google Chrome 4.0.249.89/1.0
+   und Netscape 4.78 (bedingt) wurden getestet</li>
+ <li>Bilder (d&uuml;rfen nicht geblockt werden, Textbrowser werden nicht gez&auml;hlt)</li>
+ <li>JavaScript f&uuml;r Ermittlung der Monitoraufl&ouml;sung und Farbtiefe und einige Komfort-
+   Funktionen f&uuml;r die Auswertung der Ergebnisse (in show_stat.php, nicht zwingend)</li>
+</ul>
+
+<p><a href="#top">Nach oben</a></p>
+ 
+<h2><a name="installation">4. Installation</a></h2>
+
+<p><strong>ACHTUNG! Informationen zum Updaten sind unter <a href="faq_de.html#faq3">"H&auml;ufige Fragen"</a> zu finden.</strong></p>
+
+<h3><a name="installation_schnell"></a>Schnellinstallation (Schritte in Klammern nur bei Counter!)</h3>
+<p>Diese Anleitung ist f&uuml;r erfahrenere Anwender gedacht.</p>
+<ol>
+ <li>Entpacken der Dateien auf die Festplatte</li>
+ <li>(Countergrafik ausw&auml;hlen/herunterladen (Grafiken unter stat/usr/counter_styles/ - weitere Designs und Seiten unter
+     <a href="http://www.christosoft.de/Crazystat/Countergrafiken" target="_blank">http://www.christosoft.de/Crazystat/Countergrafiken</a>)</li>
+ <li>(Design evtl. in PNG umwandeln (oder gif, falls GDLib gifs unterst&uuml;tzt) und         
+     in Ordner "stat/usr/counter_styles" abspeichern)</li>
+ <li>stat/usr/config.php &ouml;ffnen und Einstellungen nach Wunsch anpassen (v.a. $config_rel_path)</li>
+ <li>Hochladen des Ordners "stat" inkl. aller Unterordner und Dateien</li>
+ <li>Allen Dateien und Unterordnern von stat/usr sowie dem Order stat/src/log-tool CHMOD 777 setzten</li>
+ <li>Auf jede Seite &lt;?php @include_once("stat/src/include.php"); ?&gt; innerhalb des &lt;body&gt;-Tags
+     einf&uuml;gen, <u>Dateiendung von ".html" oder ".html" nach ".php" &auml;ndern</u> (falls noch nicht ".php").
+     Siehe auch FAQ zu: <a href="faq_de.html#faq32">CrazyStat in .html-Dateien</a>, <a href="faq_de.html#faq14">CrazyStat in unterschiedlichen Verzeichnissen einbinden</a></li>
+ <li>Die Statistik aufrufen (http://www.meineseite.de/stat/). Falls Passwortschutz
+   aktiv bitte das Passwort &uuml;ber "Passwort &auml;ndern" ab&auml;ndern. Die Default-Werte
+   sind User "admin" und Passwort "pass".</li>
+</ol>
+
+<p>Wenn Sie den Ordner "stat" umbenannt haben, m&uuml;ssen Sie das auch im Code (Schritt 7) sowie in $config_rel_path (Schritt 4) anpassen!</p>
+       
+<h3><a name="installation_ausf_counter">Ausf&uuml;hrliche Erkl&auml;rung: Installation <i>mit</i> Counter</a></h3>
+<ol>
+ <li>Entpacken Sie die ZIP-Datei in einen Ordner auf Ihrer Festplatte (z.B. mit <a href="http://www.7-zip.de/" target="_blank">7-Zip</a>)</li>
+ <li>Dann m&uuml;ssen Sie ein Design f&uuml;r den Counter ausw&auml;hlen. Sie finden im Ordner "stat/usr/counter_styles" einige.
+   Unter <a href="http://www.christosoft.de/Crazystat/Countergrafiken" target="_blank">http://www.christosoft.de/Crazystat/Countergrafiken</a>
+   sind weitere Countergrafiken, Seiten mit weiteren
+   Grafiken und weitere Hinweise zu Countergrafiken zu finden.</li>
+ <li>Jetzt m&uuml;ssen Sie sicherstellen, dass die Countergrafik eine PNG- oder GIF-Datei ist.
+   Sollte sie es nicht sein, oder Ihr Server keine GIF-Grafiken unterst&uuml;tzen, lesen Sie
+   in den FAQ nach, <a href="faq_de.html#faq1">wie man Grafiken in das PNG-Format konvertiert</a>. Dann legen sie die
+   Grafik unter "stat/usr/counter_styles" ab.</li>
+ <li>&Ouml;ffnen Sie die Datei "stat/usr/config.php" in einem Texteditor (z.B. Notepad oder <a href="http://www.pspad.com/de/" target="_blank">PSPad</a>)
+     und passen Sie die Einstellungen nach Wunsch an (v.a. $config_rel_path). Der Dateiname der Countergrafik
+     muss in $config_counter_file_name eingetragen werden und f&uuml;r den Counter muss $config_counter_enabled=true; sein.<br />
+     <a href="config_settings_de.html">Informationen zu weiteren Konfigurations-Einstellungen</a></li>
+ <li>Hochladen des Ordners "stat" inkl. aller Unterordner und Dateien auf Ihren Server
+     (z.B. per FTP mit <a href="http://filezilla-project.org/" target="_blank">FileZilla</a>)</li>
+ <li>Allen Dateien und Unterordnern von "stat/usr" sowie dem Order "stat/src/log-tool" CHMOD 777 setzten.
+     Wie das geht steht unter <a href="faq_de.html#faq2">FAQ</a>.</li>
+ <li>Auf jede Seite, deren Besuche gez&auml;hlt werden sollen,
+     &lt;?php @include_once("stat/src/include.php"); ?&gt; nach &lt;body&gt; und vor &lt;/body&gt;
+     einf&uuml;gen. <u>Dateiendung von ".html" oder ".html" nach ".php" &auml;ndern</u> falls noch nicht ".php"
+     (Dateien umbenennen und Links anpassen).
+     Siehe auch FAQ zu: <a href="faq_de.html#faq32">CrazyStat in .html-Dateien</a>, <a href="faq_de.html#faq14">CrazyStat in unterschiedlichen Verzeichnissen einbinden</a></li>
+ <li>Rufen Sie jetzt sie Statistik auf (im Browser http://www.meineseite.de/stat/). Falls Passwortschutz
+   aktiv bitte das Passwort &uuml;ber "Passwort &auml;ndern" ab&auml;ndern. Die Default-Werte
+   sind User "admin" und Passwort "pass".</li>
+</ol>
+
+
+<h3><a name="installation_ausf_ohne_counter">Ausf&uuml;hrliche Erkl&auml;rung: Installation <i>ohne</i> Counter</a></h3>
+<ol>
+ <li>Entpacken Sie die ZIP-Datei in einen Ordner auf Ihrer Festplatte (z.B. mit <a href="http://www.7-zip.de/" target="_blank">7-Zip</a>)</li>
+ <li>&Ouml;ffnen Sie die Datei "stat/usr/config.php" in einem Texteditor (z.B. Notepad oder <a href="http://www.pspad.com/de/" target="_blank">PSPad</a>)
+     und passen Sie die Einstellungen nach Wunsch an (v.a. $config_rel_path). Um den Counter
+     zu deaktivieren muss $config_counter_enabled=false; sein.<br />
+     <a href="config_settings_de.html">Informationen zu weiteren Konfigurations-Einstellungen</a></li>
+ <li>Hochladen des Ordners "stat" inkl. aller Unterordner und Dateien auf Ihren Server
+     (z.B. per FTP mit <a href="http://filezilla-project.org/" target="_blank">FileZilla</a>)</li>
+ <li>Allen Dateien und Unterordnern von "stat/usr" sowie dem Order "stat/src/log-tool" CHMOD 777 setzten.
+     Wie das geht steht unter <a href="faq_de.html#faq2">FAQ</a>.</li>
+ <li>Auf jede Seite, deren Besuche gez&auml;hlt werden sollen,
+     &lt;?php @include_once("stat/src/include.php"); ?&gt; nach &lt;body&gt; und vor &lt;/body&gt;
+     einf&uuml;gen. <u>Dateiendung von ".html" oder ".html" nach ".php" &auml;ndern</u> falls noch nicht ".php"
+     (Dateien umbenennen und Links anpassen).
+     Siehe auch FAQ zu: <a href="faq_de.html#faq32">CrazyStat in .html-Dateien</a>, <a href="faq_de.html#faq14">CrazyStat in unterschiedlichen Verzeichnissen einbinden</a></li>
+ <li>Rufen Sie jetzt sie Statistik auf (im Browser http://www.meineseite.de/stat/). Falls Passwortschutz
+   aktiv bitte das Passwort &uuml;ber "Passwort &auml;ndern" ab&auml;ndern. Die Default-Werte
+   sind User "admin" und Passwort "pass".</li>
+</ol>
+
+
+
+<h3><a name="installation_danach">Nach der Installation</a></h3>
+<ul>
+ <li>Sie k&ouml;nnen Ihre Statistik &uuml;ber "http://ihrserver.de/stat/" aufrufen</li>
+ <li>Das Log-Tool erreichen Sie &uuml;ber "http://ihrserver.de/stat/log-tool/" (<a href="faq_de.html#faq12">s. FAQ</a>)</li>
+</ul>
+
+<p><a href="#top">Nach oben</a></p>
+
+<h2><a name="faq">5. H&auml;ufige Fragen (FAQ)</a></h2>
+<p>Die FAQ finden Sie in <a href="faq_de.html">faq_de.html</a></p>
+
+<p><a href="#top">Nach oben</a></p>
+
+<h2><a name="history">6. History</a></h2>
+<p>Die History finden Sie unter <a href="history.html">history.html</a> (nur Deutsch bis inkl. Version 1.70, danach nur Englisch).</p>
+
+<p><a href="#top">Nach oben</a></p>
+
+<h2><a name="todo">7. To Do</a></h2>
+<p>Die Liste der ToDos finden Sie unter <a href="todo.txt">todo.txt</a> (nur Englisch).</p>
+
+
+<p><a href="#top">Nach oben</a></p>
+
+<h2><a name="copyright">8. Copyright und Lizenz</a></h2>
+<p>Copyright (C) 2004-2011  Christopher Kramer</p>
+
+<p>This program is free software; you can redistribute it and/or
+modify it under the terms of the <a href="license.txt">GNU General Public License</a>
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received <a href="license.txt">a copy of the GNU General Public License</a>
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</p>
+
+<p>Website: <a href="http://www.christosoft.de" target="_blank">http://www.christosoft.de</a><br />
+E-Mail:  webmaster AT christosoft DOT de (<a href="http://www.christosoft.de/Kontakt" target="_blank">Kontaktformular</a>)<br />
+Version: 1.70
+</p>
+<p><a href="#top">Nach oben</a></p>
+
+</body>
+</html>

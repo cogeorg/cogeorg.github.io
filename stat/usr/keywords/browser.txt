@@ -1,0 +1,65 @@
+Chrome=Google Chrome
+Opera
+Konqueror
+Safari
+K-Meleon
+Nautilus
+KHTML
+Camino
+Firefox/4=Firefox 4.x
+Firefox/3=Firefox 3.x
+Firefox/2=Firefox 2.x
+Firefox/1=Firefox 1.x
+Firefox/0=Firefox 0.x
+Firefox
+Firebird
+Avant
+CrazyBrowser
+Crazy Browser=CrazyBrowser
+FastWeb
+Galeon
+Links
+Lynx
+Mosaic
+WebTV
+Xbox
+Navigator/9=Netscape 9
+Netscape/8=Netscape 8
+Netscape/7=Netscape 7
+Netscape6/6=Netscape 6
+Netscape
+C-CCK-MCD=Netscape
+Dillo
+SymbianOS
+Googlebot
+msnbot=MSN Bot
+Yahoo! Slurp
+Yahoo-MMCrawler=Yahoo! Bilder
+ia_archiver=Alexa Bot
+Ask Jeeves/Teoma
+AOL
+T-Online
+MSIE 9
+MSIE 8
+MSIE 7
+MSIE 6
+MSIE 5.0
+MSIE 5.5
+MSIE 5
+MSIE 4
+Seamonkey
+SeaMonkey
+MultiZilla
+Iceweasel
+Gecko
+PSP (PlayStation Portable)=<span title="PlayStation Portable">PSP</span>
+Wget
+LeechGet
+FDM=<span title="Free Download Manager">FDM</span>
+DA=<span title="Download Accelerator">DA</span>
+HiDownload
+HTTrack
+CFNetwork
+Java
+WebCapture
+Mozilla

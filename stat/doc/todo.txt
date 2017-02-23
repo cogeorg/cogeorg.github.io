@@ -1,0 +1,95 @@
+ToDos and Ideas for CrazyStat:
+ - improve data privacy:
+   - change anonymizeIP: Strip off the last 1 or 2 Octets and create a virtual IP:
+     123.456.789.012 -> 123.456.OCT1.OCT2
+     OCT1=ORD(User Agent + Resolution + Color Depth + salt)%256
+     OCT2=ORD(User Agent - Resolution - Color Depth + salt)%256
+     -> create an anonymized virtual IP that looks like a real one and still has the
+     first / secnd Octet
+   - optionally automaticalls delete logs after a defined period of time or x MB
+     log usgae
+   - opt-out mechanism (using opt-out-header? Cookie?)
+   - optionally do not log referers or optionally delete referers after x days
+   - create a data privacy statement that users can put on their site which explains
+     how CrazyStat treats personal data.
+   - contact https://www.datenschutzzentrum.de/tracking/ and aks whether
+     CrazyStat is conform with German data privacy laws  
+ - IE9: Lyteframes have useless scrollbars!? :(
+ - Do not show limit/all symbol in tree Referer-Module if there are
+   only LIMIT entries to show. To do this, the referers need to be grouped before
+   konsole() is started to know the number of hosts at that point. 
+ - show_log: link IP-adresses (if not anonymized) to a lookup site (configurable)
+   like http://ip-whois-lookup.com/lookup.php?ip= or
+   http://www.infosniper.net/index.php?ip_address=
+ - refererTree: link to Domain (not only subpage)
+ - sortable table: display sort-icon onmousover
+ - special default-preset with the settings of the last session
+ - menu: breadcrumbs: Statistic > Logs > stat.log
+ - menu: on mobile phone, the buttons where not shown
+ - translate the logtool
+ - fix: show_log (backwards) says "end of logfile" for files with just 1 line
+ - Animate Bar charts (optional)
+ - Presets: One icon, on mouseover a menu opens with all the presets using JS (no <select>)
+ - when clicking on an entry in a module, start a filter in show_log which shows the individual
+   hits for this entry. E.g. when clicking on a day in hits/day, show all hits of that
+   day in show_log
+ - show_log.php: Colorize rows (each IP has its own color)
+ - show_log.php: When clicking an IP in the logs, start a filter/search for that IP
+   (also for User Agents? Color Depth? Screen resolution?)
+ - month-module: visits/day so that the current month can be easily compared
+   (also  for other modules?)#
+ - year-module?
+ - javascript-module?
+ - upload ("share") your presets
+ - (upload logfiles via GUI that have been backed up)
+ - every user controls its own presets
+ - save multiple files in "Logs"
+ - "Logs" (filter): Show how many search results (hits/visitors?)
+ - Referer / Keywords: change table-layout so that keywords is just under system
+ - Hits/day this / last month 
+ - limit/total: instead of toolbar-button some fancy image under the list?
+   load onScroll? onLoad (this means after everything has been loaded, fetch the complete list)?
+ - Hits-module: changeable IP-Blocking?
+ - Number of entrys/time period
+   (how many different referer domains this month? year-view with all months)
+ - Automatic (ajax?) refresh every x minutes (optional)
+ - "live log view": log file (viewed as a table) refreshes automatically
+ - "dynamic GUI":
+   - Modules can be dragged & dropped & resized
+   (-> Dynamic Drive DHTML Window Widget + Modal Window)
+   - User can save his view and share it with others online
+   - New Standard-views:
+ 	- technical settings (Browser, systems, color depth)
+ 	- Hits/Time (Day/Month/Year)
+ 	- Files (Files / Referer)
+   - User can "minimize" modules
+ - Month-Cache/Split-Cache/Universal-Cache
+ - Settings-GUI, Installer (simpel/advanced)
+ - Make all data available to other scripts, e.g  User online, Hits, etc.
+ - User online Max
+ - Clickcounter: New Module Clickcounter, which counts clicks on downloads/links/...
+   Maybe tab in "files" module?. Possibility to show the number of clicks
+   next to the download-link
+ - "Without JavaScript"-Setting
+ - Page Visit Time: Average time users spend on site, on particular sites,
+   (files-module?), total time spent
+ - Improve coding (structure / OOP!)
+ - (Counter: include background image)
+ - StatServer-Docu
+ - Country or Language of visitors (Maxmind GeoIP Country/City?)
+ - improve queryregex.txt (more engines, not all sites etc ...)
+ - How many visitors come from which search engine? (search-engine-module?)
+ - Diagrams using jpGraph? (http://www.aditus.nu/jpgraph/)
+ - Filter supports PCRE
+ - Entrypages/Exitpages
+ - Tendencys
+ - Log Session-Variables (username, ...)
+ - replace mktree with noAjax-Version of ajaxTree?
+ - error-message when rel-path is wrong
+ - categorize files (ajaxTree?)
+ - Report unknown browser / systems
+ - Limit Time-Modules to system attributes/files/referers/search phrases
+  -> e.g. Month-module: Referer google -> development of Google-click-throughs
+  -> e.g. Month-module: Browser Firefox -> How has the use of this browser changed?
+  -> e.g. day-module: file xy.z -> How often was this file opened in the last days?
+ - export data of a module as excel/openoffice/libreoffice/csv-file? (including diagrams?)

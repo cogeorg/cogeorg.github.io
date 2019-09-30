@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HECoin</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="hecoin---the-hec-coin">HECoin - The HEC Coin</h1>
+<p>This tutorial serves as a walk-through on how to</p>
+<ul>
+<li><a href="#Setting-up-the-Remix-environment">(1)</a> set up the Remix environment</li>
+<li><a href="#Writing-a-smart-contract">(2)</a> write a smart contract</li>
+<li><a href="#Compiling-the-smart-contract">(3)</a> compile a smart contract</li>
+<li><a href="#Deploying-the-smart-contract">(4)</a> deploy a smart contract</li>
+<li><a href="#Interacting-with-the-smart-contract">(5)</a> interact with a smart contract</li>
+</ul>
+<h2 id="prerequisits">Prerequisites</h2>
+<p>You will need to install the following tools:</p>
+<ul>
+<li><a href="https://www.trufflesuite.com/ganache">Ganache</a>: a blockchain emulator</li>
+<li><a href="https://metamask.io/">MetaMask</a>: a browser extension to interact with the smart contract</li>
+</ul>
+<h2 id="a-idsetting-up-the-remix-environmentasetting-up-the-remix-environment"><a id="Setting-up-the-Remix-environment"></a>Setting up the Remix environment</h2>
+<p><a href="https://remix.ethereum.org/">Remix</a> is an in-browser Ethereum IDE that allows you to write, test, deploy, and interact with your smart contracts. It is ideal for quick and easy development.</p>
+<p>Go ahead and open the website, preferably in Google Chrome or Chromium. You need to enable three plugins:</p>
+<ul>
+<li>Solidity Compiler</li>
+<li>Solidity Unit Testing</li>
+<li>Deploy &amp; Run Transactions</li>
+</ul>
+<p>Do that by clicking on the plug icon on the left and activating those two:<br>
+<img src="https://lh3.googleusercontent.com/us0Lf_WpE_3pnSaiT1-2kxwEkSrDTwvVQiIDPK_PqfJ_SN7op282OuRl4ydpO2RuN4Tz_gh-1_1y" alt="enter image description here"></p>
+<h2 id="a-idwriting-a-smart-contractawriting-a-smart-contract"><a id="Writing-a-smart-contract"></a>Writing a smart contract</h2>
+<p>Ethereum smart contracts are mainly written in <a href="https://solidity.readthedocs.io/en/v0.5.11/">Solidity</a>, which is a compiling language designed to interact with the Ethereum Virtual Machine (EVM). Since we are dealing with digital value when interacting with smart contracts, we want them to be as secure as possible. Solidity was created to be just that.</p>
+<p>We will implement a simple token contract called “HECoin”. For that, create a file called <em>HECoin.sol</em> within the <em>file explorer</em> on Remix<br>
+<img src="https://lh3.googleusercontent.com/8KVIzGh02YdzKZidwI2XnLEX8Q_HOGZF3elzAGiTY1ChUWyBRClnkiOJnZ4NsiPXkSX7pDbbU5FC" alt="enter image description here"><br>
+Include the following code:</p>
+<pre class=" language-js"><code class="prism  language-js">pragma solidity <span class="token operator">&gt;=</span><span class="token number">0.5</span><span class="token punctuation">.</span><span class="token number">0</span> <span class="token operator">&lt;</span><span class="token number">0.7</span><span class="token punctuation">.</span><span class="token number">0</span><span class="token punctuation">;</span>         <span class="token comment">// defines the compiler version</span>
+
+contract HECoin <span class="token punctuation">{</span>
+    <span class="token comment">// State variables hold information</span>
+    <span class="token comment">// accessible to the contract</span>
+    address <span class="token keyword">public</span> minter<span class="token punctuation">;</span>
+    <span class="token function">mapping</span> <span class="token punctuation">(</span>address <span class="token operator">=&gt;</span> uint<span class="token punctuation">)</span> <span class="token keyword">public</span> balances<span class="token punctuation">;</span>
+
+    <span class="token comment">// Events allow clients to react to specific</span>
+    <span class="token comment">// contract changes you declare</span>
+    event <span class="token function">Sent</span><span class="token punctuation">(</span>address <span class="token keyword">from</span><span class="token punctuation">,</span> address to<span class="token punctuation">,</span> uint amount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Constructor code is only run when the contract</span>
+    <span class="token comment">// is created</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+        minter <span class="token operator">=</span> msg<span class="token punctuation">.</span>sender<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Sends an amount of newly created coins to an address</span>
+    <span class="token comment">// Can only be called by the contract creator</span>
+    <span class="token keyword">function</span> <span class="token function">mint</span><span class="token punctuation">(</span>address receiver<span class="token punctuation">,</span> uint amount<span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+        <span class="token function">require</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>sender <span class="token operator">==</span> minter<span class="token punctuation">,</span> <span class="token string">"Function can only be called by minter."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">require</span><span class="token punctuation">(</span>amount <span class="token operator">&lt;</span> <span class="token number">1e60</span><span class="token punctuation">,</span> <span class="token string">"Amount is too high."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        balances<span class="token punctuation">[</span>receiver<span class="token punctuation">]</span> <span class="token operator">+=</span> amount<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Sends an amount of existing coins</span>
+    <span class="token comment">// from any caller to an address</span>
+    <span class="token keyword">function</span> <span class="token function">send</span><span class="token punctuation">(</span>address receiver<span class="token punctuation">,</span> uint amount<span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+        <span class="token function">require</span><span class="token punctuation">(</span>amount <span class="token operator">&lt;=</span> balances<span class="token punctuation">[</span>msg<span class="token punctuation">.</span>sender<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"Insufficient balance."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        balances<span class="token punctuation">[</span>msg<span class="token punctuation">.</span>sender<span class="token punctuation">]</span> <span class="token operator">-=</span> amount<span class="token punctuation">;</span>
+        balances<span class="token punctuation">[</span>receiver<span class="token punctuation">]</span> <span class="token operator">+=</span> amount<span class="token punctuation">;</span>
+        emit <span class="token function">Sent</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>sender<span class="token punctuation">,</span> receiver<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Souce: adapted from <a href="https://solidity.readthedocs.io/en/v0.5.11/introduction-to-smart-contracts.html">Solidity documentation</a></p>
+<p>The first block defines state variables:</p>
+<pre class=" language-js"><code class="prism  language-js">address <span class="token keyword">public</span> minter<span class="token punctuation">;</span>
+<span class="token function">mapping</span> <span class="token punctuation">(</span>address <span class="token operator">=&gt;</span> uint<span class="token punctuation">)</span> <span class="token keyword">public</span> balances<span class="token punctuation">;</span>
+</code></pre>
+<p><code>minter</code> is an Ethereum address that has admin privileges. The variable is public meaning that it is accessible from outside of the contract. A getter function is automatically generated.</p>
+<p><code>balances</code> is a key:value store that maps addresses to balances, allowing anybody to check the funds of HECoin available to any Ethereum address.</p>
+<p>The second block defines an event:</p>
+<pre class=" language-js"><code class="prism  language-js">event <span class="token function">Sent</span><span class="token punctuation">(</span>address <span class="token keyword">from</span><span class="token punctuation">,</span> address to<span class="token punctuation">,</span> uint amount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Whenever the <code>Sent</code> event is triggered, the defined information <code>from</code>, <code>to</code>, and <code>amount</code> are included in the transaction logs on the blockchain.</p>
+<p>The third block defines the constructor:</p>
+<pre class=" language-js"><code class="prism  language-js"><span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+    minter <span class="token operator">=</span> msg<span class="token punctuation">.</span>sender<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>It is only executed when the contract is deployed and sets the state variable <code>minter</code> to the value of the global variable <code>msg.sender</code>, which holds the address of the Ethereum address that ran the deployment command.</p>
+<p>The fourth block defines the <code>mint</code> function:</p>
+<pre class=" language-js"><code class="prism  language-js"><span class="token keyword">function</span> <span class="token function">mint</span><span class="token punctuation">(</span>address receiver<span class="token punctuation">,</span> uint amount<span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+    <span class="token function">require</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>sender <span class="token operator">==</span> minter<span class="token punctuation">,</span> <span class="token string">"Function can only be called by minter."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// (1)</span>
+    <span class="token function">require</span><span class="token punctuation">(</span>amount <span class="token operator">&lt;</span> <span class="token number">1e60</span><span class="token punctuation">,</span> <span class="token string">"Amount is too high."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                              <span class="token comment">// (2)</span>
+    balances<span class="token punctuation">[</span>receiver<span class="token punctuation">]</span> <span class="token operator">+=</span> amount<span class="token punctuation">;</span>                                               <span class="token comment">// (3)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>This function takes 2 input variables, <code>receiver</code> (of type <code>address</code>) and <code>amount</code> (of type <code>uint</code>, which is an unsigned integer, i.e.  <code>amount</code><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo separator="true">,</mo><mo>…</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\in \{0, 1, 2, 3, \ldots\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="minner">…</span><span class="mclose">}</span></span></span></span></span>). It is <code>public</code>, meaning that it is accessible from outside of the contract. The function first checks 2 conditions, namely (1), is the address calling the function corresponding to the <code>minter</code>, and (2), is the <code>amount</code> smaller than <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>60</mn></msup></mrow><annotation encoding="application/x-tex">10^{60}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></span></span> (because larger numbers cannot be handled). If either of those conditions are not met, the function throws an error. Finally, the function updates the balance of the receiver by adding the amount to it (3).</p>
+<p>The last block defines the <code>send</code> function:</p>
+<pre class=" language-js"><code class="prism  language-js"><span class="token keyword">function</span> <span class="token function">send</span><span class="token punctuation">(</span>address receiver<span class="token punctuation">,</span> uint amount<span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+    <span class="token function">require</span><span class="token punctuation">(</span>amount <span class="token operator">&lt;=</span> balances<span class="token punctuation">[</span>msg<span class="token punctuation">.</span>sender<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"Insufficient balance."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// (1)</span>
+    balances<span class="token punctuation">[</span>msg<span class="token punctuation">.</span>sender<span class="token punctuation">]</span> <span class="token operator">-=</span> amount<span class="token punctuation">;</span>                                         <span class="token comment">// (2)</span>
+    balances<span class="token punctuation">[</span>receiver<span class="token punctuation">]</span> <span class="token operator">+=</span> amount<span class="token punctuation">;</span>
+    emit <span class="token function">Sent</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span>sender<span class="token punctuation">,</span> receiver<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">;</span>                                <span class="token comment">// (3)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The function also takes 2 input variables, the same as the <code>mint</code> function. In (1), it checks whether the caller of the function has sufficient funds to send the desired amount to the recipient. If not, it reverts. If the check passes, the function substracts the <code>amount</code> from the originator’s balance and adds it to the recipient’s (2). Finally, it emits the <code>Sent</code> event (3).</p>
+<h2 id="a-idcompiling-the-smart-contractacompiling-the-smart-contract"><a id="Compiling-the-smart-contract"></a>Compiling the smart contract</h2>
+<p>As mentioned before, Solidity is a compiling language. Hence, the contract we just wrote has to be compiled. For that, click on the <em>Solidity compiler</em> icon in Remix and then on <em>Compile HECoin.sol</em>:<br>
+<img src="https://lh3.googleusercontent.com/K7SKFnsIZ_QuoUwaPyLLAdZuB5p3MOUzW4dUunsUGJhtuxJW5qZhQG8QqXa3b2ALlcJBX7s6TVKB" alt="enter image description here"><br>
+If compilation is successful, there will be a little green check mark next to the <em>Solidity compiler</em> icon on the left.</p>
+<h2 id="a-iddeploying-the-smart-contractadeploying-the-smart-contract"><a id="Deploying-the-smart-contract"></a>Deploying the smart contract</h2>
+<p>Finally, we can deploy the smart contract to a network of our choice. For the sake of the tutorial, we will deploy the contract to <a href="https://www.trufflesuite.com/ganache">Ganache</a>, an emulated Ethereum network. Go ahead and open Ganache.</p>
+<p>Next, we need to connect MetaMask and Remix to Ganache.</p>
+<h3 id="connecting-ganache-and-metamask">Connecting Ganache and MetaMask</h3>
+<p>Open Metamask, log in, and click on the network tab, click on <em>Custom RPC</em>:<br>
+<img src="https://lh3.googleusercontent.com/pvUpXgLewDi95KPKkqP0kcpF9ZCKknAFGJoIOQK0G5-y-bnldHIDe0xisHgW3MTpAXOlcwpbqvMt" alt="enter image description here"></p>
+<p>Fill in the Ganache properties and click on <em>Save</em>:<br>
+<img src="https://lh3.googleusercontent.com/cJx3V6xrQxzuWaruqIg-igYriENhK_nkoPOzD9mDUly4UJHFYo-6LDXjHLTQUJVGLJvWRe29b_DO" alt="enter image description here"><br>
+You should now see Ganache listed as one of the networks and you are automatically connected to that network. You can click on the X to leave this view:<br>
+<img src="https://lh3.googleusercontent.com/TvUEvgH38wjYwFLbnQYOYMsEzl-Q556wCJ_zUtjIzrQhSVpPsW42KrxKObBw3g62IfsGARO0F7kc" alt="enter image description here"><br>
+Next, we need to import the Ganache accounts. For that, switch to Ganache and click on the key symbol of the first account:<br>
+<img src="https://lh3.googleusercontent.com/HMC3CGHpAD0tyC5ufvX9M0tWHl5XE1uWHivm7rZNHq2mWzXw0yJCjPiLnr2fQx83PEPwI6cgkri4" alt="enter image description here"><br>
+Copy the displayed key:<br>
+<img src="https://lh3.googleusercontent.com/zqyJvPDdXyip3HalNoXMeWGrHuinWVbNd4EG83Aa525E2fgGLv5wReI4WXgIjYcSCkinS4d8PazO" alt="enter image description here"><br>
+Switch back to MetaMask and click on the coloful circle. Then click on <em>Import Account</em>:<br>
+<img src="https://lh3.googleusercontent.com/PUPZeUOMuzaSNQJMxmi_nYNv3AmUNmX-grpAwZgjfSa8k1kwVk3TglGY-yZslZ8_tuvqhnsb1kcj" alt="enter image description here"><br>
+Paste the key you just copied and click <em>Import</em>:<br>
+<img src="https://lh3.googleusercontent.com/YLH09t8gtFXsIlNfIHc74IGnM-ChOObhJBzMcxNNZX7zXNcH58TouSzwhAz3h7bT3O-GSSWXCYnR" alt="enter image description here"><br>
+MetaMask stores all keys in one vault and whenever you add an account, the names are generically generated. To keep them apart from all your other accounts, we are going to rename it. Click on the burger icon on the left:<br>
+<img src="https://lh3.googleusercontent.com/XhhLnYP3igRR7WdTfjOiVjC58aMGQGfvFRm-TIhBPxORu_89gWq7h4lFyQ2czMzmh4NpeFtoCck-" alt="enter image description here"><br>
+Click on <em>Details</em>:<br>
+<img src="https://lh3.googleusercontent.com/O1NFij9SrXTFDPJn-d6LvOCpCgT7OCpc2U1l3gbaOVNPZzQLB-TSSHx4aFXOkRzzXXOYDe4ZWAwU" alt="enter image description here"><br>
+Click on the little edit pencil:<br>
+<img src="https://lh3.googleusercontent.com/IuWg-blRpR17YEoIUUPqZLtWjwlaXR7slffapJqUfn92qPHVqufMx4O5_nml-BWIc4XiUX9rzGUS" alt="enter image description here"><br>
+And rename the account:<br>
+<img src="https://lh3.googleusercontent.com/AS3ghWXh_1GoRc0QUbirO5WqNqt8QwPCBADCLyZw67hMF1mML1lKIpLS_2gIezFPBOkBaivyHcXW" alt="enter image description here"><br>
+Repeat these steps until you have the first 3 Ganache accounts imported:<br>
+<img src="https://lh3.googleusercontent.com/MFslfObgHHHqpmQk4NWJ0uQAsPlzcSypIHXzJOAKoFFSQzIVWz4OuMM9mt1ApXiAxyFlJJAehi2Z" alt="enter image description here"><br>
+This is it, MetaMask is connected to Ganache.</p>
+<h3 id="connecting-remix-to-ganache-via-metamask">Connecting Remix to Ganache via Metamask</h3>
+<p>Open the <em>Deploy &amp; run transactions</em> tab click on the <em>Environments</em> drop down menu.  Choose <em>Injected Web3</em>:<br>
+<img src="https://lh3.googleusercontent.com/55pucXyluSEfyYauEAB8xhQ34Ivu-EWyJLMsza-YsXOQIWWKCYabRc1O8XtvUNjwyMNfQ9ttekj0" alt="enter image description here"><br>
+A MetaMask popup will open, asking you to connect. Click <em>Connect</em>:<br>
+<img src="https://lh3.googleusercontent.com/vn3jGswAVH1I-Zm_yRs5uI19mLmB7UE4bdcbyCeCp4ON5kvTJA-MookJDp2Euxte4iMt-HfyajyI" alt="enter image description here"><br>
+You are now connected to Ganache via MetaMask.</p>
+<h3 id="deploying-the-smart-contract">Deploying the smart contract</h3>
+<p>Finally, click on <em>Deploy</em>:<br>
+<img src="https://lh3.googleusercontent.com/hMv7gVcTs_ZoXxNZVdAW0M3Td5tr8g_J9cDH0Xs62XRqOqcpPbdVfDHV9OtYZUBfBNgXvhtOAI41" alt="enter image description here"><br>
+Another MetaMask popup will open, asking you to confirm the transaction:<br>
+<img src="https://lh3.googleusercontent.com/9HN96AWdv4Qa5mvatfUcnKErHlA_YU7qydjDJ_j5qI8uEX-dl3eLlgMqtW_-Abj3eaQFEjARXTrw" alt="enter image description here"><br>
+Note that account Ganache 0 is deploying the account and the gas fee is displayed. This is the amount it would potentially cost you to deploy this smart contract. Since we are using the emulator Ganache, there are no real cost incurred but the amount of test Ether in Ganache will decrease:<br>
+<img src="https://lh3.googleusercontent.com/r8gCs--By98VDyqp_edfNgmVs1YtkI1OeYtsluX-QvsYekMKVi4dORYGoAJGH8ojM1r8Jb6SHp0i" alt="enter image description here"><br>
+The transaction output is given in Remix:<br>
+<img src="https://lh3.googleusercontent.com/jBxVAHpI0P74ApkYSrkexycDNdSB-wlti_5Hm8T80KOe-keCps68a4GOI4mPr91K4Mh5wTCuL1PI" alt="enter image description here"><br>
+Congratulations, you have deployed a smart contract!</p>
+<h2 id="a-idinteracting-with-the-smart-contractainteracting-with-the-smart-contract"><a id="Interacting-with-the-smart-contract"></a>Interacting with the smart contract</h2>
+<p>Let’s mint some coins into account 0 and send half of them to account 1. For that, unfold the deployed HECoin contract on Remix:<br>
+<img src="https://lh3.googleusercontent.com/hTp-S-iq0VhnmTMc_gRDbhiGdTRIAPoGvmR-tvctAxZ9ycQ8WTWk0CvhlYs86ZEzDPPMpP3lo28v" alt="enter image description here"><br>
+Open the <code>mint</code> function and paste the first address from MetaMask (Ganache 0). You can copy it to clipboard by simply clicking on the account name:<br>
+<img src="https://lh3.googleusercontent.com/3VKRYG8Rr76zt96UuTPSJPD8dfZi8RJmSh0BLmqi03SicDhGw92O3LJbEgInY0Mszt3PxudSBCJW" alt="enter image description here"><br>
+Also, add the amount you want to mint:<br>
+<img src="https://lh3.googleusercontent.com/YYv9HR4zNweocUUH-5sO_IG-4qPC02992jSQ6vupofjxAkkXUywEW9MSKLxGgmNVUGZnO0DX36DW" alt="enter image description here"><br>
+Click on <em>transact</em> and approve the transaction in the MetaMask popup. Your transaction output should look like this:<br>
+<img src="https://lh3.googleusercontent.com/0rwd78yiAyMuQcJILpF6NkmjgbjSjEmOYVgLjY-wlw_hOC_HwGOcyxY-4zB-tN99-jM_3zkppflX" alt="enter image description here"><br>
+To check whether the coins are actually there, you can try the <code>balances</code> function. Simply paste the address of Ganache 0 into the input parameter field. The balance will show up right underneath the function on the left as well as in the transaction output:<br>
+<img src="https://lh3.googleusercontent.com/Xc8bXucFim3AIpTRr5dJrGLOx5j8kC3BYEzZqZ9vbQ_83D7nQWCC1oKxXlW7iVeJqsaJUZ_xHWYC" alt="enter image description here"><br>
+Finally, let’s send some coins to Ganache 1. Open the <code>send</code> function and paste in the address of Ganache 1. Also, add an amount. [Don’t forget to switch back to Ganache 0 if you copied the address from Metamask!]:<br>
+<img src="https://lh3.googleusercontent.com/dH8B7bdoMbK8FQ6RiQzdEGhF5AP41LS2omGNm9TGRT-xuyQL5HvjNwa91x3a_wiTv0Gk5VA-Jd5B" alt="enter image description here"><br>
+Click on <em>transact</em> and confirm the transaction with MetaMask. You can check the balances of both addresses using the <code>balances</code> function as before.</p>
+<p>Note that if you now want to send coins from Ganache 1 to Ganache 2, you will have to switch to the Ganache 1 account on MetaMask.</p>
+</div>
+</body>
+
+</html>

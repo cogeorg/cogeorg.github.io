@@ -199,12 +199,12 @@
 						<p>Activation</p>
 					</div>
 					<p> In the pre-processing phase, the neuron converts its inputs (the "input vector") into a linear model using its weight vector. This reduces the dimensionality of the input into a single numeric value. This value is then fed into the neuron’s activation function (for example linear, sigmoid or tanh) to generate the final output of the neuron. This is represented on the image below:</p>
-					<img src="./img/howneuronworks.png" alt="" align = "center">
+					<img src="./img/howneuronworks.PNG" alt="" align = "center">
 			  	</div>
 					<div>
 						<p>This process is best explained by the example below. In this example a vector of [ 5, 3, 3, 4] is used an input into a single neuron with pre-initialized weight vector of [ 3, 0.5, 0.25, 10, 7] – returning a value of 64.5 (if it possessed a linear activation) or 1 (if it were sigmoid).</p>
-						<img src="./img/NeuronCalc.png" alt="" align = "center">
-						
+						<img src="./img/NeuronCalc.PNG" alt="" align = "center">
+
 		<p>With neurons understood, we can more formally define a neural network as: </p>
 		<div class="feature">
 			<i class="fa fa-circle"></i>
@@ -220,7 +220,7 @@
 			<i class="fa fa-circle"></i>
 			<p>Each neuron is a basic multidimensional linear model (including an intercept (Wb)) that sums the product of its inputs and its internal coefficients (weights)</p>
 		</div>
-		
+
 		<div class="feature">
 			<i class="fa fa-circle"></i>
 			<p>	All weights, including the intercept, are initially randomly generated</p>
@@ -243,9 +243,9 @@
 <p>
 							Make sense? Effectively, neuron is the building block of a neural network (which is fundamentally just a collection of layered neurons) – with the outputs of each layer forming the inputs of the next. Please note that the normal graphical depiction of a neuron is:
 							</p>
-								<img src="./img/typicalNeuron.png" alt="" align = "center">
+								<img src="./img/typicalNeuron.PNG" alt="" align = "center">
 						<p> Therefore, a simple linearly activated neural network consisting of 3 neurons in a 2x1 formation with a single input could be shown in simplified notation as: </p>
-	<img src="./img/2x1 neuron.png" alt="" align = "center">				
+	<img src="./img/2x1 neuron.PNG" alt="" align = "center">
 
 
 				</div>
@@ -339,20 +339,20 @@
 					<p>	We can cycle through all training examples multiple times - every time we do, it is referred to as an epoch</p>
 				</div>
 				<p>This whole process is best explained again via example – remember our simple 3 linear neuron network from before?</p>
-				<img src="./img/2x1 Neuron.png" alt="">
+				<img src="./img/2x1 Neuron.PNG" alt="">
 				<p>Well, it can be shown that the outputs of the first two neurons are:</p>
-				<img src="./img/Neuronlayer1.png" alt="">
+				<img src="./img/Neuronlayer1.PNG" alt="">
 				<p>Using these two equations, we can calculate the equation of the output of the final neuron. Please note that this holds true – albeit just in a more complicated form – irrespective of the activation function:</p>
-				<img src="./img/2ndNetworkLayer.png" alt="">
+				<img src="./img/2ndNetworkLayer.PNG" alt="">
 				<p>We can then calculate the partial derivative of the output in respect to any weight in the network using calculus:</p>
-				<img src="./img/partial.png" alt="">
+				<img src="./img/partial.PNG" alt="">
 				<p>But the question remains – how does this help us? Imagine we were to feed this neural network a training observation – the model would consequently have some error e.g. it would have over or underpredicted the response value. We can then use the partial derivatives of each weight, multiplied by a smaller (<1) “learning rate” (so as to prevent overcorrection) to adjust each of the weight values with one of the following formulae (the choice of which depending of whether we want to increase or decrease the model output):</p>
-				<img src="./img/equations.png" alt="">
+				<img src="./img/equations.PNG" alt="">
 				<p>This methodology is the principle upon which neural networks learn and as such it is immensely powerful – and yet surprisingly simple and elegant.</p>
 				<div>
 				<p> 			 </p>
 				</div>
-				
+
 				<h3 align = "left" margin-top = 10px >Backpropagation Solver</h3>
 				<p>
 				   Please experiment with the canvas below to try to gain an intuitive
@@ -413,8 +413,8 @@
 	</div>
 
 </div>
-	
-	
+
+
 	<div class ="container">
 	<iframe id = "iframe" src="CurveTrainer.html" width="100%" height="950px", align = "center" frameBorder="0"  scrolling="no" padding-top = "20px">
 		<p>Your browser does not support iframes.</p>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<title>Neural Networks</title>
+<link rel="icon" href="img/AIFMRM.png" type="image/png" />
+
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CVarela+Round" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+
+	<!-- Owl Carousel -->
+	<link type="text/css" rel="stylesheet" href="css/owl.carousel.css" />
+	<link type="text/css" rel="stylesheet" href="css/owl.theme.default.css" />
+
+	<!-- Magnific Popup -->
+	<link type="text/css" rel="stylesheet" href="css/magnific-popup.css" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<!-- Header -->
+	<header id="home">
+		<!-- Background Image -->
+		<div class="bg-img" style="background: darkblue;">
+			<div class="overlay"></div>
+		</div>
+		<!-- /Background Image -->
+
+		<!-- Nav -->
+		<nav id="nav" class="navbar nav-transparent">
+			<div class="container">
+
+				<div class="navbar-header">
+					<!-- Logo -->
+					<div class="navbar-brand">
+						<a href="index.html">
+							<img class="logo" src="img/AIFMRM.png" alt="">
+							<img class="logo-alt" src="img/AIFMRM.png" alt="">
+						</a>
+					</div>
+					<!-- /Logo -->
+
+					<!-- Collapse nav button -->
+					<div class="nav-collapse">
+						<span></span>
+					</div>
+					<!-- /Collapse nav button -->
+				</div>
+
+				<!--  Main navigation  -->
+				<ul class="main-nav nav navbar-nav navbar-right">
+					<li><a href="#home">About</a></li>
+					<li><a href="#about">Guide</a></li>
+					<li><a href="#features">Theory</a></li>
+					<li><a href="#math">Backpropagation</a></li>
+					<li><a href="#numbers">Python Implementation</a></li>
+					<li><a href="#play">Play</a></li>
+				</ul>
+				<!-- /Main navigation -->
+
+			</div>
+		</nav>
+		<!-- /Nav -->
+
+		<!-- home wrapper -->
+		<div class="home-wrapper">
+			<div class="container">
+				<div class="row">
+
+					<!-- home content -->
+					<div class="col-md-10 col-md-offset-1">
+						<div class="home-content">
+							<h1 class="white-text">NEURAL NETWORKS</h1>
+							<p class="white-text">Welcome to the Neural Network builder - brought to you by the African Institute of Financial Markets and Risk Management and GetSmarter.
+								This site intends to be your one stop shop to learn how neural networks work - irrespective of whether you learn through the mathematics, practical code implementation or simply by play
+							</p>
+						</div>
+					</div>
+					<!-- /home content -->
+
+				</div>
+			</div>
+		</div>
+		<!-- /home wrapper -->
+
+	</header>
+	<!-- /Header -->
+
+	<!-- About -->
+	<div id="about" class="section md-padding">
+
+		<!-- Container -->
+		<div class="container">
+
+			<!-- Row -->
+			<div class="row">
+
+				<!-- Section header -->
+				<div class="section-header text-center">
+					<h2 class="title">What Do We Have?</h2>
+				</div>
+				<!-- /Section header -->
+
+				<!-- about -->
+				<div class="col-md-6">
+					<div class="about">
+						<i class="fa fa-question"></i>
+						<h3>What is Neural Network?</h3>
+						<p>A simple description of what a neural network is - and what it's core components are!</p>
+						<a href="#features">Go there now!</a>
+					</div>
+				</div>
+				<!-- /about -->
+
+				<!-- about -->
+				<div class="col-md-6">
+					<div class="about">
+						<i class="fa fa-line-chart"></i>
+						<h3>Mathematics of Backpropagation</h3>
+						<p>A simple step by step description of how neural networks use back propagation to calculate partial derivatives - and then use this to compute gradient descent!</p>
+						<a href="#portfolio">Go there now!</a>
+					</div>
+				</div>
+				<!-- /about -->
+
+				<!-- about -->
+				<div class="col-md-6">
+					<div class="about">
+						<i class="fa fa-code"></i>
+						<h3>Python Implementation</h3>
+						<p>A practical implementation of a neural network, with both sigmoid and linear activation functions, in base Python! Copy the code and give it a play! </p>
+						<a href="#numbers">Go there now!</a>
+					</div>
+				</div>
+				<!-- /about -->
+
+				<!-- about -->
+				<div class="col-md-6">
+					<div class="about">
+						<i class="fa fa-cogs"></i>
+						<h3>Train in Browser</h3>
+						<p>Train a neural network right here in your browser! Use this to gain an intuitive feel - I promise you can't break it!</p>
+						<a href="#play">Go there now!</a>
+					</div>
+				</div>
+				<!-- /about -->
+
+			</div>
+			<!-- /Row -->
+
+		</div>
+		<!-- /Container -->
+
+	</div>
+	<!-- /About -->
+
+	<!-- Why Choose Us -->
+	<div id="features" class="section md-padding bg-grey">
+
+		<!-- Container -->
+		<div class="container">
+
+			<!-- Row -->
+			<div class="row">
+
+				<!-- why choose us content -->
+				<div class="col-md-12">
+					<div class="section-header">
+						<h2 class="title">What is a Neural Network</h2>
+					</div>
+					<p>This website is concerned with neural networks in the context of regression. In regression we are fundamentally seeking a function that will take an input signal (of N dimensions) and convert it to a singular numeric outcome. In that context a regression neural network is just like any other mathematical function. It’s sole difference lies in it’s construction – which in turn allows to adapt to, and learn, complex data structures.</p>
+					<p>The basic unit of a neural network is a neuron. A neuron is a self-contained many to one function, consisting of a weight vector and activation function, that can take an input of any dimensionality and return a single numeric value. A neuron processes inputs in the following stages:</p>
+					<div class="feature">
+						<i class="fa fa-circle"></i>
+						<p>Pre-processing</p>
+					</div>
+					<div class="feature">
+						<i class="fa fa-circle"></i>
+						<p>Activation</p>
+					</div>
+					<p> In the pre-processing phase, the neuron converts its inputs (the "input vector") into a linear model using its weight vector. This reduces the dimensionality of the input into a single numeric value. This value is then fed into the neuron’s activation function (for example linear, sigmoid or tanh) to generate the final output of the neuron. This is represented on the image below:</p>
+					<img src="./img/howneuronworks.png" alt="" align = "center">
+			  	</div>
+					<div>
+						<p>This process is best explained by the example below. In this example a vector of [ 5, 3, 3, 4] is used an input into a single neuron with pre-initialized weight vector of [ 3, 0.5, 0.25, 10, 7] – returning a value of 64.5 (if it possessed a linear activation) or 1 (if it were sigmoid).</p>
+						<img src="./img/NeuronCalc.png" alt="" align = "center">
+						
+		<p>With neurons understood, we can more formally define a neural network as: </p>
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>A series of distinct layers</p>
+		</div>
+
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>Each layer consists of between 1 and N Neurons</p>
+		</div>
+
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>Each neuron is a basic multidimensional linear model (including an intercept (Wb)) that sums the product of its inputs and its internal coefficients (weights)</p>
+		</div>
+		
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>	All weights, including the intercept, are initially randomly generated</p>
+		</div>
+
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>	A neurons output is defined as the output of the neurons linear model, transformed via an activation function</p>
+		</div>
+
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>Common activations include linear, sigmoid, tanh and reclu</p>
+		</div>
+
+		<div class="feature">
+			<i class="fa fa-circle"></i>
+			<p>This output - plus the outputs of all other neurons on the layer - form the input into each of the next layers neurons</p>
+		</div>
+<p>
+							Make sense? Effectively, neuron is the building block of a neural network (which is fundamentally just a collection of layered neurons) – with the outputs of each layer forming the inputs of the next. Please note that the normal graphical depiction of a neuron is:
+							</p>
+								<img src="./img/typicalNeuron.png" alt="" align = "center">
+						<p> Therefore, a simple linearly activated neural network consisting of 3 neurons in a 2x1 formation with a single input could be shown in simplified notation as: </p>
+	<img src="./img/2x1 neuron.png" alt="" align = "center">				
+
+
+				</div>
+					</div>
+				<!-- /why choose us content -->
+
+			</div>
+			<!-- /Row -->
+
+		</div>
+		<!-- /Container -->
+
+	</div>
+	<!-- /Why Choose Us -->
+
+	<!-- Maths -->
+	<div id="math" class="section sm-padding">
+
+		<!-- Background Image -->
+		<div class="bg-img" style="background-image: url('./img/maths.jpg');">
+			<div class="overlay"></div>
+		</div>
+
+		<!-- Container -->
+		<div class="container">
+			<h2 class="white-text">The mathematics of Backpropagation</h2>
+			<p class ="white-text"> The following section contains a walkthrough of the mathematics of a neural network - and how they are trained! The intention is for you to gain an intuitive understanding of what a Neural Network truly is - simply a series of nested functions!
+		</div>
+
+		<!-- /Background Image -->
+			<!-- Maths -->
+	</div>
+
+	<div id="portfolio" class="section md-padding2 bg-grey">
+
+		<!-- Container -->
+		<div class="container">
+
+			<!-- Row -->
+			<div class="row">
+
+				<!-- Section header -->
+				<div class="section-header">
+					<h2 class="title">What is backpropagation?</h2>
+				</div>
+				<!-- /Section header -->
+
+				<!-- Work -->
+				<p>
+					So far on this website we have defined what a neural network is, and how it can calculate an output from randomly initialized weights. But this is useless – a neural network is only powerful if it can learn and adapt to the data that we feed to it.
+				</p>
+				<p>
+					This is achieved via a method referred to as backpropagation.
+				</p>
+				<p>
+						Backpropagation works in the following steps:
+				</p>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>We initialize our neuron with random weights</p>
+				</div>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>We feed our neural network between 1 and N training examples – generally the fewer the better (referred to as a batch)</p>
+				</div>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>We compute the average error between the predictions and the true responses</p>
+				</div>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>We compute the partial derivative of the error term the neural network for each of the weights of each neuron (as these are our levers of control over the system)</p>
+				</div>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>Once we have determined the derivative, we use a method called gradient descent to make tiny adjustments to each of the systems weights in order to reduce the average prediction error (effetively we "nudge" the network towards accuracy)</p>
+				</div>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>We repeat this process N times until we meet some stopping criteria (say 98% accuracy) or reach some incrementor limit (say a 1000 iterations)</p>
+				</div>
+
+				<div class="feature">
+					<i class="fa fa-circle"></i>
+					<p>	We can cycle through all training examples multiple times - every time we do, it is referred to as an epoch</p>
+				</div>
+				<p>This whole process is best explained again via example – remember our simple 3 linear neuron network from before?</p>
+				<img src="./img/2x1 Neuron.png" alt="">
+				<p>Well, it can be shown that the outputs of the first two neurons are:</p>
+				<img src="./img/Neuronlayer1.png" alt="">
+				<p>Using these two equations, we can calculate the equation of the output of the final neuron. Please note that this holds true – albeit just in a more complicated form – irrespective of the activation function:</p>
+				<img src="./img/2ndNetworkLayer.png" alt="">
+				<p>We can then calculate the partial derivative of the output in respect to any weight in the network using calculus:</p>
+				<img src="./img/partial.png" alt="">
+				<p>But the question remains – how does this help us? Imagine we were to feed this neural network a training observation – the model would consequently have some error e.g. it would have over or underpredicted the response value. We can then use the partial derivatives of each weight, multiplied by a smaller (<1) “learning rate” (so as to prevent overcorrection) to adjust each of the weight values with one of the following formulae (the choice of which depending of whether we want to increase or decrease the model output):</p>
+				<img src="./img/equations.png" alt="">
+				<p>This methodology is the principle upon which neural networks learn and as such it is immensely powerful – and yet surprisingly simple and elegant.</p>
+				<div>
+				<p> 			 </p>
+				</div>
+				
+				<h3 align = "left" margin-top = 10px >Backpropagation Solver</h3>
+				<p>
+				   Please experiment with the canvas below to try to gain an intuitive
+				   understanding of the principles of back propagation. It is linked to a 2x1 linear activated neural network - as per the example above -  with randomly assigned weights. This network is trying to return the simplified
+				   function Y=X. The tool allows you to step through each training epoch and see how the weights update for each of the neurons - the resultant equation of every epoch is displayed at the bottom beneath the true target. You
+				   can also reset the network with randomly assigned weights - this allows you to see how the initial settings affect the final weight values (as there are infinitely many solutions). </p>
+
+				<!-- /Work -->
+
+			<iframe id = "iframe" src="WeightTrainer.html" width="100%" height="850px", align = "center" frameBorder="0"  scrolling="no" padding-top = "20px">
+				<p>Your browser does not support iframes.</p>
+			</iframe>
+
+			</div>
+			<!-- /Row -->
+
+		</div>
+		<!-- /Container -->
+
+	</div>
+	<!-- /Portfolio -->
+
+
+		<!-- Numbers -->
+		<div id="numbers" class="section sm-padding">
+
+			<!-- Background Image -->
+			<div class="bg-img" style="background-image: url('./img/code.jpg');">
+				<div class="overlay"></div>
+			</div>
+
+			<!-- Container -->
+			<div class="container">
+				<h2 class="white-text">Practical Implementation in base Python</h2>
+				<p class ="white-text"> The following section contains a practical implementation in a Python enviroment. The intention is for you to read the code sequential and determine what each function is doing - thereafter you can copy it to your machine and play with it yourself!
+			</div>
+		</div>
+
+		<div>
+			<iframe id = "iframe" src="Python.html" width="100%" height="1000">
+  		<p>Your browser does not support iframes.</p>
+		</iframe>
+		</div>
+
+<!--BROWSER PLAYER-->
+<!-- Numbers -->
+<div id="play" class="section sm-padding">
+
+	<!-- Background Image -->
+	<div class="bg-img" style="background-image: url('./img/blog1.jpg');">
+		<div class="overlay"></div>
+	</div>
+
+	<!-- Container -->
+	<div class="container">
+		<h2 class="white-text">Build in Browser</h2>
+		<p class ="white-text"> The following section contains a practical implementation in a Tensorflow.js. It allows you to draw any curve, and observe how a neural network "learns" to replicate it. Start by drawing holding down your mouse in the black square, drawing a simple curve of a few points, and clicking "train". Click "reset" when you would like to start over, with a new curve. Enjoy! </p>
+	</div>
+
+</div>
+	
+	
+	<div class ="container">
+	<iframe id = "iframe" src="CurveTrainer.html" width="100%" height="950px", align = "center" frameBorder="0"  scrolling="no" padding-top = "20px">
+		<p>Your browser does not support iframes.</p>
+	</iframe>
+	</div>
+
+
+	<!-- Footer -->
+	<footer id="footer" class="sm-padding bg-dark">
+
+		<!-- Container -->
+		<div class="container">
+
+			<!-- Row -->
+			<div class="row">
+				<div class="col-md-12">
+
+					<!-- footer logo -->
+					<div class="footer-logo">
+						<a href="index.html"><img src="img/AIFMRM.png" alt="logo"></a>
+					</div>
+					<!-- /footer logo -->
+
+					<!-- footer copyright -->
+					<div class="footer-copyright">
+						<p>Copyright © 2017. All Rights Reserved. Original template by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+					</div>
+					<!-- /footer copyright -->
+
+				</div>
+
+			</div>
+			<!-- /Row -->
+
+		</div>
+		<!-- /Container -->
+
+	</footer>
+	<!-- /Footer -->
+
+	<!-- Back to top -->
+	<div id="back-to-top"></div>
+	<!-- /Back to top -->
+
+	<!-- Preloader -->
+	<div id="preloader">
+		<div class="preloader">
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	<!-- /Preloader -->
+	<!-- MY SCRIPTS -->
+	<script src="particles/particles.js"></script>
+	<script src="tensor/Libraries/p5/p5.js"></script>
+	<script src="tensor/Libraries/p5/addons/p5.dom.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.3/dist/tf.min.js"> </script>
+	<!-- jQuery Plugins -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/owl.carousel.min.js"></script>
+	<script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+
+<!--  PARTCILES-->
+	<script type="text/javascript"> particlesJS("home",{
+  "particles": {
+    "number": {
+      "value": 20,
+      "density": {
+        "enable": true,
+        "value_area": 100
+      }
+    },
+    "color": {
+      "value": "#ffffff"
+    },
+    "shape": {
+      "type": "star",
+      "stroke": {
+        "width": 0,
+        "color": "#000000"
+      },
+      "polygon": {
+        "nb_sides": 10
+      },
+      "image": {
+        "src": "img/github.svg",
+        "width": 100,
+        "height": 100
+      }
+    },
+    "opacity": {
+      "value": 0.1,
+      "random": false,
+      "anim": {
+        "enable": false,
+        "speed": 1,
+        "opacity_min": 0.1,
+        "sync": false
+      }
+    },
+    "size": {
+      "value": 3,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 40,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 150,
+      "color": "#ffffff",
+      "opacity": 0.1,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 12.819177489524316,
+      "direction": "none",
+      "random": true,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": true,
+      "attract": {
+        "enable": true,
+        "rotateX": 2643.9553572143905,
+        "rotateY": 1200
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {
+        "enable": true,
+        "mode": "repulse"
+      },
+      "onclick": {
+        "enable": true,
+        "mode": "bubble"
+      },
+      "resize": true
+    },
+    "modes": {
+      "grab": {
+        "distance": 400,
+        "line_linked": {
+          "opacity": 1
+        }
+      },
+      "bubble": {
+        "distance": 300,
+        "size": 6,
+        "duration": 2,
+        "opacity": 3,
+        "speed": 1
+      },
+      "repulse": {
+        "distance": 59,
+        "duration": 0.4
+      },
+      "push": {
+        "particles_nb": 4
+      },
+      "remove": {
+        "particles_nb": 2
+      }
+    }
+  },
+  "retina_detect": true
+});</script>
+
+</body>
+
+</html>

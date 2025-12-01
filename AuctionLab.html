@@ -1,729 +1,765 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { initializeApp } from 'firebase/app';
-import { 
-  getAuth, 
-  signInAnonymously, 
-  onAuthStateChanged,
-  signInWithCustomToken
-} from 'firebase/auth';
-import { 
-  getFirestore, 
-  collection, 
-  doc, 
-  setDoc, 
-  onSnapshot, 
-  updateDoc, 
-  deleteDoc,
-  serverTimestamp,
-  writeBatch
-} from 'firebase/firestore';
-import { 
-  ComposedChart, // Changed from ScatterChart to ComposedChart
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
-  ResponsiveContainer,
-  Scatter,
-  ReferenceLine
-} from 'recharts';
-import { 
-  Gavel, 
-  Users, 
-  TrendingUp, 
-  DollarSign, 
-  RefreshCw, 
-  ShieldCheck,
-  AlertCircle,
-  PlayCircle,
-  StopCircle,
-  BarChart3
-} from 'lucide-react';
-
-// --- Firebase Initialization ---
-const firebaseConfig = JSON.parse(__firebase_config);
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'auction-lab-v1';
-
-// --- Components ---
-
-const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-xl shadow-sm border border-slate-200 p-6 ${className}`}>
-    {children}
-  </div>
-);
-
-const Button = ({ onClick, disabled, variant = "primary", children, className = "" }) => {
-  const baseStyle = "px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2";
-  const variants = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300",
-    secondary: "bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:bg-slate-50",
-    danger: "bg-red-500 text-white hover:bg-red-600 disabled:bg-red-300",
-    outline: "border-2 border-slate-200 text-slate-600 hover:border-slate-300"
-  };
-  return (
-    <button 
-      onClick={onClick} 
-      disabled={disabled} 
-      className={`${baseStyle} ${variants[variant]} ${className}`}
-    >
-      {children}
-    </button>
-  );
-};
-
-const Badge = ({ children, color = "blue" }) => {
-  const colors = {
-    blue: "bg-blue-100 text-blue-800",
-    green: "bg-green-100 text-green-800",
-    yellow: "bg-yellow-100 text-yellow-800",
-    purple: "bg-purple-100 text-purple-800"
-  };
-  return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${colors[color]}`}>
-      {children}
-    </span>
-  );
-};
-
-// --- Main Application ---
-
-export default function App() {
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null); // 'admin' or 'student'
-  const [name, setName] = useState("");
-  const [hasJoined, setHasJoined] = useState(false);
-  
-  // Game State
-  const [sessionState, setSessionState] = useState({
-    status: 'lobby', // lobby, bidding, results
-    auctionType: 'second-price', // first-price, second-price
-    round: 0,
-    timestamp: 0
-  });
-  const [players, setPlayers] = useState({});
-  const [history, setHistory] = useState([]);
-
-  // --- Auth & Data Listeners ---
-  useEffect(() => {
-    const initAuth = async () => {
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-    };
-    initAuth();
-    const unsubscribe = onAuthStateChanged(auth, setUser);
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (!user) return;
-
-    // Listen to global session state
-    // FIX: Changed path to ensure even number of segments: artifacts/{appId}/public/data/game_config/session
-    const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
-    const unsubSession = onSnapshot(sessionRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setSessionState(docSnap.data());
-      } else {
-        // Initialize if not exists
-        setDoc(sessionRef, {
-          status: 'lobby',
-          auctionType: 'second-price',
-          round: 0,
-          timestamp: Date.now()
-        });
-      }
-    }, (err) => console.error("Session sync error", err));
-
-    // Listen to players
-    const playersRef = collection(db, 'artifacts', appId, 'public', 'data', 'players');
-    const unsubPlayers = onSnapshot(playersRef, (snapshot) => {
-      const p = {};
-      snapshot.forEach(doc => {
-        p[doc.id] = doc.data();
-      });
-      setPlayers(p);
-    }, (err) => console.error("Players sync error", err));
-
-    // Listen to history
-    const historyRef = collection(db, 'artifacts', appId, 'public', 'data', 'history');
-    const unsubHistory = onSnapshot(historyRef, (snapshot) => {
-      const h = [];
-      snapshot.forEach(doc => h.push(doc.data()));
-      setHistory(h.sort((a,b) => a.round - b.round));
-    }, (err) => console.error("History sync error", err));
-
-    return () => {
-      unsubSession();
-      unsubPlayers();
-      unsubHistory();
-    };
-  }, [user]);
-
-  // --- Logic Helpers ---
-
-  const joinSession = async (selectedRole) => {
-    if (!name.trim()) return;
-    setRole(selectedRole);
-    setHasJoined(true);
-
-    if (selectedRole === 'student') {
-      const playerRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', user.uid);
-      await setDoc(playerRef, {
-        id: user.uid,
-        name: name,
-        role: 'student',
-        valuation: 0,
-        bid: 0,
-        hasBid: false,
-        lastActive: serverTimestamp()
-      });
-    }
-  };
-
-  const startRound = async () => {
-    // 1. Assign valuations to all connected students
-    // Uniform distribution U[0, 100]
-    const batch = writeBatch(db);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuctionLab - Digital Economics</title>
     
-    Object.values(players).forEach(p => {
-      if (p.role === 'student') {
-        const newValuation = Math.floor(Math.random() * 101); // 0-100
-        const pRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', p.id);
-        batch.update(pRef, {
-          valuation: newValuation,
-          bid: 0,
-          hasBid: false
-        });
-      }
-    });
-
-    // 2. Update session state
-    const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
-    batch.update(sessionRef, {
-      status: 'bidding',
-      round: sessionState.round + 1,
-      startTime: Date.now()
-    });
-
-    await batch.commit();
-  };
-
-  const endRound = async () => {
-    const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    // Calculate results
-    const activeBids = Object.values(players)
-      .filter(p => p.role === 'student' && p.hasBid)
-      .map(p => ({
-        id: p.id,
-        name: p.name,
-        bid: Number(p.bid),
-        valuation: p.valuation
-      }))
-      .sort((a, b) => b.bid - a.bid); // Descending
-
-    let winner = null;
-    let price = 0;
+    <!-- React & ReactDOM (Pinned Versions) -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
     
-    if (activeBids.length > 0) {
-      winner = activeBids[0];
-      
-      if (sessionState.auctionType === 'first-price') {
-        price = winner.bid;
-      } else {
-        // Second price: Highest losing bid, or 0 if only 1 bidder
-        price = activeBids.length > 1 ? activeBids[1].bid : 0;
-      }
-    }
-
-    // Calculate Efficiency (Did the person with highest valuation win?)
-    const highestValuationPlayer = [...activeBids].sort((a,b) => b.valuation - a.valuation)[0];
-    const isEfficient = winner && highestValuationPlayer && winner.id === highestValuationPlayer.id;
-
-    // Save History
-    const historyRef = doc(db, 'artifacts', appId, 'public', 'data', 'history', `round_${sessionState.round}`);
+    <!-- Recharts Dependencies & Library (Pinned Versions) -->
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+    <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.min.js"></script>
     
-    // Normalize data for chart (x=valuation, y=bid)
-    const bidsDataForChart = activeBids.map(b => ({
-      ...b,
-      x: b.valuation,
-      y: b.bid
-    }));
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    await setDoc(historyRef, {
-      round: sessionState.round,
-      type: sessionState.auctionType,
-      winner: winner ? winner.name : 'None',
-      winningBid: winner ? winner.bid : 0,
-      price: price,
-      revenue: price,
-      efficiency: isEfficient,
-      bidders: activeBids.length,
-      bidsData: bidsDataForChart
-    });
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-    await updateDoc(sessionRef, {
-      status: 'results'
-    });
-  };
+    <script type="text/babel" data-type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { 
+            getAuth, 
+            signInAnonymously, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            setDoc, 
+            onSnapshot, 
+            updateDoc, 
+            serverTimestamp, 
+            writeBatch 
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-  const submitBid = async (amount) => {
-    if (!user || role !== 'student') return;
-    const pRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', user.uid);
-    await updateDoc(pRef, {
-      bid: Number(amount),
-      hasBid: true
-    });
-  };
-
-  const toggleAuctionType = async () => {
-    const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
-    const newType = sessionState.auctionType === 'first-price' ? 'second-price' : 'first-price';
-    await updateDoc(sessionRef, { auctionType: newType });
-  };
-
-  const resetGame = async () => {
-    const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
-    await updateDoc(sessionRef, {
-      status: 'lobby',
-      round: 0
-    });
-  };
-
-  // --- Render Sections ---
-
-  if (!user) return <div className="min-h-screen flex items-center justify-center bg-slate-50">Loading AuctionLab...</div>;
-
-  if (!hasJoined) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md space-y-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-slate-800 flex items-center justify-center gap-2">
-              <Gavel className="w-8 h-8 text-blue-600" />
-              AuctionLab
-            </h1>
-            <p className="text-slate-500 mt-2">Digital Economics • Block 5</p>
-          </div>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
-              <input 
-                type="text" 
-                value={name} 
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="e.g. John Doe"
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <button 
-                onClick={() => joinSession('student')}
-                disabled={!name}
-                className="flex flex-col items-center justify-center p-6 border-2 border-slate-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all group"
-              >
-                <Users className="w-8 h-8 text-slate-400 group-hover:text-blue-500 mb-2" />
-                <span className="font-semibold text-slate-700">Student</span>
-                <span className="text-xs text-slate-500">I am bidding</span>
-              </button>
-
-              <button 
-                onClick={() => joinSession('admin')}
-                disabled={!name}
-                className="flex flex-col items-center justify-center p-6 border-2 border-slate-200 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all group"
-              >
-                <ShieldCheck className="w-8 h-8 text-slate-400 group-hover:text-purple-500 mb-2" />
-                <span className="font-semibold text-slate-700">Instructor</span>
-                <span className="text-xs text-slate-500">I am running the class</span>
-              </button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  // --- Main UI ---
-
-  const activePlayers = Object.values(players).filter(p => p.role === 'student');
-  const bidsReceived = activePlayers.filter(p => p.hasBid).length;
-  const myPlayer = players[user.uid];
-
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Gavel className="w-6 h-6 text-blue-600" />
-            <span className="font-bold text-xl hidden sm:inline">AuctionLab</span>
-            <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs ml-2">
-              Round {sessionState.round}
-            </span>
-            <Badge color={sessionState.auctionType === 'first-price' ? 'purple' : 'blue'}>
-              {sessionState.auctionType === 'first-price' ? 'First-Price' : 'Second-Price'}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${sessionState.status === 'bidding' ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`} />
-              <span className="capitalize text-slate-600">{sessionState.status}</span>
-            </div>
-            <div className="h-4 w-px bg-slate-200" />
-            <span className="font-medium text-slate-800">{name} ({role})</span>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        // Ensure globals are available
+        const { useState, useEffect, useMemo } = React;
         
-        {/* INSTRUCTOR VIEW */}
-        {role === 'admin' && (
-          <div className="space-y-6">
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="md:col-span-1 space-y-4">
-                <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-                  <RefreshCw className="w-4 h-4" />
-                  Controls
-                </h3>
-                
-                <div className="space-y-2">
-                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Settings</div>
-                  <button 
-                    onClick={toggleAuctionType}
-                    disabled={sessionState.status === 'bidding'}
-                    className="w-full flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-50"
-                  >
-                    <span className="text-sm">Type</span>
-                    <span className="font-mono text-xs bg-slate-200 px-2 py-1 rounded">
-                      {sessionState.auctionType === 'first-price' ? 'FPSB' : 'SPSB'}
-                    </span>
-                  </button>
-                </div>
+        // Safe access to Recharts
+        const RechartsObj = window.Recharts || {};
+        const { 
+            ComposedChart, 
+            Line, 
+            XAxis, 
+            YAxis, 
+            CartesianGrid, 
+            Tooltip, 
+            Legend, 
+            ResponsiveContainer, 
+            Scatter 
+        } = RechartsObj;
 
-                <div className="space-y-2">
-                  <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</div>
-                  {sessionState.status !== 'bidding' ? (
-                    <Button onClick={startRound} className="w-full">
-                      <PlayCircle className="w-4 h-4" />
-                      Start Round {sessionState.round + 1}
-                    </Button>
-                  ) : (
-                    <Button onClick={endRound} variant="danger" className="w-full">
-                      <StopCircle className="w-4 h-4" />
-                      End Round (Bids: {bidsReceived}/{activePlayers.length})
-                    </Button>
-                  )}
-                  {sessionState.round > 0 && sessionState.status !== 'bidding' && (
-                     <Button onClick={resetGame} variant="secondary" className="w-full text-xs">
-                       Reset Session
-                     </Button>
-                  )}
-                </div>
-              </Card>
+        // --- CONFIGURATION START ---
+        // REPLACE THE OBJECT BELOW WITH YOUR FIREBASE CONFIG
+        // You can find this in your Firebase Console -> Project Settings
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        const appId = 'auction-lab-class-v1'; 
+        // --- CONFIGURATION END ---
 
-              <Card className="md:col-span-2">
-                <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4" />
-                  Live Stats
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 bg-blue-50 rounded-lg">
-                    <div className="text-sm text-blue-600 mb-1">Active Bidders</div>
-                    <div className="text-2xl font-bold text-blue-900">{activePlayers.length}</div>
-                  </div>
-                  <div className="p-4 bg-emerald-50 rounded-lg">
-                    <div className="text-sm text-emerald-600 mb-1">Bids Submitted</div>
-                    <div className="text-2xl font-bold text-emerald-900">{bidsReceived}</div>
-                    <div className="text-xs text-emerald-700 mt-1">
-                      {activePlayers.length > 0 ? Math.round((bidsReceived/activePlayers.length)*100) : 0}% completion
-                    </div>
-                  </div>
-                  <div className="p-4 bg-purple-50 rounded-lg">
-                    <div className="text-sm text-purple-600 mb-1">Last Revenue</div>
-                    <div className="text-2xl font-bold text-purple-900">
-                      ${history.length > 0 ? history[history.length -1].revenue.toFixed(2) : '0.00'}
-                    </div>
-                  </div>
-                </div>
-              </Card>
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- Icons (Replaced Lucide imports with SVGs) ---
+        const IconBase = ({ d, className, ...props }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" viewBox="0 0 24 24" 
+                fill="none" stroke="currentColor" strokeWidth="2" 
+                strokeLinecap="round" strokeLinejoin="round" 
+                className={className} 
+                {...props}
+            >
+                {d}
+            </svg>
+        );
+
+        const Gavel = (props) => <IconBase d={<><path d="m14 13-7.5 7.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L11 10"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></>} {...props} />;
+        const Users = (props) => <IconBase d={<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>} {...props} />;
+        const TrendingUp = (props) => <IconBase d={<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></>} {...props} />;
+        const DollarSign = (props) => <IconBase d={<><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></>} {...props} />;
+        const RefreshCw = (props) => <IconBase d={<><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></>} {...props} />;
+        const ShieldCheck = (props) => <IconBase d={<><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></>} {...props} />;
+        const AlertCircle = (props) => <IconBase d={<><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></>} {...props} />;
+        const PlayCircle = (props) => <IconBase d={<><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></>} {...props} />;
+        const StopCircle = (props) => <IconBase d={<><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6"/></>} {...props} />;
+        const BarChart3 = (props) => <IconBase d={<><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></>} {...props} />;
+
+        // --- Components ---
+
+        const Card = ({ children, className = "" }) => (
+            <div className={`bg-white rounded-xl shadow-sm border border-slate-200 p-6 ${className}`}>
+                {children}
             </div>
+        );
+
+        const Button = ({ onClick, disabled, variant = "primary", children, className = "" }) => {
+            const baseStyle = "px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2";
+            const variants = {
+                primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300",
+                secondary: "bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:bg-slate-50",
+                danger: "bg-red-500 text-white hover:bg-red-600 disabled:bg-red-300",
+                outline: "border-2 border-slate-200 text-slate-600 hover:border-slate-300"
+            };
+            return (
+                <button 
+                onClick={onClick} 
+                disabled={disabled} 
+                className={`${baseStyle} ${variants[variant]} ${className}`}
+                >
+                {children}
+                </button>
+            );
+        };
+
+        const Badge = ({ children, color = "blue" }) => {
+            const colors = {
+                blue: "bg-blue-100 text-blue-800",
+                green: "bg-green-100 text-green-800",
+                yellow: "bg-yellow-100 text-yellow-800",
+                purple: "bg-purple-100 text-purple-800"
+            };
+            return (
+                <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${colors[color]}`}>
+                {children}
+                </span>
+            );
+        };
+
+        // --- Main Application ---
+
+        function App() {
+            const [user, setUser] = useState(null);
+            const [role, setRole] = useState(null); // 'admin' or 'student'
+            const [name, setName] = useState("");
+            const [hasJoined, setHasJoined] = useState(false);
             
-            {/* Analytics Dashboard (Visible after a round) */}
-            {history.length > 0 && (
-              <div className="space-y-6">
-                 {/* Chart: Bids vs Valuation */}
-                 <Card>
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="font-semibold text-slate-800 text-lg">Behavior Analysis: Bids vs. Valuations</h3>
-                      <p className="text-sm text-slate-500">
-                        Comparing actual student bids (dots) against Risk-Neutral Nash Equilibrium (lines).
-                      </p>
-                    </div>
-                    <div className="text-xs text-right">
-                       <div className="flex items-center gap-2 justify-end text-slate-500">
-                         <span className="w-3 h-3 rounded-full bg-blue-500"></span> Student Bid
-                         <span className="w-8 h-0.5 bg-emerald-500"></span> Equilibrium
-                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className="h-[400px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis 
-                          type="number" 
-                          dataKey="x" 
-                          name="Valuation" 
-                          unit="$" 
-                          domain={[0, 100]} 
-                          label={{ value: 'Valuation ($)', position: 'insideBottom', offset: -10 }} 
-                        />
-                        <YAxis 
-                          type="number" 
-                          dataKey="y" 
-                          name="Bid" 
-                          unit="$" 
-                          domain={[0, 100]} 
-                          label={{ value: 'Bid ($)', angle: -90, position: 'insideLeft' }} 
-                        />
-                        <Tooltip cursor={{ strokeDasharray: '3 3' }} content={({ active, payload }) => {
-                          if (active && payload && payload.length) {
-                            // Find the scatter payload (it has the name property)
-                            const pointData = payload.find(p => p.dataKey === 'y' && p.payload.name);
-                            if (pointData) {
-                              const data = pointData.payload;
-                              return (
-                                <div className="bg-white p-2 border border-slate-200 shadow-lg rounded text-xs">
-                                  <p><strong>{data.name}</strong></p>
-                                  <p>Valuation: ${data.valuation}</p>
-                                  <p>Bid: ${data.bid}</p>
+            // Game State
+            const [sessionState, setSessionState] = useState({
+                status: 'lobby', // lobby, bidding, results
+                auctionType: 'second-price', // first-price, second-price
+                round: 0,
+                timestamp: 0
+            });
+            const [players, setPlayers] = useState({});
+            const [history, setHistory] = useState([]);
+
+            // --- Auth & Data Listeners ---
+            useEffect(() => {
+                const initAuth = async () => {
+                    await signInAnonymously(auth);
+                };
+                initAuth();
+                const unsubscribe = onAuthStateChanged(auth, setUser);
+                return () => unsubscribe();
+            }, []);
+
+            useEffect(() => {
+                if (!user) return;
+
+                // Listen to global session state
+                const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
+                const unsubSession = onSnapshot(sessionRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        setSessionState(docSnap.data());
+                    } else {
+                        // Initialize if not exists
+                        setDoc(sessionRef, {
+                            status: 'lobby',
+                            auctionType: 'second-price',
+                            round: 0,
+                            timestamp: Date.now()
+                        });
+                    }
+                }, (err) => console.error("Session sync error", err));
+
+                // Listen to players
+                const playersRef = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+                const unsubPlayers = onSnapshot(playersRef, (snapshot) => {
+                    const p = {};
+                    snapshot.forEach(doc => {
+                        p[doc.id] = doc.data();
+                    });
+                    setPlayers(p);
+                }, (err) => console.error("Players sync error", err));
+
+                // Listen to history
+                const historyRef = collection(db, 'artifacts', appId, 'public', 'data', 'history');
+                const unsubHistory = onSnapshot(historyRef, (snapshot) => {
+                    const h = [];
+                    snapshot.forEach(doc => h.push(doc.data()));
+                    setHistory(h.sort((a,b) => a.round - b.round));
+                }, (err) => console.error("History sync error", err));
+
+                return () => {
+                    unsubSession();
+                    unsubPlayers();
+                    unsubHistory();
+                };
+            }, [user]);
+
+            // --- Logic Helpers ---
+
+            const joinSession = async (selectedRole) => {
+                if (!name.trim()) return;
+                setRole(selectedRole);
+                setHasJoined(true);
+
+                if (selectedRole === 'student') {
+                    const playerRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', user.uid);
+                    await setDoc(playerRef, {
+                        id: user.uid,
+                        name: name,
+                        role: 'student',
+                        valuation: 0,
+                        bid: 0,
+                        hasBid: false,
+                        lastActive: serverTimestamp()
+                    });
+                }
+            };
+
+            const startRound = async () => {
+                const batch = writeBatch(db);
+                
+                Object.values(players).forEach(p => {
+                    if (p.role === 'student') {
+                        const newValuation = Math.floor(Math.random() * 101); // 0-100
+                        const pRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', p.id);
+                        batch.update(pRef, {
+                            valuation: newValuation,
+                            bid: 0,
+                            hasBid: false
+                        });
+                    }
+                });
+
+                const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
+                batch.update(sessionRef, {
+                    status: 'bidding',
+                    round: sessionState.round + 1,
+                    startTime: Date.now()
+                });
+
+                await batch.commit();
+            };
+
+            const endRound = async () => {
+                const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
+                
+                const activeBids = Object.values(players)
+                    .filter(p => p.role === 'student' && p.hasBid)
+                    .map(p => ({
+                        id: p.id,
+                        name: p.name,
+                        bid: Number(p.bid),
+                        valuation: p.valuation
+                    }))
+                    .sort((a, b) => b.bid - a.bid);
+
+                let winner = null;
+                let price = 0;
+                
+                if (activeBids.length > 0) {
+                    winner = activeBids[0];
+                    
+                    if (sessionState.auctionType === 'first-price') {
+                        price = winner.bid;
+                    } else {
+                        price = activeBids.length > 1 ? activeBids[1].bid : 0;
+                    }
+                }
+
+                const highestValuationPlayer = [...activeBids].sort((a,b) => b.valuation - a.valuation)[0];
+                const isEfficient = winner && highestValuationPlayer && winner.id === highestValuationPlayer.id;
+
+                const historyRef = doc(db, 'artifacts', appId, 'public', 'data', 'history', `round_${sessionState.round}`);
+                
+                const bidsDataForChart = activeBids.map(b => ({
+                    ...b,
+                    x: b.valuation,
+                    y: b.bid
+                }));
+
+                await setDoc(historyRef, {
+                    round: sessionState.round,
+                    type: sessionState.auctionType,
+                    winner: winner ? winner.name : 'None',
+                    winningBid: winner ? winner.bid : 0,
+                    price: price,
+                    revenue: price,
+                    efficiency: isEfficient,
+                    bidders: activeBids.length,
+                    bidsData: bidsDataForChart
+                });
+
+                await updateDoc(sessionRef, {
+                    status: 'results'
+                });
+            };
+
+            const submitBid = async (amount) => {
+                if (!user || role !== 'student') return;
+                const pRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', user.uid);
+                await updateDoc(pRef, {
+                    bid: Number(amount),
+                    hasBid: true
+                });
+            };
+
+            const toggleAuctionType = async () => {
+                const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
+                const newType = sessionState.auctionType === 'first-price' ? 'second-price' : 'first-price';
+                await updateDoc(sessionRef, { auctionType: newType });
+            };
+
+            const resetGame = async () => {
+                const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'game_config', 'session');
+                await updateDoc(sessionRef, {
+                    status: 'lobby',
+                    round: 0
+                });
+            };
+
+            // --- Render ---
+
+            if (!user) return <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500">Connecting to Auction Server...</div>;
+
+            if (!hasJoined) {
+                return (
+                    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+                        <Card className="w-full max-w-md space-y-6">
+                            <div className="text-center">
+                                <h1 className="text-3xl font-bold text-slate-800 flex items-center justify-center gap-2">
+                                    <Gavel className="w-8 h-8 text-blue-600" />
+                                    AuctionLab
+                                </h1>
+                                <p className="text-slate-500 mt-2">Digital Economics • Block 5</p>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
+                                    <input 
+                                        type="text" 
+                                        value={name} 
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="w-full p-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                                        placeholder="e.g. John Doe"
+                                    />
                                 </div>
-                              );
-                            }
-                          }
-                          return null;
-                        }} />
-                        
-                        {/* Student Bids */}
-                        <Scatter 
-                          name="Bids" 
-                          data={history[history.length-1].bidsData} 
-                          fill="#3b82f6" 
-                          shape="circle"
-                        />
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button 
+                                        onClick={() => joinSession('student')}
+                                        disabled={!name}
+                                        className="flex flex-col items-center justify-center p-6 border-2 border-slate-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all group"
+                                    >
+                                        <Users className="w-8 h-8 text-slate-400 group-hover:text-blue-500 mb-2" />
+                                        <span className="font-semibold text-slate-700">Student</span>
+                                        <span className="text-xs text-slate-500">I am bidding</span>
+                                    </button>
 
-                        {/* Theoretical Equilibrium Lines */}
-                        {/* SPSB: y = x (Bid = Valuation) */}
-                        {history[history.length-1].type === 'second-price' && (
-                           <Line 
-                             type="monotone"
-                             dataKey="y" 
-                             data={[{x:0, y:0}, {x:100, y:100}]} 
-                             stroke="#10b981" 
-                             strokeWidth={2} 
-                             dot={false} 
-                             name="Equilibrium (b=v)"
-                             isAnimationActive={false}
-                           />
-                        )}
-                        {/* FPSB: y = x * (N-1)/N */}
-                        {history[history.length-1].type === 'first-price' && (
-                           <Line 
-                             type="monotone"
-                             dataKey="y" 
-                             data={[
-                               {x:0, y:0}, 
-                               {x:100, y: 100 * ((history[history.length-1].bidders - 1) / Math.max(1, history[history.length-1].bidders))}
-                             ]} 
-                             stroke="#10b981" 
-                             strokeWidth={2} 
-                             dot={false} 
-                             name="Equilibrium (Risk Neutral)"
-                             isAnimationActive={false}
-                           />
-                        )}
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
-                 </Card>
-
-                 {/* Historical Table */}
-                 <Card>
-                    <h3 className="font-semibold text-slate-800 mb-4">Round History</h3>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm text-left">
-                        <thead className="text-xs text-slate-500 uppercase bg-slate-50">
-                          <tr>
-                            <th className="px-4 py-2">Round</th>
-                            <th className="px-4 py-2">Type</th>
-                            <th className="px-4 py-2">Winner</th>
-                            <th className="px-4 py-2 text-right">Revenue</th>
-                            <th className="px-4 py-2 text-center">Efficient?</th>
-                            <th className="px-4 py-2 text-center">Bidders</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {history.map((h, i) => (
-                            <tr key={i} className="border-b border-slate-100 hover:bg-slate-50">
-                              <td className="px-4 py-2 font-medium">#{h.round}</td>
-                              <td className="px-4 py-2">
-                                <Badge color={h.type === 'first-price' ? 'purple' : 'blue'}>
-                                  {h.type === 'first-price' ? 'FPSB' : 'SPSB'}
-                                </Badge>
-                              </td>
-                              <td className="px-4 py-2">{h.winner} (${h.winningBid})</td>
-                              <td className="px-4 py-2 text-right font-mono">${h.revenue.toFixed(2)}</td>
-                              <td className="px-4 py-2 text-center">
-                                {h.efficiency ? 
-                                  <span className="text-green-600 flex justify-center"><ShieldCheck className="w-4 h-4"/></span> : 
-                                  <span className="text-red-500 flex justify-center"><AlertCircle className="w-4 h-4"/></span>
-                                }
-                              </td>
-                              <td className="px-4 py-2 text-center">{h.bidders}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                                    <button 
+                                        onClick={() => joinSession('admin')}
+                                        disabled={!name}
+                                        className="flex flex-col items-center justify-center p-6 border-2 border-slate-200 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all group"
+                                    >
+                                        <ShieldCheck className="w-8 h-8 text-slate-400 group-hover:text-purple-500 mb-2" />
+                                        <span className="font-semibold text-slate-700">Instructor</span>
+                                        <span className="text-xs text-slate-500">I am running the class</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </Card>
                     </div>
-                 </Card>
-              </div>
-            )}
-          </div>
-        )}
+                );
+            }
 
-        {/* STUDENT VIEW */}
-        {role === 'student' && (
-          <div className="max-w-md mx-auto">
-            {sessionState.status === 'lobby' && (
-              <Card className="text-center py-12">
-                <div className="animate-pulse bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Gavel className="w-8 h-8 text-blue-600" />
+            const activePlayers = Object.values(players).filter(p => p.role === 'student');
+            const bidsReceived = activePlayers.filter(p => p.hasBid).length;
+            const myPlayer = players[user.uid];
+
+            return (
+                <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
+                    <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+                        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Gavel className="w-6 h-6 text-blue-600" />
+                                <span className="font-bold text-xl hidden sm:inline">AuctionLab</span>
+                                <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs ml-2">
+                                    Round {sessionState.round}
+                                </span>
+                                <Badge color={sessionState.auctionType === 'first-price' ? 'purple' : 'blue'}>
+                                    {sessionState.auctionType === 'first-price' ? 'First-Price' : 'Second-Price'}
+                                </Badge>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm">
+                                <div className="flex items-center gap-2">
+                                    <div className={`w-2 h-2 rounded-full ${sessionState.status === 'bidding' ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`} />
+                                    <span className="capitalize text-slate-600">{sessionState.status}</span>
+                                </div>
+                                <div className="h-4 w-px bg-slate-200" />
+                                <span className="font-medium text-slate-800">{name} ({role})</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+                        
+                        {role === 'admin' && (
+                            <div className="space-y-6">
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <Card className="md:col-span-1 space-y-4">
+                                        <h3 className="font-semibold text-slate-800 flex items-center gap-2">
+                                            <RefreshCw className="w-4 h-4" />
+                                            Controls
+                                        </h3>
+                                        
+                                        <div className="space-y-2">
+                                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Settings</div>
+                                            <button 
+                                                onClick={toggleAuctionType}
+                                                disabled={sessionState.status === 'bidding'}
+                                                className="w-full flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-50"
+                                            >
+                                                <span className="text-sm">Type</span>
+                                                <span className="font-mono text-xs bg-slate-200 px-2 py-1 rounded">
+                                                    {sessionState.auctionType === 'first-price' ? 'FPSB' : 'SPSB'}
+                                                </span>
+                                            </button>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</div>
+                                            {sessionState.status !== 'bidding' ? (
+                                                <Button onClick={startRound} className="w-full">
+                                                    <PlayCircle className="w-4 h-4" />
+                                                    Start Round {sessionState.round + 1}
+                                                </Button>
+                                            ) : (
+                                                <Button onClick={endRound} variant="danger" className="w-full">
+                                                    <StopCircle className="w-4 h-4" />
+                                                    End Round (Bids: {bidsReceived}/{activePlayers.length})
+                                                </Button>
+                                            )}
+                                            {sessionState.round > 0 && sessionState.status !== 'bidding' && (
+                                                <Button onClick={resetGame} variant="secondary" className="w-full text-xs">
+                                                    Reset Session
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </Card>
+
+                                    <Card className="md:col-span-2">
+                                        <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                                            <BarChart3 className="w-4 h-4" />
+                                            Live Stats
+                                        </h3>
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div className="p-4 bg-blue-50 rounded-lg">
+                                                <div className="text-sm text-blue-600 mb-1">Active Bidders</div>
+                                                <div className="text-2xl font-bold text-blue-900">{activePlayers.length}</div>
+                                            </div>
+                                            <div className="p-4 bg-emerald-50 rounded-lg">
+                                                <div className="text-sm text-emerald-600 mb-1">Bids Submitted</div>
+                                                <div className="text-2xl font-bold text-emerald-900">{bidsReceived}</div>
+                                                <div className="text-xs text-emerald-700 mt-1">
+                                                    {activePlayers.length > 0 ? Math.round((bidsReceived/activePlayers.length)*100) : 0}% completion
+                                                </div>
+                                            </div>
+                                            <div className="p-4 bg-purple-50 rounded-lg">
+                                                <div className="text-sm text-purple-600 mb-1">Last Revenue</div>
+                                                <div className="text-2xl font-bold text-purple-900">
+                                                    ${history.length > 0 ? history[history.length -1].revenue.toFixed(2) : '0.00'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                </div>
+                                
+                                {history.length > 0 && (
+                                    <div className="space-y-6">
+                                        <Card>
+                                            <div className="flex items-center justify-between mb-6">
+                                                <div>
+                                                    <h3 className="font-semibold text-slate-800 text-lg">Behavior Analysis: Bids vs. Valuations</h3>
+                                                    <p className="text-sm text-slate-500">
+                                                        Comparing actual student bids (dots) against Risk-Neutral Nash Equilibrium (lines).
+                                                    </p>
+                                                </div>
+                                                <div className="text-xs text-right">
+                                                    <div className="flex items-center gap-2 justify-end text-slate-500">
+                                                        <span className="w-3 h-3 rounded-full bg-blue-500"></span> Student Bid
+                                                        <span className="w-8 h-0.5 bg-emerald-500"></span> Equilibrium
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="h-[400px] w-full">
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <ComposedChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                        <XAxis 
+                                                            type="number" 
+                                                            dataKey="x" 
+                                                            name="Valuation" 
+                                                            unit="$" 
+                                                            domain={[0, 100]} 
+                                                            label={{ value: 'Valuation ($)', position: 'insideBottom', offset: -10 }} 
+                                                        />
+                                                        <YAxis 
+                                                            type="number" 
+                                                            dataKey="y" 
+                                                            name="Bid" 
+                                                            unit="$" 
+                                                            domain={[0, 100]} 
+                                                            label={{ value: 'Bid ($)', angle: -90, position: 'insideLeft' }} 
+                                                        />
+                                                        <Tooltip cursor={{ strokeDasharray: '3 3' }} content={({ active, payload }) => {
+                                                            if (active && payload && payload.length) {
+                                                                const pointData = payload.find(p => p.dataKey === 'y' && p.payload.name);
+                                                                if (pointData) {
+                                                                    const data = pointData.payload;
+                                                                    return (
+                                                                        <div className="bg-white p-2 border border-slate-200 shadow-lg rounded text-xs">
+                                                                            <p><strong>{data.name}</strong></p>
+                                                                            <p>Valuation: ${data.valuation}</p>
+                                                                            <p>Bid: ${data.bid}</p>
+                                                                        </div>
+                                                                    );
+                                                                }
+                                                            }
+                                                            return null;
+                                                        }} />
+                                                        
+                                                        <Scatter 
+                                                            name="Bids" 
+                                                            data={history[history.length-1].bidsData} 
+                                                            fill="#3b82f6" 
+                                                            shape="circle"
+                                                        />
+
+                                                        {history[history.length-1].type === 'second-price' && (
+                                                            <Line 
+                                                                type="monotone"
+                                                                dataKey="y" 
+                                                                data={[{x:0, y:0}, {x:100, y:100}]} 
+                                                                stroke="#10b981" 
+                                                                strokeWidth={2} 
+                                                                dot={false} 
+                                                                name="Equilibrium (b=v)"
+                                                                isAnimationActive={false}
+                                                            />
+                                                        )}
+                                                        {history[history.length-1].type === 'first-price' && (
+                                                            <Line 
+                                                                type="monotone"
+                                                                dataKey="y" 
+                                                                data={[
+                                                                    {x:0, y:0}, 
+                                                                    {x:100, y: 100 * ((history[history.length-1].bidders - 1) / Math.max(1, history[history.length-1].bidders))}
+                                                                ]} 
+                                                                stroke="#10b981" 
+                                                                strokeWidth={2} 
+                                                                dot={false} 
+                                                                name="Equilibrium (Risk Neutral)"
+                                                                isAnimationActive={false}
+                                                            />
+                                                        )}
+                                                    </ComposedChart>
+                                                </ResponsiveContainer>
+                                            </div>
+                                        </Card>
+
+                                        <Card>
+                                            <h3 className="font-semibold text-slate-800 mb-4">Round History</h3>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full text-sm text-left">
+                                                    <thead className="text-xs text-slate-500 uppercase bg-slate-50">
+                                                        <tr>
+                                                            <th className="px-4 py-2">Round</th>
+                                                            <th className="px-4 py-2">Type</th>
+                                                            <th className="px-4 py-2">Winner</th>
+                                                            <th className="px-4 py-2 text-right">Revenue</th>
+                                                            <th className="px-4 py-2 text-center">Efficient?</th>
+                                                            <th className="px-4 py-2 text-center">Bidders</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {history.map((h, i) => (
+                                                            <tr key={i} className="border-b border-slate-100 hover:bg-slate-50">
+                                                                <td className="px-4 py-2 font-medium">#{h.round}</td>
+                                                                <td className="px-4 py-2">
+                                                                    <Badge color={h.type === 'first-price' ? 'purple' : 'blue'}>
+                                                                        {h.type === 'first-price' ? 'FPSB' : 'SPSB'}
+                                                                    </Badge>
+                                                                </td>
+                                                                <td className="px-4 py-2">{h.winner} (${h.winningBid})</td>
+                                                                <td className="px-4 py-2 text-right font-mono">${h.revenue.toFixed(2)}</td>
+                                                                <td className="px-4 py-2 text-center">
+                                                                    {h.efficiency ? 
+                                                                        <span className="text-green-600 flex justify-center"><ShieldCheck className="w-4 h-4"/></span> : 
+                                                                        <span className="text-red-500 flex justify-center"><AlertCircle className="w-4 h-4"/></span>
+                                                                    }
+                                                                </td>
+                                                                <td className="px-4 py-2 text-center">{h.bidders}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </Card>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {role === 'student' && (
+                            <div className="max-w-md mx-auto">
+                                {sessionState.status === 'lobby' && (
+                                    <Card className="text-center py-12">
+                                        <div className="animate-pulse bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                                            <Gavel className="w-8 h-8 text-blue-600" />
+                                        </div>
+                                        <h2 className="text-xl font-bold text-slate-800">Waiting for Auctioneer</h2>
+                                        <p className="text-slate-500 mt-2">The next round will start shortly.</p>
+                                    </Card>
+                                )}
+
+                                {sessionState.status === 'bidding' && (
+                                    <Card>
+                                        <div className="text-center mb-6">
+                                            <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">Your Private Valuation</span>
+                                            <div className="text-5xl font-bold text-slate-800 mt-2">${myPlayer?.valuation}</div>
+                                            <div className="mt-2 inline-block">
+                                                <Badge color={sessionState.auctionType === 'first-price' ? 'purple' : 'blue'}>
+                                                    Current Mode: {sessionState.auctionType === 'first-price' ? 'First-Price' : 'Second-Price'}
+                                                </Badge>
+                                            </div>
+                                            <p className="text-xs text-slate-400 mt-4 max-w-xs mx-auto leading-relaxed">
+                                                {sessionState.auctionType === 'first-price' 
+                                                ? "If you win, you pay exactly what you bid." 
+                                                : "If you win, you pay the amount of the second highest bid."}
+                                            </p>
+                                        </div>
+
+                                        {!myPlayer?.hasBid ? (
+                                            <div className="space-y-4">
+                                                <div className="relative">
+                                                    <DollarSign className="absolute left-3 top-3 text-slate-400 w-5 h-5" />
+                                                    <input 
+                                                        type="number" 
+                                                        className="w-full pl-10 pr-4 py-3 text-lg border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                                        placeholder="Enter your bid..."
+                                                        onKeyDown={(e) => {
+                                                            if(e.key === 'Enter') submitBid(e.target.value);
+                                                        }}
+                                                        id="bidInput"
+                                                    />
+                                                </div>
+                                                <Button 
+                                                    onClick={() => {
+                                                        const val = document.getElementById('bidInput').value;
+                                                        if(val) submitBid(val);
+                                                    }} 
+                                                    className="w-full py-3 text-lg"
+                                                >
+                                                    Submit Bid
+                                                </Button>
+                                            </div>
+                                        ) : (
+                                            <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-6 text-center">
+                                                <ShieldCheck className="w-12 h-12 text-emerald-500 mx-auto mb-2" />
+                                                <h3 className="text-emerald-800 font-semibold text-lg">Bid Submitted</h3>
+                                                <p className="text-emerald-600">Waiting for other bidders...</p>
+                                                <div className="mt-4 text-emerald-700 font-medium">Your Bid: ${myPlayer.bid}</div>
+                                            </div>
+                                        )}
+                                    </Card>
+                                )}
+
+                                {sessionState.status === 'results' && history.length > 0 && (
+                                    <div className="space-y-4">
+                                        <Card className="text-center relative overflow-hidden">
+                                            {history[history.length-1].winner === name ? (
+                                                <div className="space-y-2">
+                                                    <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-300 to-yellow-500" />
+                                                    <div className="inline-flex p-3 bg-yellow-100 rounded-full mb-2">
+                                                        <TrendingUp className="w-8 h-8 text-yellow-600" />
+                                                    </div>
+                                                    <h2 className="text-2xl font-bold text-slate-800">You Won!</h2>
+                                                    <div className="grid grid-cols-2 gap-4 mt-4 text-left bg-slate-50 p-4 rounded-lg">
+                                                        <div>
+                                                            <div className="text-xs text-slate-500">Value</div>
+                                                            <div className="font-semibold">${myPlayer?.valuation}</div>
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-xs text-slate-500">You Paid</div>
+                                                            <div className="font-semibold text-red-600">${history[history.length-1].price}</div>
+                                                        </div>
+                                                        <div className="col-span-2 border-t border-slate-200 pt-2 mt-2">
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="text-sm font-bold text-slate-700">Net Profit</span>
+                                                                <span className="text-lg font-bold text-green-600">
+                                                                +${(myPlayer?.valuation - history[history.length-1].price).toFixed(2)}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-2">
+                                                    <div className="inline-flex p-3 bg-slate-100 rounded-full mb-2">
+                                                        <Users className="w-8 h-8 text-slate-400" />
+                                                    </div>
+                                                    <h2 className="text-xl font-bold text-slate-700">You did not win</h2>
+                                                    <p className="text-slate-500">
+                                                        Winner paid: <strong>${history[history.length-1].price}</strong>
+                                                    </p>
+                                                    <div className="bg-slate-50 p-3 rounded mt-4 text-sm text-slate-600">
+                                                        Your Valuation: ${myPlayer?.valuation} <br/>
+                                                        Your Bid: ${myPlayer?.bid}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Card>
+                                        
+                                        <div className="text-center text-slate-500 text-sm animate-pulse">
+                                            Waiting for instructor to start next round...
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </main>
                 </div>
-                <h2 className="text-xl font-bold text-slate-800">Waiting for Auctioneer</h2>
-                <p className="text-slate-500 mt-2">The next round will start shortly.</p>
-              </Card>
-            )}
+            );
+        }
 
-            {sessionState.status === 'bidding' && (
-              <Card>
-                <div className="text-center mb-6">
-                  <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">Your Private Valuation</span>
-                  <div className="text-5xl font-bold text-slate-800 mt-2">${myPlayer?.valuation}</div>
-                  <div className="mt-2 inline-block">
-                    <Badge color={sessionState.auctionType === 'first-price' ? 'purple' : 'blue'}>
-                       Current Mode: {sessionState.auctionType === 'first-price' ? 'First-Price' : 'Second-Price'}
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-4 max-w-xs mx-auto leading-relaxed">
-                    {sessionState.auctionType === 'first-price' 
-                      ? "If you win, you pay exactly what you bid." 
-                      : "If you win, you pay the amount of the second highest bid."}
-                  </p>
-                </div>
-
-                {!myPlayer?.hasBid ? (
-                   <div className="space-y-4">
-                     <div className="relative">
-                       <DollarSign className="absolute left-3 top-3 text-slate-400 w-5 h-5" />
-                       <input 
-                         type="number" 
-                         className="w-full pl-10 pr-4 py-3 text-lg border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                         placeholder="Enter your bid..."
-                         onKeyDown={(e) => {
-                           if(e.key === 'Enter') submitBid(e.target.value);
-                         }}
-                         id="bidInput"
-                       />
-                     </div>
-                     <Button 
-                       onClick={() => {
-                         const val = document.getElementById('bidInput').value;
-                         if(val) submitBid(val);
-                       }} 
-                       className="w-full py-3 text-lg"
-                     >
-                       Submit Bid
-                     </Button>
-                   </div>
-                ) : (
-                  <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-6 text-center">
-                    <ShieldCheck className="w-12 h-12 text-emerald-500 mx-auto mb-2" />
-                    <h3 className="text-emerald-800 font-semibold text-lg">Bid Submitted</h3>
-                    <p className="text-emerald-600">Waiting for other bidders...</p>
-                    <div className="mt-4 text-emerald-700 font-medium">Your Bid: ${myPlayer.bid}</div>
-                  </div>
-                )}
-              </Card>
-            )}
-
-            {sessionState.status === 'results' && history.length > 0 && (
-               <div className="space-y-4">
-                  {/* Round Result Card */}
-                  <Card className="text-center relative overflow-hidden">
-                    {history[history.length-1].winner === name ? (
-                      <div className="space-y-2">
-                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-300 to-yellow-500" />
-                        <div className="inline-flex p-3 bg-yellow-100 rounded-full mb-2">
-                          <TrendingUp className="w-8 h-8 text-yellow-600" />
-                        </div>
-                        <h2 className="text-2xl font-bold text-slate-800">You Won!</h2>
-                        <div className="grid grid-cols-2 gap-4 mt-4 text-left bg-slate-50 p-4 rounded-lg">
-                           <div>
-                             <div className="text-xs text-slate-500">Value</div>
-                             <div className="font-semibold">${myPlayer?.valuation}</div>
-                           </div>
-                           <div>
-                             <div className="text-xs text-slate-500">You Paid</div>
-                             <div className="font-semibold text-red-600">${history[history.length-1].price}</div>
-                           </div>
-                           <div className="col-span-2 border-t border-slate-200 pt-2 mt-2">
-                             <div className="flex justify-between items-center">
-                               <span className="text-sm font-bold text-slate-700">Net Profit</span>
-                               <span className="text-lg font-bold text-green-600">
-                                 +${(myPlayer?.valuation - history[history.length-1].price).toFixed(2)}
-                               </span>
-                             </div>
-                           </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        <div className="inline-flex p-3 bg-slate-100 rounded-full mb-2">
-                          <Users className="w-8 h-8 text-slate-400" />
-                        </div>
-                        <h2 className="text-xl font-bold text-slate-700">You did not win</h2>
-                        <p className="text-slate-500">
-                          Winner paid: <strong>${history[history.length-1].price}</strong>
-                        </p>
-                        <div className="bg-slate-50 p-3 rounded mt-4 text-sm text-slate-600">
-                           Your Valuation: ${myPlayer?.valuation} <br/>
-                           Your Bid: ${myPlayer?.bid}
-                        </div>
-                      </div>
-                    )}
-                  </Card>
-                  
-                  <div className="text-center text-slate-500 text-sm animate-pulse">
-                    Waiting for instructor to start next round...
-                  </div>
-               </div>
-            )}
-          </div>
-        )}
-      </main>
-    </div>
-  );
-}
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
